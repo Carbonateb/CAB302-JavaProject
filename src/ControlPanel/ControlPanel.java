@@ -14,6 +14,20 @@ public class ControlPanel {
 	}
 
 	private static void setupUI() {
+		// Won't compile without the exceptions unhandled
+		try {
+			// Set System L&F
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException e) {
+			// handle exception
+		} catch (ClassNotFoundException e) {
+			// handle exception
+		} catch (InstantiationException e) {
+			// handle exception
+		} catch (IllegalAccessException e) {
+			// handle exception
+		}
+
 		// Create and setup main window
 		JFrame mainWindow = new JFrame("Billboard Control Panel");
 		mainWindow.setSize(400, 250); // Size of the main window

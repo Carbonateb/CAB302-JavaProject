@@ -1,51 +1,38 @@
 package ControlPanel;
 
-import java.awt.FlowLayout;
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-/**
- * ControlPanel remotely controls the Server. This is the main class of the
- * ControlPanel app.
- */
 public class ControlPanel {
-	public static void main(String[] args) {
-		setupUI();
-	}
+	private JLabel helloWorldLabel;
+	private JPanel mainWindow;
+	private JButton testButton;
 
-	private static void setupUI() {
-		// Won't compile without the exceptions unhandled
-		try {
-			// Set System L&F
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException e) {
-			// handle exception
-		} catch (ClassNotFoundException e) {
-			// handle exception
-		} catch (InstantiationException e) {
-			// handle exception
-		} catch (IllegalAccessException e) {
-			// handle exception
-		}
-
-		// Create and setup main window
-		JFrame mainWindow = new JFrame("Billboard Control Panel");
-		mainWindow.setSize(400, 250); // Size of the main window
-		mainWindow.setLayout(new FlowLayout()); // Arrange widgets centered left to right, top to bottom
-		mainWindow.setVisible(true);
-
-		// Create a bit of text
-		mainWindow.add(new JLabel("Hello World!"));
-
-		// Create an ugly button
-		JButton exitButton = new JButton("Click me");
-		mainWindow.add(exitButton); // Add button to window
-
-		// Do stuff when button is clicked
-		exitButton.addActionListener(new ActionListener() {
+	// Handle button click
+	public ControlPanel() {
+		testButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button pressed");
 			}
 		});
+	}
+
+	public static void main(String[] args) {
+		// Won't compile without the exceptions unhandled
+		try {
+			// Set System L&F
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+			// handle exception
+		}
+
+		// Create and setup main window
+		JFrame frame = new JFrame("Billboard Control Panel");
+		frame.setContentPane(new ControlPanel().mainWindow);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 	}
 }

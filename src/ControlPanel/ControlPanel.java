@@ -1,13 +1,18 @@
 package ControlPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ControlPanel {
-	private JLabel helloWorldLabel;
-	private JPanel mainWindow;
+	public JPanel mainWindow;
+	private JLabel lblUsername;
 	private JButton testButton;
+	private JTextField enterUsernameTextField;
+	private JLabel lblPassword;
+	private JButton button1;
+	private JPasswordField enterPasswordPasswordField;
 
 	// Handle button click
 	public ControlPanel() {
@@ -15,6 +20,12 @@ public class ControlPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button pressed");
+			}
+		});
+		testButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
 			}
 		});
 	}

@@ -6,21 +6,34 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ControlPanel {
-	public JPanel mainWindow;
+public class LoginWindow {
+	public JPanel loginWindow;
 	private JLabel lblUsername;
 	private JButton testButton;
 	private JTextField enterUsernameTextField;
 	private JLabel lblPassword;
 	private JButton btnLogin;
 	private JPasswordField enterPasswordPasswordField;
+	private JLabel passIncorrect;
+	private JLabel placeholderLabel;
+	private static JFrame loginFrame;
 
 	//Variables
 	public boolean user;
 	public boolean password;
 
+	/**
+	 * Getter to allow actions to be performed on the login window JFrame from outside
+	 * of the main function.
+	 * @author Connor McHugh - n10522662
+	 * @return Returns the JFrame loginFrame
+	 */
+	public JFrame getLoginFrame() {
+		return loginFrame;
+	}
+
 	// Handle button click
-	public ControlPanel() {
+	public LoginWindow() {
 
 		/**
 		 * Graphical User Interface for login form
@@ -68,6 +81,7 @@ public class ControlPanel {
 		/**
 		 * When pressed checks user credentials and authenticates
 		 *  @author Callum McNeilage - n10482652
+		 *  Additions made by Connor McHugh - n10522662
 		 */
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
@@ -83,10 +97,31 @@ public class ControlPanel {
 					System.out.print(pwd[i]);
 					password += pwd[i];
 				}
-				System.out.println(password.hashCode());
+				System.out.println("\n" + password.hashCode());
+
+				// Checks if username and password are correct (placeholder for real
+				// check that will be implemented later
+				if (username.equals("username") && password.equals("password")) {
+					// If the username and password are correct, close the login window
+					// and open the main window
+
+					getLoginFrame().dispose();
+					JFrame mainFrame = new JFrame("Billboard Control Panel");
+					mainFrame.setContentPane(new MainWindow().mainWindow);
+					mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					mainFrame.pack();
+					mainFrame.setVisible(true);
+				} else {
+					// If the password is incorrect, hide the placeholder label and show
+					// the label informing the user that the password is incorrect.
+					placeholderLabel.setVisible(false);
+					passIncorrect.setVisible(true);
+				}
 			}
 		});
 	}
+
+
 
 	public static void main(String[] args) {
 		// Won't compile without the exceptions unhandled
@@ -98,10 +133,11 @@ public class ControlPanel {
 		}
 
 		// Create and setup main window
-		JFrame frame = new JFrame("Billboard Control Panel");
-		frame.setContentPane(new ControlPanel().mainWindow);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+		loginFrame = new JFrame("Billboard Control Panel");
+		loginFrame.setContentPane(new LoginWindow().loginWindow);
+		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginFrame.pack();
+		loginFrame.setVisible(true);
 	}
+
 }

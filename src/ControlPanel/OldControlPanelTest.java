@@ -5,8 +5,8 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * ControlPanel remotely controls the Server. This is the main class of the
- * ControlPanel app.
+ * LoginWindow remotely controls the Server. This is the main class of the
+ * LoginWindow app.
  */
 public class OldControlPanelTest {
 	public static void main(String[] args) {

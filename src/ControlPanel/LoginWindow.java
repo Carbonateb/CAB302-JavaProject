@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginWindow {
 	public JPanel loginWindow;
@@ -18,9 +21,7 @@ public class LoginWindow {
 	private JLabel placeholderLabel;
 	private static JFrame loginFrame;
 
-	//Variables
-	public boolean user;
-	public boolean password;
+	public static String encodedPassword;
 
 	/**
 	 * Getter to allow actions to be performed on the login window JFrame from outside
@@ -97,11 +98,28 @@ public class LoginWindow {
 					System.out.print(pwd[i]);
 					password += pwd[i];
 				}
-				System.out.println("\n" + password.hashCode());
+				System.out.println("\n" + password);
+
+				// Converts password to a SHA-256 encoded password
+				try {
+					MessageDigest md = MessageDigest.getInstance("SHA-256");
+					byte[] encodedhash = md.digest(
+						password.getBytes(StandardCharsets.UTF_8));
+
+					encodedPassword = bytesToHex(encodedhash);
+					System.out.println(encodedPassword);
+				}
+				catch (NoSuchAlgorithmException nsae) {
+					System.err.println("SHA-256 is not a valid message digest algorithm");
+				}
+
+
+
+
 
 				// Checks if username and password are correct (placeholder for real
 				// check that will be implemented later
-				if (username.equals("username") && password.equals("password")) {
+				if (username.equals("username") && encodedPassword.equals(encodedPassword)) {
 					// If the username and password are correct, close the login window
 					// and open the main window
 
@@ -121,7 +139,15 @@ public class LoginWindow {
 		});
 	}
 
-
+	private static String bytesToHex(byte[] hash) {
+		StringBuffer hexString = new StringBuffer();
+		for (int i = 0; i < hash.length; i++){
+			String hex = Integer.toHexString(0xff & hash[i]);
+			if(hex.length() == 1) hexString.append('0');
+			hexString.append(hex);
+		}
+		return hexString.toString();
+	}
 
 	public static void main(String[] args) {
 		// Won't compile without the exceptions unhandled

@@ -17,13 +17,19 @@ public class MainWindow {
 	private JTable mainWindowTable;
 
 
+
 	public MainWindow() {
+		/**
+		 * Opens the Users form when editUsersButton is clicked
+		 *
+		 * @author Callum McNeilage - n10482652
+		 */
 		editUsersButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame usersFrame = new JFrame("Users");
 				usersFrame.setContentPane(new User().Users);
-				usersFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				usersFrame.setDefaultCloseOperation(usersFrame.HIDE_ON_CLOSE);
 				usersFrame.pack();
 				usersFrame.setVisible(true);
 			}

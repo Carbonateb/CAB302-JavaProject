@@ -41,48 +41,41 @@ public class LoginWindow {
 		 */
 
 		/**
-		 * Checks for when user inputs username and enables the password field
-		 *  @author Callum McNeilage - n10482652
+		 * Enables login button if both username and password fields have stuff in them.
+		 * This one KeyAdapter is reused for both username and password events
+		 * @author Callum McNeilage - n10482652
+		 * @contributor Lucas Maldonado - n10534342
 		 */
-		enterUsernameTextField.addKeyListener(new KeyAdapter() {
+		KeyAdapter loginKeyAdapter = new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(!enterUsernameTextField.getText().trim().isEmpty()) {
-					enterPasswordPasswordField.setEnabled(true);
-					//user = true;
-				}
+			public void keyReleased(KeyEvent e) {
+				btnLogin.setEnabled(
+					enterPasswordPasswordField.getPassword().length > 0
+						&& enterUsernameTextField.getText().length() > 0
+				);
 			}
-		});
+		};
+
+		// Use the key listener from above in both the username and password field
+		enterUsernameTextField.addKeyListener(loginKeyAdapter);
+		enterPasswordPasswordField.addKeyListener(loginKeyAdapter);
 
 		/**
-		 * Checks for user to input password and enables login button
-		 *  @author Callum McNeilage - n10482652
+		 * Called when the user presses enter on the password field
+		 * Will click the login button for the user
+		 * @author Lucas Maldonado - n10534342
 		 */
-		enterPasswordPasswordField.addKeyListener(new KeyAdapter() {
+		enterPasswordPasswordField.addActionListener(new ActionListener() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(!enterPasswordPasswordField.getPassword().equals("")) {
-					btnLogin.setEnabled(true);
-					//password = true;
-				}
+			public void actionPerformed(ActionEvent e) {
+				btnLogin.doClick();
 			}
 		});
-		/*btnLogin.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (user) {
-					btnLogin.setEnabled(true);
-					if (password) {
-
-					}
-				}
-			}
-		});*/
 
 		/**
 		 * When pressed checks user credentials and authenticates
-		 *  @author Callum McNeilage - n10482652
-		 *  Additions made by Connor McHugh - n10522662
+		 * @author Callum McNeilage - n10482652
+		 * @contributor Connor McHugh - n10522662
 		 */
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
@@ -167,3 +160,29 @@ public class LoginWindow {
 	}
 
 }
+
+/* ========== CODE GRAVEYARD ==========
+Unused code goes here:
+
+// controls login button enabled status
+	btnLogin.addKeyListener(new KeyAdapter() {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (user) {
+				btnLogin.setEnabled(true);
+				if (password) {
+
+				}
+			}
+		}
+	});
+
+// another better attempt at controlling login button enabled status
+	public void keyPressed(KeyEvent e) {
+				if(!enterUsernameTextField.getText().trim().isEmpty()) {
+					enterPasswordPasswordField.setEnabled(true);
+					//user = true;
+				}
+
+
+ */

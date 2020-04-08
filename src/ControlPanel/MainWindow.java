@@ -34,6 +34,22 @@ public class MainWindow {
 				usersFrame.setVisible(true);
 			}
 		});
+		createButton.addActionListener(new ActionListener() {
+			/**
+			 * Opens NewBillboard when createButton is pressed
+			 *
+			 * @author Connor McHugh - n10522662
+			 * @param e the event to be processed
+			 */
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame usersFrame = new JFrame("Create New Billboard");
+				usersFrame.setContentPane(new NewBillboard().newBillboardWindow);
+				usersFrame.setDefaultCloseOperation(usersFrame.HIDE_ON_CLOSE);
+				usersFrame.pack();
+				usersFrame.setVisible(true);
+			}
+		});
 	}
 
 	public static void main(String[] args) {

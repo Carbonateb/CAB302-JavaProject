@@ -20,22 +20,36 @@ public class MainWindow {
 
 	public MainWindow() {
 		/**
-		 * Opens the Users form when editUsersButton is clicked
+		 * Opens the User form when editUsersButton is clicked
 		 *
 		 * @author Callum McNeilage - n10482652
 		 */
 		editUsersButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame usersFrame = new JFrame("Users");
-				usersFrame.setContentPane(new User().Users);
-				usersFrame.setDefaultCloseOperation(usersFrame.HIDE_ON_CLOSE);
-				usersFrame.pack();
-				usersFrame.setVisible(true);
+				User.main(null);
+			}
+		});
+
+		/**
+		 * Opens the Schedule form when Schedule button if clicked
+		 *
+		 * @author Callum McNeilage
+		 */
+		scheduleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Schedule.main(null);
 			}
 		});
 	}
 
+	/**
+	 * Loads the main application window
+	 *
+	 * @author Connor McHugh -
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		JFrame mainFrame = new JFrame("MainWindow");
 		mainFrame.setContentPane(new MainWindow().mainWindow);

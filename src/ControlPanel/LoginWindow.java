@@ -73,6 +73,21 @@ public class LoginWindow {
 		});
 
 		/**
+		 * Called when user presses enter on username field
+		 * Will click the login button for the user
+		 * @author Callum McNeilage - n10482652
+		 *
+		 * Adapted from enterPasswordPasswordField.addActionListener
+		 * @author Lucas Maldonado - n10534342
+		 */
+		enterUsernameTextField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnLogin.doClick();
+			}
+		});
+
+		/**
 		 * When pressed checks user credentials and authenticates
 		 * @author Callum McNeilage - n10482652
 		 * @contributor Connor McHugh - n10522662

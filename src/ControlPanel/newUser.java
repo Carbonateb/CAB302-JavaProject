@@ -16,6 +16,10 @@ public class newUser {
 	private JButton btnSet;
 	public static JFrame newUserFrame;
 
+	/**
+	 * Saves all user variables to database and closes window when OK is pressed
+	 * @author Callum McNeilage - n10482652
+	 */
 	public newUser() {
 		btnSet.addActionListener(new ActionListener() {
 			@Override
@@ -25,6 +29,13 @@ public class newUser {
 		});
 	}
 
+	/**
+	 * Loads New User/Edit User window
+	 * - The new User window will load blank while edit user window will load with user credentials filled out
+	 *
+	 * @author Callum McNeilage - n10482652
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// Won't compile without the exceptions unhandled
 		try {
@@ -34,7 +45,7 @@ public class newUser {
 			// handle exception
 		}
 
-		// Create and setup main window
+		// Create and setup newUsers window
 		newUserFrame = new JFrame("New User");
 		newUserFrame.setContentPane(new newUser().newUser);
 		newUserFrame.setDefaultCloseOperation(newUserFrame.HIDE_ON_CLOSE);

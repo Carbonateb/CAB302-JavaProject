@@ -19,21 +19,13 @@ public class User {
 		btnNewUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame usersFrame = new JFrame("New Users");
-				usersFrame.setContentPane(new newUser().newUser);
-				usersFrame.setDefaultCloseOperation(usersFrame.HIDE_ON_CLOSE);
-				usersFrame.pack();
-				usersFrame.setVisible(true);
+				newUser.main(null);
 			}
 		});
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame usersFrame = new JFrame("New Users");
-				usersFrame.setContentPane(new newUser().newUser);
-				usersFrame.setDefaultCloseOperation(usersFrame.HIDE_ON_CLOSE);
-				usersFrame.pack();
-				usersFrame.setVisible(true);
+				newUser.main(null);
 			}
 		});
 	}

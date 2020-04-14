@@ -9,14 +9,11 @@ public class newUser {
 	public JPanel newUser;
 	private JTextField textField1;
 	private JTextField textField2;
-	private JCheckBox checkBox1;
-	private JCheckBox checkBox2;
-	private JCheckBox checkBox3;
-	private JCheckBox checkBox4;
+	private JCheckBox chkCreate;
+	private JCheckBox chkEdit;
+	private JCheckBox chkSchedule;
+	private JCheckBox chkEditUsers;
 	private JButton btnSet;
-	private JCheckBox useOneTimePasswordCheckBox;
-	private JCheckBox checkBox6;
-	private JCheckBox checkBox5;
 	public static JFrame newUserFrame;
 
 	public newUser() {

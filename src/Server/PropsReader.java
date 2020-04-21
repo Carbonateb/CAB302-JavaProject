@@ -69,10 +69,18 @@ public final class PropsReader {
 	 * Constructor that auto reads the properties files
 	 * @author Lucas Maldonado n10534342
 	 */
-	public PropsReader() throws IOException {
+	public PropsReader() {
 		Log.config("Current Working Directory is: " + GetCWD());
-		HashMap<String, String> serverProps = ReadPropFile(GetCWD() + filePath + serverPropsFileName);
-		HashMap<String, String> databaseProps = ReadPropFile(GetCWD() + filePath + databasePropsFileName);
+
+		HashMap<String, String> serverProps = new HashMap<String, String>();
+		HashMap<String, String> databaseProps = new HashMap<String, String>();
+
+		try{
+			serverProps = ReadPropFile(GetCWD() + filePath + serverPropsFileName);
+			databaseProps = ReadPropFile(GetCWD() + filePath + databasePropsFileName);
+		} catch (Exception e) {
+			Log.warning("Caught exception: " + e.getMessage() + "\nFalling back to default values");
+		}
 
 		// Ensure that all the data is present. Uses the default value arrays
 		for (String[] s : defaultServerProps) {

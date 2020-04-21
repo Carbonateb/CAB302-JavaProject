@@ -7,11 +7,7 @@ public class Server {
 		System.out.println("Server starting");
 
 		// Create the PropsReader for debugging purposes
-		try {
-			PropsReader testPropsReader = new PropsReader();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		PropsReader testPropsReader = new PropsReader();
 	}
 
 }

@@ -60,6 +60,13 @@ public final class PropsReader {
 		{"password", ""},
 	};
 
+	// Variables for storing the properties
+	public HashMap<String, String> serverProps = new HashMap<String, String>();
+	public HashMap<String, String> databaseProps = new HashMap<String, String>();
+
+	
+
+
 
 	/** Log class for logging PropsReader specific messages with more helpful info */
 	private static final Logger Log = Logger.getLogger(PropsReader.class.getName());
@@ -71,9 +78,6 @@ public final class PropsReader {
 	 */
 	public PropsReader() {
 		Log.config("Current Working Directory is: " + GetCWD());
-
-		HashMap<String, String> serverProps = new HashMap<String, String>();
-		HashMap<String, String> databaseProps = new HashMap<String, String>();
 
 		try{
 			serverProps = ReadPropFile(GetCWD() + filePath + serverPropsFileName);

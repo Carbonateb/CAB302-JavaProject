@@ -49,7 +49,7 @@ public final class PropsReader {
 
 	/** Default values of serverPropsFile if some values are missing */
 	private final static String[][] defaultServerProps = {
-		{"port", ""}
+		{"port", "0"}
 	};
 
 	/** Default values of databasePropsFile if some values are missing */
@@ -60,13 +60,56 @@ public final class PropsReader {
 		{"password", ""},
 	};
 
+	/**
+	 * @returns the 'port' value found in port.props
+	 */
+	public int GetPort()
+	{
+		try{
+			return Integer.parseUnsignedInt(serverProps.get("port"));
+		} catch (NumberFormatException e) {
+			Log.warning("Can't parse Port number '" + e.getMessage() +
+				"'. Falling back to default (" + defaultServerProps[0][1] + ")");
+			return Integer.parseUnsignedInt(defaultServerProps[0][1]);
+		}
+
+	}
+
+	/**
+	 * @returns the 'url' value found in db.props
+	 */
+	public String GetURL()
+	{
+		return databaseProps.get("url");
+	}
+
+	/**
+	 * @returns the 'path' value found in db.props
+	 */
+	public String GetPath()
+	{
+		return databaseProps.get("path");
+	}
+
+	/**
+	 * @returns the 'username' value found in db.props
+	 */
+	public String GetUsername()
+	{
+		return databaseProps.get("username");
+	}
+
+	/**
+	 * @returns the 'password' value found in db.props
+	 */
+	public String GetPassword()
+	{
+		return databaseProps.get("password");
+	}
+
 	// Variables for storing the properties
-	public HashMap<String, String> serverProps = new HashMap<String, String>();
-	public HashMap<String, String> databaseProps = new HashMap<String, String>();
-
-	
-
-
+	private HashMap<String, String> serverProps = new HashMap<>();
+	private HashMap<String, String> databaseProps = new HashMap<>();
 
 	/** Log class for logging PropsReader specific messages with more helpful info */
 	private static final Logger Log = Logger.getLogger(PropsReader.class.getName());
@@ -79,22 +122,30 @@ public final class PropsReader {
 	public PropsReader() {
 		Log.config("Current Working Directory is: " + GetCWD());
 
+		boolean foundServerPropFile = true;
+		boolean foundDatabasePropFile = true;
+
+		// Doing them separately so that if one fails, the other file can still be read
 		try{
 			serverProps = ReadPropFile(GetCWD() + filePath + serverPropsFileName);
+		} catch (Exception e) {
+			Log.warning("Caught exception: " + e.getMessage() + "\nFalling back to default values");
+			foundServerPropFile = false;
+		}
+		try{
 			databaseProps = ReadPropFile(GetCWD() + filePath + databasePropsFileName);
 		} catch (Exception e) {
 			Log.warning("Caught exception: " + e.getMessage() + "\nFalling back to default values");
+			foundDatabasePropFile = false;
 		}
 
 		// Ensure that all the data is present. Uses the default value arrays
 		for (String[] s : defaultServerProps) {
-			FixIfMissing(serverProps, s, serverPropsFileName);
+			FixIfMissing(serverProps, s, serverPropsFileName, foundServerPropFile);
 		}
 		for (String[] s : defaultDatabaseProps) {
-			FixIfMissing(databaseProps, s, databasePropsFileName);
+			FixIfMissing(databaseProps, s, databasePropsFileName, foundDatabasePropFile);
 		}
-
-
 	}
 
 	/**
@@ -104,12 +155,13 @@ public final class PropsReader {
 	 * @param map the map to modify. Passed by reference.
 	 * @param values contains the expected key and default value. key goes in [0], val in [1]
 	 * @param sourceFile for the log, to say which file this key should be in.
+	 * @param logMissingKeys if true, will print any missing keys to the log
 	 * @author Lucas Maldonado n10534342
 	 */
-	private void FixIfMissing(HashMap<String, String> map, String[] values, String sourceFile){
+	private void FixIfMissing(HashMap<String, String> map, String[] values, String sourceFile, boolean logMissingKeys){
 		if (!map.containsKey(values[0])){
-			Log.warning("Could not find '" + values[0] + "' key in file: " + sourceFile +
-				". Adding key and using default value '" + values[1] + "'");
+			if (logMissingKeys) { Log.warning("Could not find '" + values[0] + "' key in file: " + sourceFile +
+				". Adding key and using default value '" + values[1] + "'"); }
 			map.put(values[0], values[1]);
 		}
 		else if(map.get(values[0]).isEmpty() && !values[1].isEmpty()) {
@@ -143,8 +195,7 @@ public final class PropsReader {
 				if (splitLine.length < 2) {
 					throw new Exception(line);
 				}
-				// System.out.println(splitLine[0].toLowerCase() + ", " + splitLine[1]);
-				ReturnValue.put(splitLine[0].toLowerCase(), splitLine[1]);
+				ReturnValue.put(splitLine[0].toLowerCase(), splitLine[1].trim());
 			}
 			catch (Exception e) {
 				// Badly formatted lines can be ignored, empty lines aren't reported at all

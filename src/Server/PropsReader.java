@@ -49,7 +49,7 @@ public final class PropsReader {
 
 	/** Default values of serverPropsFile if some values are missing */
 	private final static String[][] defaultServerProps = {
-		{"port", "0"}
+		{"port", "9977"}
 	};
 
 	/** Default values of databasePropsFile if some values are missing */

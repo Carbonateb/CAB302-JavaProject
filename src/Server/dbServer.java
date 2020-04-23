@@ -1,7 +1,10 @@
 package Server;
+
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.Date;
+
+import Server.ServerPropsReader;
 
 public class dbServer {
 
@@ -22,7 +25,7 @@ public class dbServer {
 
 	public void setupDB() {
 		//create reader object
-		PropsReader reader = new PropsReader();
+		ServerPropsReader reader = new ServerPropsReader();
 
 		DB_URL = reader.GetURL() + "/" + reader.GetPath();
 

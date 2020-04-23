@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.time.LocalTime;
 
+import Server.ServerPropsReader;
 import Server.SocketHandler;
 
 public class Server {
@@ -11,7 +12,7 @@ public class Server {
 		System.out.println("Server Starting...");
 		dbServer db = new dbServer();
 
-		PropsReader propsReader = new PropsReader();
+		ServerPropsReader propsReader = new ServerPropsReader();
 		ServerSocket serverSocket = new ServerSocket(propsReader.GetPort());
 		SocketHandler socketHandler = new SocketHandler(serverSocket);
 

@@ -78,6 +78,12 @@ public class dbServer {
 
 	}//end main
 
+
+	/***
+	 *
+	 * @param sql a string containing sql
+	 * @return return true if sql ran successfully else return false
+	 */
 	public boolean runSql(String sql)
 	{
 		try
@@ -98,6 +104,14 @@ public class dbServer {
 		}
 		return true;
 	}
+
+	/***
+	 * adds a user to the database
+	 * @param user_ID integer storing the ID of the user (PK)
+	 * @param usr_Name string storing the username of the user
+	 * @param pw_Hash string storing the hashed password of the user
+	 * @return true if sql ran successfully else false
+	 */
 	public boolean addUser(int user_ID, String usr_Name, String pw_Hash)
 	{
 		String sql =
@@ -106,6 +120,11 @@ public class dbServer {
 		return runSql(sql);
 	}
 
+	/***
+	 * drops a user based on the users ID
+	 * @param user_ID integer storing the ID of the user (PK)
+	 * @return true if sql ran successfully else false
+	 */
 	public boolean dropUser(int user_ID)
 	{
 		String sql =
@@ -113,6 +132,14 @@ public class dbServer {
 		return runSql(sql);
 	}
 
+	/***
+	 * adds a billboard to the database
+	 * @param bb_ID unique identification for the billboard (PK)
+	 * @param bb_Text text to be displayed on the billboard
+	 * @param bb_BGCol background color of the billboard
+	 * @param bb_Img the url of the image to be displayed
+	 * @return true if sql ran successfully else false
+	 */
 	public boolean addBillboard(int bb_ID, String bb_Text, String bb_BGCol, String bb_Img)
 	{
 		String sql =
@@ -121,6 +148,11 @@ public class dbServer {
 		return runSql(sql);
 	}
 
+	/***
+	 * removes a billboard from the database
+	 * @param bb_ID unique identification for the billboard (PK)
+	 * @return true if sql ran successfully else false
+	 */
 	public boolean dropBillboard(int bb_ID)
 	{
 		String sql =
@@ -128,6 +160,12 @@ public class dbServer {
 		return runSql(sql);
 	}
 
+	/***
+	 * adds a schedule to the database
+	 * @param schedule_Time String containing the time the image is to be displayed (PK)
+	 * @param bb_ID the id of the billboard the image will be displayed to (FK)
+	 * @return true if sql ran successfully else false
+	 */
 	public boolean addSchedule(String schedule_Time, int bb_ID)
 	{
 		String sql =
@@ -136,6 +174,11 @@ public class dbServer {
 		return runSql(sql);
 	}
 
+	/***
+	 * removes a schedule from the database
+	 * @param schedule_Time String containing the time the image is to be displayed (PK)
+	 * @return true if sql ran successfully else false
+	 */
 	public boolean dropSchedule(String schedule_Time)
 	{
 		String sql =

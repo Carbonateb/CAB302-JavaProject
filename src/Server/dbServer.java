@@ -13,8 +13,8 @@ public class dbServer {
 	static String DB_URL;
 
 	//  Database credentials
-	static String USER = "root";
-	static String PASS = "root";
+	static String USER = "x";
+	static String PASS = "x";
 
 	Connection conn = null;
 	Statement stmt = null;
@@ -28,7 +28,9 @@ public class dbServer {
 		ServerPropsReader reader = new ServerPropsReader();
 
 		DB_URL = reader.GetURL() + "/" + reader.GetPath();
-
+		USER = reader.GetUsername();
+		PASS = reader.GetPassword();
+		System.out.println("Connecting to a selected database...");
 		try
 		{
 			//Register JDBC driver

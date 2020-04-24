@@ -1,6 +1,7 @@
 package Viewer;
 
 import javax.swing.*;
+import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,6 +42,34 @@ public class Viewer {
 		mainFrame.pack();
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setVisible(true);
+
+		Action exitProgram = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		};
+
+		// Setup input binds, ESC and clicking should quit program
+		mainPanel.grabFocus();
+		mainPanel.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "exitProgram");
+		mainPanel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 1 = LMB
+				// 2 = ScrollWheel
+				// 3 = RMB
+				// 4 = SideButtonBack
+				// 5 = SideButtonFront
+				if (e.getButton() == 1)
+					System.exit(0);
+			}
+			// These need to be here
+			@Override public void mousePressed(MouseEvent e) { }
+			@Override public void mouseReleased(MouseEvent e) { }
+			@Override public void mouseEntered(MouseEvent e) { }
+			@Override public void mouseExited(MouseEvent e) { }
+		});
+		mainPanel.getActionMap().put("exitProgram", exitProgram);
 	}
 
 

@@ -42,4 +42,8 @@ public class XMLHandler {
 			return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
 		}
 	}
+
+	public static void xmlWriter() {
+
+	}
 }

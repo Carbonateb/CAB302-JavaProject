@@ -2,15 +2,18 @@ package ControlPanel;
 
 import org.xml.sax.SAXException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
-
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Form for creating a new billboard
@@ -59,6 +62,8 @@ public class NewBillboard {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String localImagePath = null;
+
 				JFileChooser imageSelect = new JFileChooser();
 				imageSelect.setAcceptAllFileFilterUsed(false);
 				imageSelect.setDialogTitle("Select an image");
@@ -69,9 +74,31 @@ public class NewBillboard {
 				int selected = imageSelect.showOpenDialog(null);
 
 				if (selected == JFileChooser.APPROVE_OPTION) {
-					String localImagePath = imageSelect.getSelectedFile().getAbsolutePath();
+					localImagePath = imageSelect.getSelectedFile().getAbsolutePath();
 					selectedFileLabel.setText(localImagePath);
 				}
+
+				BufferedImage image = null;
+
+				try
+				{
+					assert localImagePath != null;
+					image = ImageIO.read(new File(localImagePath));
+				} catch (IOException ioException) {
+					ioException.printStackTrace();
+				}
+
+				String fileExtension = "";
+
+				int i = localImagePath.lastIndexOf('.');
+				int p = Math.max(localImagePath.lastIndexOf('/'), localImagePath.lastIndexOf('\\'));
+
+				if (i > p) {
+					fileExtension = localImagePath.substring(i+1);
+				}
+
+				String imageBase64String = IMGHandler.imageEncoder(image, fileExtension);
+				System.out.println(imageBase64String);
 			}
 		});
 
@@ -167,6 +194,17 @@ public class NewBillboard {
 				} catch (ParserConfigurationException | IOException | SAXException ex) {
 					ex.printStackTrace();
 				}
+			}
+		});
+		exportXMLButton.addActionListener(new ActionListener() {
+			/**
+			 * Handle the 'Export XML' button being pressed
+			 *
+			 * @param e the event to be processed
+			 */
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
 			}
 		});
 	}

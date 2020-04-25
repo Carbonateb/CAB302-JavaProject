@@ -1,11 +1,22 @@
 package ControlPanel;
 
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Objects;
 
+
+/**
+ * Form for creating a new billboard
+ *
+ * @author Connor McHugh - n10522662
+ */
 public class NewBillboard {
 	public JPanel newBillboardWindow;
 	private JTextField message;
@@ -13,9 +24,9 @@ public class NewBillboard {
 	private JButton localFileButton;
 	private JButton URLButton;
 	private JLabel selectedFileLabel;
-	private JTextArea information;
-	private JButton informationTextColourButton;
-	private JButton backgroundColourButton;
+	private JTextField information;
+	private JButton informationColorButton;
+	private JButton backgroundColorButton;
 	private JButton exportXMLButton;
 	private JButton importXMLButton;
 	private JTextField messageColorPreview;
@@ -24,24 +35,19 @@ public class NewBillboard {
 	private JButton okayButton;
 	private JButton cancelButton;
 
-	public NewBillboard() {
-		/**
-		 * Form for creating a new billboard
-		 *
-		 * @author Connor McHugh - n10522662
-		 */
 
+	public NewBillboard() {
 		messageColorButton.addActionListener(new ActionListener() {
 			/**
-			 * Handle the 'Message Colour' button being pressed
+			 * Handle the 'Message Color' button being pressed
 			 *
 			 * @param e the event to be processed
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Color initialColor = Color.black;
-				Color messageColor = JColorChooser.showDialog(null, "Choose Message Colour", initialColor); // Brings up the colour chooser dialogue
-				messageColorPreview.setBackground(messageColor); // Sets the inactive button that acts as as 'preview' to the colour selected
+				Color messageColor = JColorChooser.showDialog(null, "Choose Message Color", initialColor); // Brings up the color chooser dialogue
+				messageColorPreview.setBackground(messageColor); // Sets the inactive button that acts as as 'preview' to the color selected
 			}
 		});
 
@@ -55,7 +61,7 @@ public class NewBillboard {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser imageSelect = new JFileChooser();
 				imageSelect.setAcceptAllFileFilterUsed(false);
-				imageSelect.setDialogTitle("Select and image");
+				imageSelect.setDialogTitle("Select an image");
 
 				FileNameExtensionFilter restrict = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "bmp", "png");
 				imageSelect.addChoosableFileFilter(restrict);
@@ -93,31 +99,74 @@ public class NewBillboard {
 			}
 		});
 
-		informationTextColourButton.addActionListener(new ActionListener() {
+		informationColorButton.addActionListener(new ActionListener() {
 			/**
-			 * Handle the 'Information Text Colour' button being pressed
+			 * Handle the 'Information Text Color' button being pressed
 			 *
 			 * @param e the event to be processed
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Color initialColor = Color.black;
-				Color informationTextColour = JColorChooser.showDialog(null, "Choose Information Text Colour", initialColor); // Brings up the colour chooser dialogue
-				informationColorPreview.setBackground(informationTextColour); // Sets the inactive button that acts as as 'preview' to the colour selected
+				Color informationColor = JColorChooser.showDialog(null, "Choose Information Text Color", initialColor); // Brings up the color chooser dialogue
+				informationColorPreview.setBackground(informationColor); // Sets the inactive button that acts as as 'preview' to the color selected
 			}
 		});
 
-		backgroundColourButton.addActionListener(new ActionListener() {
+		backgroundColorButton.addActionListener(new ActionListener() {
 			/**
-			 * Handle the 'Background Colour' button being pressed
+			 * Handle the 'Background Color' button being pressed
 			 *
 			 * @param e the event to be processed
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Color initialColor = Color.white;
-				Color informationTextColour = JColorChooser.showDialog(null, "Choose Background Colour", initialColor); // Brings up the colour chooser dialogue
-				backgroundColorPreview.setBackground(informationTextColour); // Sets the inactive button that acts as as 'preview' to the colour selected
+				Color backgroundColor = JColorChooser.showDialog(null, "Choose Background Color", initialColor); // Brings up the color chooser dialogue
+				backgroundColorPreview.setBackground(backgroundColor); // Sets the inactive button that acts as as 'preview' to the color selected
+			}
+		});
+		importXMLButton.addActionListener(new ActionListener() {
+			/**
+			 * Handle the 'Import XML' button being pressed
+			 *
+			 * @param e the event to be processed
+			 */
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// Open file chooser dialogue to select XML file to load
+					JFileChooser xmlSelect = new JFileChooser();
+					xmlSelect.setAcceptAllFileFilterUsed(false);
+					xmlSelect.setDialogTitle("Select an XML file");
+
+					FileNameExtensionFilter restrict = new FileNameExtensionFilter("XML files", "xml");
+					xmlSelect.addChoosableFileFilter(restrict);
+
+					String xmlImportPath = null;
+					int selected = xmlSelect.showOpenDialog(null);
+
+					if (selected == JFileChooser.APPROVE_OPTION) {
+						xmlImportPath = xmlSelect.getSelectedFile().getAbsolutePath();
+					}
+
+					// Set message text and color
+					message.setText(XMLHandler.xmlReader(xmlImportPath, "message", "null"));
+					Color messageColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(xmlImportPath, "message", "colour")));
+					messageColorPreview.setBackground(messageColor);
+
+					// Set information text and color
+					information.setText(XMLHandler.xmlReader(xmlImportPath, "information", "null"));
+					Color informationColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(xmlImportPath, "information", "colour")));
+					informationColorPreview.setBackground(informationColor);
+
+					// Set background color
+					Color backgroundColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(xmlImportPath, "billboard", "background")));
+					backgroundColorPreview.setBackground(backgroundColor);
+
+				} catch (ParserConfigurationException | IOException | SAXException ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 	}
@@ -128,6 +177,7 @@ public class NewBillboard {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+		frame.setResizable(false);
 //		frame.setResizable(false);
 	}
 

@@ -47,25 +47,27 @@ public class dbServer {
 			stmt = conn.createStatement();
 			String usr_sql =
 				"CREATE TABLE IF NOT EXISTS USERS (" +
-					"usr_ID INT(11) NOT NULL PRIMARY KEY," +
+					"usr_ID INT(11) NOT NULL AUTO_INCREMENT," +
 					"usr_Name VARCHAR(20) NOT NULL," +
-					"pw_Hash VARCHAR(20) NOT NULL" +
+					"pw_Hash VARCHAR(20) NOT NULL," +
+					"PRIMARY KEY (usr_ID)"+
 					");";
 
 			String bb_sql =
 				"CREATE TABLE IF NOT EXISTS BILLBOARDS (" +
-					"bb_ID INT(11) NOT NULL PRIMARY KEY," +
+					"bb_ID INT(11) NOT NULL AUTO_INCREMENT," +
 					"bb_Text VARCHAR(20) NOT NULL," +
 					"bb_BGCol VARCHAR(20) NOT NULL," +
-					"bb_Img VARCHAR(100) NOT NULL" +
+					"bb_Img VARCHAR(100) NOT NULL," +
+					"PRIMARY KEY (bb_ID)"+
 					");";
 
 			String schedule_sql =
 				"CREATE TABLE IF NOT EXISTS SCHEDULE (" +
-					"schedule_Time VARCHAR(20) NOT NULL PRIMARY KEY," +
-					"bb_ID INT(11) NOT NULL," +
-					"CONSTRAINT schedule_fk FOREIGN KEY (bb_ID)" +
-					"REFERENCES BILLBOARDS (bb_ID)" +
+					"bb_ID INT(11) NOT NULL AUTO_INCREMENT," +
+					"schedule_Time_Start VARCHAR(20) NOT NULL," +
+					"schedule_Time_End VARCHAR(20) NOT NULL," +
+					"PRIMARY KEY (bb_ID)"+
 					");";
 
 			stmt.executeUpdate(usr_sql);
@@ -129,11 +131,13 @@ public class dbServer {
 		try
 		{
 			rs = stmt.executeQuery(sql);
-			rs.next();
-			for(int j=0; j< column_size; j++)
+			while (rs.next())
 			{
-				obj = rs.getObject(j + 1);
-				stringArray[j] = String.valueOf(obj);
+				for(int j=0; j< column_size; j++)
+				{
+					obj = rs.getObject(j + 1);
+					stringArray[j] = String.valueOf(obj);
+				}
 			}
 		}
 		catch (SQLException se)
@@ -158,6 +162,8 @@ public class dbServer {
 	 */
 	public String[] queryDB(String table_Name, String pk_value, String pk_name)
 	{
+		pk_value = "'"+pk_value+"'";
+
 		int column_size = 0;
 
 		if(table_Name == "USERS")
@@ -170,7 +176,7 @@ public class dbServer {
 		}
 		else if (table_Name == "SCHEDULE")
 		{
-			column_size = 2;
+			column_size = 3;
 		}
 
 		String sql =
@@ -181,44 +187,42 @@ public class dbServer {
 
 	/***
 	 * adds a user to the database
-	 * @param user_ID integer storing the ID of the user (PK)
 	 * @param usr_Name string storing the username of the user
 	 * @param pw_Hash string storing the hashed password of the user
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addUser(int user_ID, String usr_Name, String pw_Hash)
+	public boolean addUser(String usr_Name, String pw_Hash)
 	{
 		String sql =
-			"INSERT INTO USERS (usr_ID, usr_Name, pw_Hash)" +
-				"VALUES ( '" + user_ID + "' , '" + usr_Name + "' , '" + pw_Hash + "' )";
+				"INSERT INTO USERS (usr_Name, pw_Hash)" +
+				"VALUES ( '" +usr_Name + "' , '" + pw_Hash + "' )";
 		return runSql(sql);
 	}
 
 	/***
 	 * drops a user based on the users ID
-	 * @param user_ID integer storing the ID of the user (PK)
+	 * @param usr_ID integer storing the ID of the user (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean dropUser(int user_ID)
+	public boolean dropUser(int usr_ID)
 	{
 		String sql =
-			"DELETE FROM USERS WHERE usr_ID = " + user_ID ;
+			"DELETE FROM USERS WHERE usr_ID = " + usr_ID ;
 		return runSql(sql);
 	}
 
 	/***
 	 * adds a billboard to the database
-	 * @param bb_ID unique identification for the billboard (PK)
 	 * @param bb_Text text to be displayed on the billboard
 	 * @param bb_BGCol background color of the billboard
 	 * @param bb_Img the url of the image to be displayed
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addBillboard(int bb_ID, String bb_Text, String bb_BGCol, String bb_Img)
+	public boolean addBillboard(String bb_Text, String bb_BGCol, String bb_Img)
 	{
 		String sql =
-			"INSERT INTO BILLBOARDS (bb_ID, bb_Text, bb_BGCol, bb_Img)" +
-			"VALUES ( '" + bb_ID + "' , '" + bb_Text + "' , '" + bb_BGCol + "' , '" + bb_Img + "' )";
+			"INSERT INTO BILLBOARDS (bb_Text, bb_BGCol, bb_Img)" +
+			"VALUES ( '" + bb_Text + "' , '" + bb_BGCol + "' , '" + bb_Img + "' )";
 		return runSql(sql);
 	}
 
@@ -236,27 +240,27 @@ public class dbServer {
 
 	/***
 	 * adds a schedule to the database
-	 * @param schedule_Time String containing the time the image is to be displayed (PK)
-	 * @param bb_ID the id of the billboard the image will be displayed to (FK)
+	 * @param schedule_Time_Start String containing the time the image is to be displayed
+	 * @param schedule_Time_End String containing the time the image is to stop being displayed
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addSchedule(String schedule_Time, int bb_ID)
+	public boolean addSchedule(String schedule_Time_Start, String schedule_Time_End)
 	{
 		String sql =
-			"INSERT INTO SCHEDULE (schedule_Time, bb_ID)" +
-				"VALUES ('" + schedule_Time + "' , (SELECT bb_ID FROM BILLBOARDS WHERE bb_ID = '" + bb_ID+ "'))" ;
+			"INSERT INTO SCHEDULE (schedule_Time_Start, schedule_Time_End)" +
+				"VALUES ('" + schedule_Time_Start+ "' , '"+ schedule_Time_End +"')" ;
 		return runSql(sql);
 	}
 
 	/***
 	 * removes a schedule from the database
-	 * @param schedule_Time String containing the time the image is to be displayed (PK)
+	 * @param bb_ID the id of the billboard the image will be displayed to(pk)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean dropSchedule(String schedule_Time)
+	public boolean dropSchedule(int bb_ID)
 	{
 		String sql =
-			"DELETE FROM SCHEDULE WHERE schedule_Time = '" + schedule_Time + "'";
+			"DELETE FROM SCHEDULE WHERE bb_ID = '" + bb_ID + "'";
 		return runSql(sql);
 	}
 

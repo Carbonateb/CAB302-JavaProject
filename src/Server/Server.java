@@ -20,18 +20,18 @@ public class Server {
 
 		//add data to db
 
-		db.addUser(321, "dylan", "faljnfkan");
-		db.addUser(121, "colby", "gggggddd");
-		db.addBillboard(1, "hi", "red", "cat.png");
-		db.addSchedule("22 07 24", 1);
+		db.addUser("dylan", "faljnfkan");
+		db.addUser("colby", "gggggddd");
+		db.addBillboard("hi", "red", "cat.png");
+		db.addSchedule("12 30 00", "01 00 00");
 
 		System.out.println("added");
 
 		//query data from db
 
-		String[] query = db.queryDB("USERS", "321", "usr_ID");
+		String[] query = db.queryDB("USERS", "1", "usr_ID");
 		String[] query2 = db.queryDB("BILLBOARDS", "1", "bb_ID");
-		String[] query3 = db.queryDB("SCHEDULE", "'22 07 24'", "schedule_Time");
+		String[] query3 = db.queryDB("SCHEDULE", "1", "bb_ID");
 
 		//print data from db
 
@@ -49,10 +49,10 @@ public class Server {
 		}
 
 		//remove data from db
-
-		db.dropUser(321);
-		db.dropUser(121);
-		db.dropSchedule("22 07 24");
+		System.out.println("dropped");
+		db.dropUser(1);
+		db.dropUser(2);
+		db.dropSchedule(1);
 		db.dropBillboard(1);
 
 		System.out.println("dropped");

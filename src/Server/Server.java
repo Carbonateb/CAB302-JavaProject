@@ -18,13 +18,40 @@ public class Server {
 
 		db.setupDB();
 
+		//add data to db
+
 		db.addUser(321, "dylan", "faljnfkan");
+		db.addUser(121, "colby", "gggggddd");
 		db.addBillboard(1, "hi", "red", "cat.png");
 		db.addSchedule("22 07 24", 1);
 
 		System.out.println("added");
 
+		//query data from db
+
+		String[] query = db.queryDB("USERS", "321", "usr_ID");
+		String[] query2 = db.queryDB("BILLBOARDS", "1", "bb_ID");
+		String[] query3 = db.queryDB("SCHEDULE", "'22 07 24'", "schedule_Time");
+
+		//print data from db
+
+		for(int i=0; i< query.length; i++)
+		{
+			System.out.println(query[i]);
+		}
+		for(int i=0; i< query2.length; i++)
+		{
+			System.out.println(query2[i]);
+		}
+		for(int i=0; i< query3.length; i++)
+		{
+			System.out.println(query3[i]);
+		}
+
+		//remove data from db
+
 		db.dropUser(321);
+		db.dropUser(121);
 		db.dropSchedule("22 07 24");
 		db.dropBillboard(1);
 

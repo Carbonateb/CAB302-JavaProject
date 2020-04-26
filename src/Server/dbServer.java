@@ -2,7 +2,10 @@ package Server;
 
 import java.sql.*;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import Server.ServerPropsReader;
 
@@ -30,7 +33,6 @@ public class dbServer {
 		DB_URL = reader.GetURL() + "/" + reader.GetPath();
 		USER = reader.GetUsername();
 		PASS = reader.GetPassword();
-		System.out.println("Connecting to a selected database...");
 		try
 		{
 			//Register JDBC driver
@@ -89,6 +91,7 @@ public class dbServer {
 	 * @param sql a string containing sql
 	 * @return return true if sql ran successfully else return false
 	 */
+
 	public boolean runSql(String sql)
 	{
 		try
@@ -109,6 +112,72 @@ public class dbServer {
 		}
 		return true;
 	}
+
+	/***
+	 *
+	 * @param sql the sql for the query in the form of a string
+	 * @param column_size the column size of a given table
+	 * @return array of strings of the queried data
+	 */
+	public String[] querySql(String sql, int column_size)
+	{
+		ResultSet rs;
+		String[] stringArray = new String[column_size];
+
+		Object obj;
+
+		try
+		{
+			rs = stmt.executeQuery(sql);
+			rs.next();
+			for(int j=0; j< column_size; j++)
+			{
+				obj = rs.getObject(j + 1);
+				stringArray[j] = String.valueOf(obj);
+			}
+		}
+		catch (SQLException se)
+		{
+			//Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}
+		return stringArray;
+	}
+
+	/***
+	 *
+	 * @param table_Name the name of the table you wish to pull from
+	 * @param pk_value the value of the primary key
+	 * @param pk_name the name of the primary key
+	 * @return returns the queried data in the form of a string array
+	 */
+	public String[] queryDB(String table_Name, String pk_value, String pk_name)
+	{
+		int column_size = 0;
+
+		if(table_Name == "USERS")
+		{
+			column_size = 3;
+		}
+		else if (table_Name == "BILLBOARDS")
+		{
+			column_size = 4;
+		}
+		else if (table_Name == "SCHEDULE")
+		{
+			column_size = 2;
+		}
+
+		String sql =
+			"SELECT * FROM " + table_Name + " WHERE " + pk_name + " = " + pk_value + ";";
+		return querySql(sql, column_size);
+	}
+
 
 	/***
 	 * adds a user to the database

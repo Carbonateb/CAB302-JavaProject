@@ -49,10 +49,11 @@ public class Server {
 		}
 
 		// Remove data from DB
-		db.dropUser(1);
-		db.dropUser(2);
-		db.dropSchedule(1);
-		db.dropBillboard(1);
+		db.rmUser(1);
+		db.rmUser(2);
+		db.rmSchedule(1);
+		db.rmBillboard(1);
+
 		System.out.println("Removed items");
 
 		// Run socketHandler forever

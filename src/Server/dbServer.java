@@ -204,7 +204,7 @@ public class dbServer {
 	 * @param usr_ID integer storing the ID of the user (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean dropUser(int usr_ID)
+	public boolean rmUser(int usr_ID)
 	{
 		String sql =
 			"DELETE FROM USERS WHERE usr_ID = " + usr_ID ;
@@ -231,7 +231,7 @@ public class dbServer {
 	 * @param bb_ID unique identification for the billboard (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean dropBillboard(int bb_ID)
+	public boolean rmBillboard(int bb_ID)
 	{
 		String sql =
 			"DELETE FROM BILLBOARDS WHERE bb_ID = " + bb_ID ;
@@ -257,7 +257,7 @@ public class dbServer {
 	 * @param bb_ID the id of the billboard the image will be displayed to(pk)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean dropSchedule(int bb_ID)
+	public boolean rmSchedule(int bb_ID)
 	{
 		String sql =
 			"DELETE FROM SCHEDULE WHERE bb_ID = '" + bb_ID + "'";

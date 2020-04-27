@@ -1,8 +1,6 @@
 package Server;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -14,17 +12,21 @@ public class SocketHandler {
 		serverSocket = inputSocket;
 	}
 
-	public void Run() throws IOException {
+	public void Run() throws IOException, ClassNotFoundException {
 		while (true) {
 			Socket socket = serverSocket.accept();
+			System.out.println("Incoming connection from: " + socket.getInetAddress());
 
 			InputStream inputStream = socket.getInputStream();
+			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-			int input = inputStream.read();
-			System.out.println(input);
+			Object input = objectInputStream.readObject();
+			System.out.println("Received: " + input);
 
 			OutputStream outputStream = socket.getOutputStream();
-			outputStream.write(input);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+			objectOutputStream.writeObject(input);
+			System.out.println("Sent: " + input);
 
 			socket.close();
 		}

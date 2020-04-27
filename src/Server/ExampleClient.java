@@ -1,33 +1,43 @@
 package Server;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * ExampleClient is a class which can send a single request
+ * and print the response provided back by a server.
+ *
+ * The intended use is debugging.
+ *
+ * @author Colby Derix n10475991
+ */
 public class ExampleClient {
 	public static void main(String args[]) throws IOException, ClassNotFoundException {
-		System.out.println("Client Starting...");
 
+		// This is the object that is sent
+		Object toSend = "Hello Server!";
+
+		// Connect to server
+		System.out.println("Client Starting...");
 		ServerPropsReader propsReader = new ServerPropsReader();
 		Socket socket = new Socket("localhost", propsReader.GetPort());
+		System.out.println("Connected to server!");
 
-		System.out.println("Connected to server...");
-
+		// Setup streams
 		OutputStream outputStream = socket.getOutputStream();
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-		String toSend = "Hello Server!";
-		objectOutputStream.writeObject(toSend);
-		objectOutputStream.flush();
-
-		System.out.println("Sent: " + toSend);
-
 		InputStream inputStream = socket.getInputStream();
 		ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-		Object reply = objectInputStream.readObject();
-		System.out.println("Received: " + reply);
+		// Send the payload
+		objectOutputStream.writeObject(toSend);
+		objectOutputStream.flush();
+		System.out.println("Sent: " + toSend);
 
-		socket.close();
+		// Print the response
+		Object response = objectInputStream.readObject();
+		System.out.println("Received: " + response);
+
+		socket.close(); // Close the connection
 	}
-
 }

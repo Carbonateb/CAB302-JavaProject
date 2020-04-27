@@ -2,6 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import Shared.RequestSender;
 
 /**
  * ExampleClient is a class which can send a single request
@@ -13,31 +14,25 @@ import java.net.Socket;
  */
 public class ExampleClient {
 	public static void main(String args[]) throws IOException, ClassNotFoundException {
+		// Define server address
+		String serverIP = "localhost";
+		int serverPort = 9977;
 
-		// This is the object that is sent
+		// Create RequestSender
+		RequestSender requestSender = new RequestSender(serverIP, serverPort);
+
+		// Define payload
 		Object toSend = "Hello Server!";
 
-		// Connect to server
-		System.out.println("Client Starting...");
-		ServerPropsReader propsReader = new ServerPropsReader();
-		Socket socket = new Socket("localhost", propsReader.GetPort());
-		System.out.println("Connected to server!");
+		// Print the payload to console, send it to the server, amd print the response
+		System.out.println("Sending: " + toSend);
+		Object response = requestSender.SendData(toSend);
+		System.out.println("Response: " + response);
 
-		// Setup streams
-		OutputStream outputStream = socket.getOutputStream();
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-		InputStream inputStream = socket.getInputStream();
-		ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
-		// Send the payload
-		objectOutputStream.writeObject(toSend);
-		objectOutputStream.flush();
-		System.out.println("Sent: " + toSend);
-
-		// Print the response
-		Object response = objectInputStream.readObject();
-		System.out.println("Received: " + response);
-
-		socket.close(); // Close the connection
+		// Example with an int...
+		toSend = 99;
+		System.out.println("Sending: " + toSend);
+		response = requestSender.SendData(toSend);
+		System.out.println("Response: " + response);
 	}
 }

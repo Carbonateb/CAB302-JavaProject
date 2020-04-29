@@ -13,15 +13,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Form for creating a new billboard
  *
  * @author Connor McHugh - n10522662
  */
-public class NewBillboard {
-	public JPanel newBillboardWindow;
+public class Billboard {
+	public JPanel BillboardWindow;
 	private JTextField message;
 	private JButton messageColorButton;
 	private JButton localFileButton;
@@ -39,7 +38,7 @@ public class NewBillboard {
 	private JButton cancelButton;
 
 
-	public NewBillboard() {
+	public Billboard() {
 		messageColorButton.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Message Color' button being pressed
@@ -211,12 +210,11 @@ public class NewBillboard {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Create New Billboard");
-		frame.setContentPane(new NewBillboard().newBillboardWindow);
+		frame.setContentPane(new Billboard().BillboardWindow);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setResizable(false);
-//		frame.setResizable(false);
 	}
 
 }

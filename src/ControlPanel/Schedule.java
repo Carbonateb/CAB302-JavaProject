@@ -16,6 +16,11 @@ public class Schedule {
 	}
 
 
+	/**
+	 * Action listener for OK button to close window
+	 *
+	 * @author Callum McNeilage - n10482652
+	 */
 	public Schedule() {
 		btnOK.addActionListener(new ActionListener() {
 			@Override

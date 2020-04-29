@@ -1,13 +1,29 @@
 package ControlPanel;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Schedule {
 	private JPanel Schedule;
 	private JTable table1;
 	private JButton btnDelete;
 	private JButton btnOK;
+	private static JFrame scheduleFrame;
 
+	public JFrame getScheduleFrame() {
+		return scheduleFrame;
+	}
+
+
+	public Schedule() {
+		btnOK.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getScheduleFrame().dispose();
+			}
+		});
+	}
 
 	/**
 	 * Loads the schedule window
@@ -25,7 +41,7 @@ public class Schedule {
 		}
 
 		// Create and setup Schedule window
-		JFrame scheduleFrame = new JFrame("Billboard Schedule");
+		scheduleFrame = new JFrame("Billboard Schedule");
 		scheduleFrame.setContentPane(new Schedule().Schedule);
 		scheduleFrame.setDefaultCloseOperation(scheduleFrame.HIDE_ON_CLOSE);
 		scheduleFrame.pack();

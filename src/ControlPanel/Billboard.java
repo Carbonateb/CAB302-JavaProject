@@ -36,6 +36,11 @@ public class Billboard {
 	private JTextField backgroundColorPreview;
 	private JButton okayButton;
 	private JButton cancelButton;
+	private static JFrame billboardFrame;
+
+	public JFrame getBillboardFrame() {
+		return billboardFrame;
+	}
 
 
 	public Billboard() {
@@ -206,15 +211,39 @@ public class Billboard {
 
 			}
 		});
+		okayButton.addActionListener(new ActionListener() {
+			/**
+			 * Saves data and closes window
+			 *
+			 * @author Callum McNeilage - n10482652
+			 * @param e
+			 */
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getBillboardFrame().dispose();
+			}
+		});
+
+		cancelButton.addActionListener(new ActionListener() {
+			/**
+			 * Closes window without saving data
+			 *
+			 * @author Callum McNeilage - n10482652
+			 * @param e
+			 */
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getBillboardFrame().dispose();
+			}
+		});
 	}
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Create New Billboard");
-		frame.setContentPane(new Billboard().BillboardWindow);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setResizable(false);
+		billboardFrame = new JFrame();
+		billboardFrame.setContentPane(new Billboard().BillboardWindow);
+		billboardFrame.setDefaultCloseOperation(billboardFrame.HIDE_ON_CLOSE);
+		billboardFrame.pack();
+		billboardFrame.setVisible(true);
 	}
 
 }

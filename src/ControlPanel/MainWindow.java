@@ -51,11 +51,7 @@ public class MainWindow {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame newBillboardFrame = new JFrame("Create New Billboard");
-				newBillboardFrame.setContentPane(new Billboard().BillboardWindow);
-				newBillboardFrame.setDefaultCloseOperation(newBillboardFrame.HIDE_ON_CLOSE);
-				newBillboardFrame.pack();
-				newBillboardFrame.setVisible(true);
+				Billboard.main(null, "New Billboard");
 			}
 		});
 
@@ -69,11 +65,7 @@ public class MainWindow {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame billboardFrame = new JFrame("Edit Billboard");
-				billboardFrame.setContentPane((new Billboard().BillboardWindow));
-				billboardFrame.setDefaultCloseOperation(billboardFrame.HIDE_ON_CLOSE);
-				billboardFrame.pack();
-				billboardFrame.setVisible(true);
+				Billboard.main(null, "Edit Billboard");
 			}
 		});
 	}

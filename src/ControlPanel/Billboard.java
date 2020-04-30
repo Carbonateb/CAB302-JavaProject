@@ -36,11 +36,7 @@ public class Billboard {
 	private JTextField backgroundColorPreview;
 	private JButton okayButton;
 	private JButton cancelButton;
-	private static JFrame billboardFrame;
-
-	public JFrame getBillboardFrame() {
-		return billboardFrame;
-	}
+	public static JFrame billboardFrame;
 
 
 	public Billboard() {
@@ -220,7 +216,7 @@ public class Billboard {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getBillboardFrame().dispose();
+				billboardFrame.dispose();
 			}
 		});
 
@@ -233,17 +229,18 @@ public class Billboard {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getBillboardFrame().dispose();
+				billboardFrame.dispose();
 			}
 		});
 	}
 
-	public static void main(String[] args) {
-		billboardFrame = new JFrame();
+	public static void main(String[] args, String title) {
+		billboardFrame = new JFrame(title);
 		billboardFrame.setContentPane(new Billboard().BillboardWindow);
 		billboardFrame.setDefaultCloseOperation(billboardFrame.HIDE_ON_CLOSE);
 		billboardFrame.pack();
 		billboardFrame.setVisible(true);
+		billboardFrame.setResizable(false);
 	}
 
 }

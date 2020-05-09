@@ -16,19 +16,19 @@ public final class ServerPropsReader extends PropsReader {
 	}
 
 	public String GetURL(){
-		return dbPropsReader.GetStringProperty("URL", "");
+		return dbPropsReader.GetStringProperty("jdbc.URL", "jdbc:mysql://localhost:3306");
 	}
 
-	public String GetPath(){
-		return dbPropsReader.GetStringProperty("path", "");
+	public String GetSchema(){
+		return dbPropsReader.GetStringProperty("jdbc.schema", "cab302");
 	}
 
 	public String GetUsername(){
-		return dbPropsReader.GetStringProperty("username", "");
+		return dbPropsReader.GetStringProperty("jdbc.username", "root");
 	}
 
 	public String GetPassword(){
-		return dbPropsReader.GetStringProperty("password", "");
+		return dbPropsReader.GetStringProperty("jdbc.password", "root");
 	}
 
 

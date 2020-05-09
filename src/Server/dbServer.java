@@ -1,13 +1,6 @@
 package Server;
 
 import java.sql.*;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import Server.ServerPropsReader;
 
 public class dbServer {
 
@@ -30,7 +23,7 @@ public class dbServer {
 		//create reader object
 		ServerPropsReader reader = new ServerPropsReader();
 
-		DB_URL = reader.GetURL() + "/" + reader.GetPath();
+		DB_URL = reader.GetURL() + "/" + reader.GetSchema();
 		USER = reader.GetUsername();
 		PASS = reader.GetPassword();
 		try

@@ -73,7 +73,7 @@ public class MainWindow {
 	/**
 	 * Loads the main application window
 	 *
-	 * @author Connor McHugh -
+	 * @author Connor McHugh - n10522662
 	 * @param args
 	 */
 	public static void main(String[] args) {

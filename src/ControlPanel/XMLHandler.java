@@ -32,15 +32,33 @@ public class XMLHandler {
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(file);
 
-		// Check whether we need to find information from within the XML tags or the tag attribute
-		if (attribute.equals("null") && !tag.equals("billboard")) {
-			return document.getElementsByTagName(tag).item(0).getTextContent();
-		} else if (attribute.equals("null")) {
-			System.out.println("Cannot get value of surrounding <billboard> tags");
-			return null;
+		if (document.getElementsByTagName("billboard").getLength() != 0) {
+				if (document.getElementsByTagName(tag).getLength() != 0) {
+					if (attribute.equals("null")) {
+						return document.getElementsByTagName(tag).item(0).getTextContent();
+					} else {
+						return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
+					}
+				} else {
+//					System.out.println("Tag doesn't exist in the provided XML file!");
+					return null;
+				}
 		} else {
-			return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
+//			System.out.println("This is not a valid billboard XML file!");
+			return null;
 		}
+
+
+
+		// Check whether we need to find information from within the XML tags or the tag attribute
+//		if (attribute.equals("null") && !tag.equals("billboard")) {
+//			return document.getElementsByTagName(tag).item(0).getTextContent();
+//		} else if (attribute.equals("null")) {
+//			System.out.println("Cannot get value of surrounding <billboard> tags");
+//			return null;
+//		} else {
+//			return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
+//		}
 	}
 
 	public static void xmlWriter() {

@@ -1,11 +1,22 @@
 package ControlPanel;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.*;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -47,21 +58,103 @@ public class XMLHandler {
 //			System.out.println("This is not a valid billboard XML file!");
 			return null;
 		}
-
-
-
-		// Check whether we need to find information from within the XML tags or the tag attribute
-//		if (attribute.equals("null") && !tag.equals("billboard")) {
-//			return document.getElementsByTagName(tag).item(0).getTextContent();
-//		} else if (attribute.equals("null")) {
-//			System.out.println("Cannot get value of surrounding <billboard> tags");
-//			return null;
-//		} else {
-//			return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
-//		}
 	}
 
-	public static void xmlWriter() {
+	/**
+	 * Method to generate an XML file based on the parameters provided
+	 * @param filePath path to save the XML file to
+	 * @param messageText billboard message
+	 * @param messageColor colour of billboard message text
+	 * @param informationText billboard information
+	 * @param informationColor colour of information text
+	 * @param backgroundColor background colour of the billboard
+	 * @param image image on billboard
+	 * @throws ParserConfigurationException
+	 */
+	public static void xmlWriter(String filePath, String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String image) throws ParserConfigurationException {
+		String messageColorHex = colorConverter(messageColor);
+		String informationColorHex = colorConverter(informationColor);
+		String backgroundColorHex = colorConverter(backgroundColor);
 
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+			.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.newDocument();
+
+		// Root 'billboard element'
+		Element rootElem = document.createElement("billboard");
+		document.appendChild(rootElem);
+
+		// Background color attribute
+		Attr backgroundAttr = document.createAttribute("background");
+		backgroundAttr.setValue(backgroundColorHex);
+		rootElem.setAttributeNode(backgroundAttr);
+
+		// Message element
+		if (!messageText.equals("")) {
+			// Message text
+			Element messageElem = document.createElement("message");
+			rootElem.appendChild(messageElem);
+			messageElem.appendChild(document.createTextNode(messageText));
+
+			// Message color attribute
+			Attr messageAttr = document.createAttribute("colour");
+			messageAttr.setValue(messageColorHex);
+			messageElem.setAttributeNode(messageAttr);
+		}
+
+		// Information element
+		if (!informationText.equals("")) {
+			// Information text
+			Element informationElem = document.createElement("information");
+			rootElem.appendChild(informationElem);
+			informationElem.appendChild(document.createTextNode(informationText));
+
+			// Information color attribute
+			Attr informationAttr = document.createAttribute("colour");
+			informationAttr.setValue(informationColorHex);
+			informationElem.setAttributeNode(informationAttr);
+		}
+
+		// Picture element
+		if (!image.equals("")) {
+			Element pictureElem = document.createElement("picture");
+			rootElem.appendChild(pictureElem);
+
+			try {
+				URL imageURL = new URL(image);
+				Attr urlAttr = document.createAttribute("url");
+				urlAttr.setValue(String.valueOf(imageURL));
+				pictureElem.setAttributeNode(urlAttr);
+			} catch (MalformedURLException e) {
+				Attr dataAttr = document.createAttribute("data");
+				dataAttr.setValue(image);
+				pictureElem.setAttributeNode(dataAttr);
+			}
+		}
+
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = null;
+		try {
+			transformer = transformerFactory.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		}
+		DOMSource source = new DOMSource(document);
+		StreamResult result = new StreamResult(new File(filePath));
+		try {
+			assert transformer != null;
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static String colorConverter(Color inputColor) {
+		return String.format("#%02X%02X%02X",
+			inputColor.getRed(),
+			inputColor.getGreen(),
+			inputColor.getBlue());
 	}
 }

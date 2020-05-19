@@ -249,7 +249,33 @@ public class Billboard {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Open file chooser dialogue to select XML file to load
+				JFileChooser xmlSave = new JFileChooser();
+				xmlSave.setAcceptAllFileFilterUsed(false);
+				xmlSave.setDialogTitle("Save To");
 
+				FileNameExtensionFilter restrict = new FileNameExtensionFilter("XML files", "xml");
+				xmlSave.addChoosableFileFilter(restrict);
+
+				String xmlExportPath = null;
+				int selected = xmlSave.showSaveDialog(null);
+
+				if (selected == JFileChooser.APPROVE_OPTION) {
+					xmlExportPath = xmlSave.getSelectedFile().getAbsolutePath();
+
+					String messageText = message.getText();
+					Color messageColor = messageColorPreview.getBackground();
+					String informationText = information.getText();
+					Color informationColor = informationColorPreview.getBackground();
+					Color backgroundColor = backgroundColorPreview.getBackground();
+					String image = selectedFileLabel.getText();
+
+					try {
+						XMLHandler.xmlWriter(xmlExportPath, messageText, messageColor, informationText, informationColor, backgroundColor, image);
+					} catch (ParserConfigurationException parserConfigurationException) {
+						parserConfigurationException.printStackTrace();
+					}
+				}
 			}
 		});
 

@@ -176,7 +176,7 @@
           <maximumSize width="110" height="30"/>
           <minimumSize width="110" height="30"/>
           <preferredSize width="110" height="30"/>
-          <text value="No File/URL Selected"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="6cef2" class="javax.swing.JTextField" binding="information">

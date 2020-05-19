@@ -1,10 +1,12 @@
 package ControlPanel;
 
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.xml.parsers.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -48,7 +50,11 @@ public class XMLHandler {
 					if (attribute.equals("null")) {
 						return document.getElementsByTagName(tag).item(0).getTextContent();
 					} else {
-						return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
+						try {
+							return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
+						} catch (NullPointerException e) {
+							return null;
+						}
 					}
 				} else {
 //					System.out.println("Tag doesn't exist in the provided XML file!");
@@ -71,7 +77,7 @@ public class XMLHandler {
 	 * @param image image on billboard
 	 * @throws ParserConfigurationException
 	 */
-	public static void xmlWriter(String filePath, String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String image) throws ParserConfigurationException {
+	public static void xmlWriter(String filePath, @NotNull String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String image) throws ParserConfigurationException {
 		String messageColorHex = colorConverter(messageColor);
 		String informationColorHex = colorConverter(informationColor);
 		String backgroundColorHex = colorConverter(backgroundColor);

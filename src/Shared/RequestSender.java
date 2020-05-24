@@ -28,7 +28,7 @@ public class RequestSender {
 	 * Sends data to the server, and returns the response provided by the server
 	 * @param request The data that is to be sent
 	 */
-	public Object SendData(Object request) throws IOException, ClassNotFoundException {
+	public Object SendData(Request request) throws IOException, ClassNotFoundException {
 		// Connect to server
 		Socket socket = new Socket(ipAddress, port);
 

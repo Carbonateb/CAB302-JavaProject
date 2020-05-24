@@ -1,6 +1,7 @@
 package Server;
 
 import Shared.Request;
+import Shared.Response;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -42,7 +43,7 @@ public class SocketHandler {
 			Object raw = objectInputStream.readObject();
 
 			Request request = null;
-			Object response = null;
+			Response response = new Response("error", "An unknown error occurred");
 			try {
 				// Cast request to Request class
 				request = (Request) raw;
@@ -50,7 +51,7 @@ public class SocketHandler {
 				// Generate a response
 				response = CalculateResponse(request);
 			} catch (java.lang.ClassCastException e) {
-				response = "Malformed request (should be class Response)";
+				response = new Response("error", "Malformed request (should be class Response)");
 			} finally {
 				System.out.println("Received: " + request);
 				objectOutputStream.writeObject(response);
@@ -64,12 +65,12 @@ public class SocketHandler {
 	/**
 	 * Generate a response for a given request
 	 */
-	private Object CalculateResponse(Request request) {
+	private Response CalculateResponse(Request request) {
 		switch (request.getEndpoint()) {
 			case "echo":
-				return request.getData();
+				return new Response("success", request.getData());
 			default:
-				return "Endpoint not implemented";
+				return new Response("error", "Endpoint not implemented");
 		}
 	}
 }

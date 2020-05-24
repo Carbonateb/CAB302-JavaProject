@@ -1,5 +1,7 @@
 package Server;
 
+import Shared.Request;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -36,24 +38,38 @@ public class SocketHandler {
 			OutputStream outputStream = socket.getOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-			// Read the request and print it to the console
-			Object request = objectInputStream.readObject();
-			System.out.println("Received: " + request);
+			// Read the request
+			Object raw = objectInputStream.readObject();
 
-			// Generate a response, send it, and print it to the console
-			Object response  = CalculateResponse(request);
-			objectOutputStream.writeObject(response);
-			System.out.println("Sent: " + response);
+			Request request = null;
+			Object response = null;
+			try {
+				// Cast request to Request class
+				request = (Request) raw;
 
-			socket.close(); // End the connection
+				// Generate a response
+				response = CalculateResponse(request);
+			} catch (java.lang.ClassCastException e) {
+				response = "Malformed request (should be class Response)";
+			} finally {
+				System.out.println("Received: " + request);
+				objectOutputStream.writeObject(response);
+				System.out.println("Sent: " + response);
+
+				socket.close(); // End the connection
+			}
 		}
 	}
 
 	/**
 	 * Generate a response for a given request
 	 */
-	private Object CalculateResponse(Object request) {
-		return request; // Just echo back the request (for now)
+	private Object CalculateResponse(Request request) {
+		switch (request.getEndpoint()) {
+			case "echo":
+				return request.getData();
+			default:
+				return "Endpoint not implemented";
+		}
 	}
-
 }

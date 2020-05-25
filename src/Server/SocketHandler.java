@@ -72,9 +72,10 @@ public class SocketHandler {
 	 */
 	private Response CalculateResponse(Request request) {
 		switch (request.getEndpoint()) {
-			case "echo":
+			case "echo": {
 				return new Response("success", request.getData());
-			case "login":
+			}
+			case "login": {
 				Credentials credentials = null;
 				try {
 					// Cast request data to Credentials class
@@ -86,23 +87,57 @@ public class SocketHandler {
 				String password = credentials.getPassword();
 
 				if (true) { // TODO: Replace with an actual DB check
-					// Generate a random array of bytes, and encode it to base64 text
-					SecureRandom secureRandom = new SecureRandom();
-					byte[] values = new byte[128];
-					secureRandom.nextBytes(values);
-					Base64.Encoder base64 = Base64.getEncoder();
-					String encoded = new String(base64.encode(values));
+					String token_data = GenerateToken();
 
 					// TODO: Store the token data/expiry in DB
 
 					// Instantiate a new token object and return it
-					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, encoded);
+					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
 					return new Response("success", token);
 				} else {
 					return new Response("error", "Invalid credentials");
 				}
-			default:
+			}
+			case "register": {
+				Credentials credentials = null;
+				try {
+					// Cast request data to Credentials class
+					credentials = (Credentials) request.getData();
+				} catch (java.lang.ClassCastException e) {
+					return new Response("error", "Malformed request (data property should be class Credentials)");
+				}
+				String username = credentials.getUsername();
+				String password = credentials.getPassword();
+
+				if (true) { // TODO: Check that user does not already exist
+
+					// TODO: Add user to DB
+
+					String token_data = GenerateToken();
+
+					// TODO: Store the token data/expiry in DB
+
+					// Instantiate a new token object and return it
+					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
+					return new Response("success", token);
+				} else {
+					return new Response("error", "User already exists");
+				}
+			}
+			default: {
 				return new Response("error", "Endpoint not implemented");
+			}
 		}
+	}
+
+	private String GenerateToken() {
+		// Generate a random array of bytes, and encode it to base64 text
+		SecureRandom secureRandom = new SecureRandom();
+		byte[] values = new byte[128];
+		secureRandom.nextBytes(values);
+		Base64.Encoder base64 = Base64.getEncoder();
+		String encoded = new String(base64.encode(values));
+
+		return encoded;
 	}
 }

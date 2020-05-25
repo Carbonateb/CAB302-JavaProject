@@ -90,7 +90,7 @@ public class SocketHandler {
 				String username = credentials.getUsername();
 				String password = credentials.getPassword();
 
-				if (false) { // TODO: Replace with an actual DB check
+				if (true) { // TODO: Replace with an actual DB check
 					String token_data = GenerateToken();
 
 					// TODO: Store the token data/expiry in DB
@@ -126,6 +126,14 @@ public class SocketHandler {
 					return new Response("success", token, token);
 				} else {
 					return new Response("error", "User already exists", null);
+				}
+			}
+			case "logout": {
+				if (request.getToken() != null) { // TODO: Replace with actual token check
+					// TODO: Remove token from memory
+					return new Response("success", null, null);
+				} else {
+					return new Response("error", "Invalid token", null);
 				}
 			}
 			default: {

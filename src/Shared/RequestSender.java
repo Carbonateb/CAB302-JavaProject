@@ -63,6 +63,18 @@ public class RequestSender {
 		return response;
 	}
 
+	public Response login(Credentials credentials) throws IOException, ClassNotFoundException {
+		return SendData("login", credentials);
+	}
+
+	public Response logout() throws IOException, ClassNotFoundException {
+		Response response = SendData("logout", null);
+		if (response.getStatus().equals("success")) {
+			token = null;
+		}
+		return response;
+	}
+
 	public Token getToken() {
 		return token;
 	}

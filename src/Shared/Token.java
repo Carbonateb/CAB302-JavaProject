@@ -1,7 +1,5 @@
 package Shared;
 
-import org.junit.platform.commons.util.StringUtils;
-
 import java.io.Serializable;
 
 /**

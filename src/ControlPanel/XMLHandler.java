@@ -1,6 +1,5 @@
 package ControlPanel;
 
-import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -77,7 +76,7 @@ public class XMLHandler {
 	 * @param image image on billboard
 	 * @throws ParserConfigurationException
 	 */
-	public static void xmlWriter(String filePath, @NotNull String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String image) throws ParserConfigurationException {
+	public static void xmlWriter(String filePath, String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String image) throws ParserConfigurationException {
 		String messageColorHex = colorConverter(messageColor);
 		String informationColorHex = colorConverter(informationColor);
 		String backgroundColorHex = colorConverter(backgroundColor);

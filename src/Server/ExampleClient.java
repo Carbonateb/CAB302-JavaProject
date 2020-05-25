@@ -2,10 +2,7 @@ package Server;
 
 import java.io.*;
 
-import Shared.Credentials;
-import Shared.RequestSender;
-import Shared.Token;
-import Shared.Request;
+import Shared.*;
 
 /**
  * ExampleClient is a class which can send a single request
@@ -25,21 +22,21 @@ public class ExampleClient {
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
 		// Define payload
-		Token token = new Token("testUser", 0, "tokentoken123123");
-		Request request = new Request(token,"echo", "hello world!");
+		Credentials credentials = new Credentials("test", "secure password");
+		Request request = new Request(null,"login", credentials);
 
 		// Print the payload to console, send it to the server, amd print the response
 		System.out.println("Sending: " + request);
-		Object response = requestSender.SendData(request);
+		Response response = (Response) requestSender.SendData(request);
 		System.out.println("Response: " + response);
+		Token token = (Token) response.getData();
 
 		// Define payload
-		Credentials credentials = new Credentials("test", "secure password");
-		request = new Request(null,"login", credentials);
+		request = new Request(token,"echo", "hello world!");
 
 		// Print the payload to console, send it to the server, amd print the response
 		System.out.println("Sending: " + request);
-		response = requestSender.SendData(request);
+		response = (Response) requestSender.SendData(request);
 		System.out.println("Response: " + response);
 	}
 }

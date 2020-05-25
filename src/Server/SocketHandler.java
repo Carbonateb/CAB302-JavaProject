@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
 
 /**
@@ -21,6 +22,7 @@ import java.util.Base64;
 public class SocketHandler {
 
 	ServerSocket serverSocket;
+	ArrayList<Token> tokens = new ArrayList<Token>();
 
 	/**
 	 * SocketHandler Constructor
@@ -93,10 +95,9 @@ public class SocketHandler {
 				if (true) { // TODO: Replace with an actual DB check
 					String token_data = GenerateToken();
 
-					// TODO: Store the token data/expiry in DB
-
-					// Instantiate a new token object and return it
+					// Instantiate a new token object, store it, and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
+					tokens.add(token);
 					return new Response("success", token, token);
 				} else {
 					return new Response("error", "Invalid credentials", null);
@@ -119,18 +120,17 @@ public class SocketHandler {
 
 					String token_data = GenerateToken();
 
-					// TODO: Store the token data/expiry in DB
-
-					// Instantiate a new token object and return it
+					// Instantiate a new token object, store it, and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
+					tokens.add(token);
 					return new Response("success", token, token);
 				} else {
 					return new Response("error", "User already exists", null);
 				}
 			}
 			case "logout": {
-				if (request.getToken() != null) { // TODO: Replace with actual token check
-					// TODO: Remove token from memory
+				if (tokens.contains(request.getToken())) {
+					tokens.remove(request.getToken());
 					return new Response("success", null, null);
 				} else {
 					return new Response("error", "Invalid token", null);

@@ -46,4 +46,8 @@ public class Token implements Serializable {
 	public String toString() {
 		return String.format("{user: \"%s\", expires: %d, data: \"%s\"}", _user, _expires, _data.substring(0,9) + "...");
 	}
+
+	public boolean equals(Object compareTo) {
+		return this.toString().equals(compareTo.toString());
+	}
 }

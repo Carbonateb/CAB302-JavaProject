@@ -38,6 +38,6 @@ public class Request implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("{token: \"%s\", expires: \"%s\", data: \"%s\"}", _token, _endpoint, _data);
+		return String.format("{token: \"%s\", endpoint: \"%s\", data: \"%s\"}", _token, _endpoint, _data);
 	}
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class Token implements Serializable {
 	String _user;
-	int _expires;
+	long _expires;
 	String _data;
 
 	/**
@@ -19,7 +19,7 @@ public class Token implements Serializable {
 	 * @param expires The timestamp at which the token expires
 	 * @param data The raw data the server will receive
 	 */
-	public Token(String user, int expires, String data) {
+	public Token(String user, long expires, String data) {
 		_user = user;
 		_expires = expires;
 		_data = data;
@@ -29,7 +29,7 @@ public class Token implements Serializable {
 		return _user;
 	}
 
-	public int getExpires() {
+	public long getExpires() {
 		return _expires;
 	}
 

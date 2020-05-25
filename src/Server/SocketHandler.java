@@ -1,11 +1,19 @@
 package Server;
 
+import Shared.Credentials;
 import Shared.Request;
 import Shared.Response;
+import Shared.Token;
+import org.junit.jupiter.api.DisplayNameGenerator;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * SocketHandler is a class which - given a ServerSocket - can endlessly
@@ -69,6 +77,33 @@ public class SocketHandler {
 		switch (request.getEndpoint()) {
 			case "echo":
 				return new Response("success", request.getData());
+			case "login":
+				Credentials credentials = null;
+				try {
+					// Cast request data to Credentials class
+					credentials = (Credentials) request.getData();
+				} catch (java.lang.ClassCastException e) {
+					return new Response("error", "Malformed request (data property should be class Credentials)");
+				}
+				String username = credentials.getUsername();
+				String password = credentials.getPassword();
+
+				if (true) { // TODO: Replace with an actual DB check
+					// Generate a random array of bytes, and encode it to base64 text
+					SecureRandom secureRandom = new SecureRandom();
+					byte[] values = new byte[128];
+					secureRandom.nextBytes(values);
+					Base64.Encoder base64 = Base64.getEncoder();
+					String encoded = new String(base64.encode(values));
+
+					// TODO: Store the token data/expiry in DB
+
+					// Instantiate a new token and return it
+					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, encoded);
+					return new Response("success", token);
+				} else {
+					return new Response("error", "Invalid credentials");
+				}
 			default:
 				return new Response("error", "Endpoint not implemented");
 		}

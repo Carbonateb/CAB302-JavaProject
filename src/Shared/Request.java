@@ -36,4 +36,8 @@ public class Request implements Serializable {
 	public Object getData() {
 		return _data;
 	}
+
+	public String toString() {
+		return String.format("{token: \"%s\", expires: \"%s\", data: \"%s\"}", _token, _endpoint, _data);
+	}
 }

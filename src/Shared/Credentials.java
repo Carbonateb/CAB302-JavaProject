@@ -29,4 +29,8 @@ public class Credentials implements Serializable {
 	public String getUsername() {
 		return _username;
 	}
+
+	public String toString() {
+		return String.format("{username: \"%s\", password: \"%s\"}", _username, _password.substring(0,9) + "...");
+	}
 }

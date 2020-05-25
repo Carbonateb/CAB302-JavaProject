@@ -1,6 +1,8 @@
 package Server;
 
 import java.io.*;
+
+import Shared.Credentials;
 import Shared.RequestSender;
 import Shared.Token;
 import Shared.Request;
@@ -29,6 +31,15 @@ public class ExampleClient {
 		// Print the payload to console, send it to the server, amd print the response
 		System.out.println("Sending: " + request);
 		Object response = requestSender.SendData(request);
+		System.out.println("Response: " + response);
+
+		// Define payload
+		Credentials credentials = new Credentials("test", "secure password");
+		request = new Request(null,"login", credentials);
+
+		// Print the payload to console, send it to the server, amd print the response
+		System.out.println("Sending: " + request);
+		response = requestSender.SendData(request);
 		System.out.println("Response: " + response);
 	}
 }

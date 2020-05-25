@@ -4,15 +4,12 @@ import Shared.Credentials;
 import Shared.Request;
 import Shared.Response;
 import Shared.Token;
-import org.junit.jupiter.api.DisplayNameGenerator;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Base64;
 
 /**
@@ -98,7 +95,7 @@ public class SocketHandler {
 
 					// TODO: Store the token data/expiry in DB
 
-					// Instantiate a new token and return it
+					// Instantiate a new token object and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, encoded);
 					return new Response("success", token);
 				} else {

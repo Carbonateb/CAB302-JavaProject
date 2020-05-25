@@ -1,5 +1,7 @@
 package Shared;
 
+import org.junit.platform.commons.util.StringUtils;
+
 import java.io.Serializable;
 
 /**
@@ -35,5 +37,9 @@ public class Token implements Serializable {
 
 	public String getData() {
 		return _data;
+	}
+
+	public String toString() {
+		return String.format("{user: \"%s\", expires: %d, data: \"%s\"}", _user, _expires, _data.substring(0,9) + "...");
 	}
 }

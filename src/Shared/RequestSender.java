@@ -54,6 +54,10 @@ public class RequestSender {
 		// Update the locally stored token
 		if (response.getNewToken() != null) {
 			token = response.getNewToken();
+		} else if (response.getStatus().equals("error")) {
+			if (response.getData().equals("Expired token") || response.getData().equals("Invalid token")) {
+				token = null;
+			}
 		}
 
 		// Close the connection

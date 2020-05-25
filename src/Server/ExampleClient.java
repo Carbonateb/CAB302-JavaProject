@@ -13,7 +13,7 @@ import Shared.*;
  * @author Colby Derix n10475991
  */
 public class ExampleClient {
-	public static void main(String args[]) throws IOException, ClassNotFoundException {
+	public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException {
 		// Define server address
 		String serverIP = "localhost";
 		int serverPort = 9977;
@@ -28,10 +28,14 @@ public class ExampleClient {
 		Response response = requestSender.login(credentials);
 		System.out.println("Response: " + response);
 
+		Thread.sleep(1500);
+
 		// Print the payload to console, send it to the server, amd print the response
 		System.out.println("Sending: " + requestSender.toString("echo", "hello world!"));
 		response = requestSender.SendData("echo", "hello world!");
 		System.out.println("Response: " + response);
+
+		Thread.sleep(1500);
 
 		// Logout
 		System.out.println("Logging out");

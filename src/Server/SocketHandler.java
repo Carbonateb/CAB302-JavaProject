@@ -57,6 +57,7 @@ public class SocketHandler {
 
 				// Generate a response
 				response = CalculateResponse(request);
+				System.out.println(tokens);
 			} catch (java.lang.ClassCastException e) {
 				response = new Response("error", "Malformed request (should be class Response)", null);
 			} finally {
@@ -75,8 +76,13 @@ public class SocketHandler {
 	private Response CalculateResponse(Request request) {
 		switch (request.getEndpoint()) {
 			case "echo": {
-				if (request.getToken() != null) { // TODO: Replace with actual token check
-					return new Response("success", request.getData(), request.getToken().resetExpire());
+				if (tokens.contains(request.getToken())) {
+					if (request.getToken().getExpires() >= Instant.now().getEpochSecond()) {
+						return new Response("success", request.getData(), resetExpire(request.getToken()));
+					} else {
+						removeToken(request.getToken());
+						return new Response("error", "Expired token", null);
+					}
 				} else {
 					return new Response("error", "Invalid token", null);
 				}
@@ -97,7 +103,7 @@ public class SocketHandler {
 
 					// Instantiate a new token object, store it, and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
-					tokens.add(token);
+					addToken(token);
 					return new Response("success", token, token);
 				} else {
 					return new Response("error", "Invalid credentials", null);
@@ -122,7 +128,7 @@ public class SocketHandler {
 
 					// Instantiate a new token object, store it, and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
-					tokens.add(token);
+					addToken(token);
 					return new Response("success", token, token);
 				} else {
 					return new Response("error", "User already exists", null);
@@ -130,7 +136,7 @@ public class SocketHandler {
 			}
 			case "logout": {
 				if (tokens.contains(request.getToken())) {
-					tokens.remove(request.getToken());
+					removeToken(request.getToken());
 					return new Response("success", null, null);
 				} else {
 					return new Response("error", "Invalid token", null);
@@ -140,6 +146,22 @@ public class SocketHandler {
 				return new Response("error", "Endpoint not implemented", null);
 			}
 		}
+	}
+
+	private Token addToken(Token token) {
+		tokens.add(token);
+		return token;
+	}
+
+	private Token removeToken(Token token) {
+		tokens.remove(token);
+		return token;
+	}
+
+	private Token resetExpire(Token token) {
+		Token tempToken = removeToken(token);
+		addToken(tempToken.resetExpire());
+		return tempToken;
 	}
 
 	private String GenerateToken() {

@@ -21,22 +21,17 @@ public class ExampleClient {
 		// Create RequestSender
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
-		// Define payload
+		// Define payload data
 		Credentials credentials = new Credentials("test", "secure password");
-		Request request = new Request(null,"login", credentials);
 
 		// Print the payload to console, send it to the server, amd print the response
-		System.out.println("Sending: " + request);
-		Response response = (Response) requestSender.SendData(request);
+		System.out.println("Sending: " + requestSender.toString("login", credentials));
+		Response response = (Response) requestSender.SendData("login", credentials);
 		System.out.println("Response: " + response);
-		Token token = (Token) response.getData();
-
-		// Define payload
-		request = new Request(token,"echo", "hello world!");
 
 		// Print the payload to console, send it to the server, amd print the response
-		System.out.println("Sending: " + request);
-		response = (Response) requestSender.SendData(request);
+		System.out.println("Sending: " + requestSender.toString("echo", "hello world!"));
+		response = (Response) requestSender.SendData("echo", "hello world!");
 		System.out.println("Response: " + response);
 	}
 }

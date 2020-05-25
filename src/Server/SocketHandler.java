@@ -48,7 +48,7 @@ public class SocketHandler {
 			Object raw = objectInputStream.readObject();
 
 			Request request = null;
-			Response response = new Response("error", "An unknown error occurred");
+			Response response = new Response("error", "An unknown error occurred", null);
 			try {
 				// Cast request to Request class
 				request = (Request) raw;
@@ -56,7 +56,7 @@ public class SocketHandler {
 				// Generate a response
 				response = CalculateResponse(request);
 			} catch (java.lang.ClassCastException e) {
-				response = new Response("error", "Malformed request (should be class Response)");
+				response = new Response("error", "Malformed request (should be class Response)", null);
 			} finally {
 				System.out.println("Received: " + request);
 				objectOutputStream.writeObject(response);
@@ -73,7 +73,11 @@ public class SocketHandler {
 	private Response CalculateResponse(Request request) {
 		switch (request.getEndpoint()) {
 			case "echo": {
-				return new Response("success", request.getData());
+				if (request.getToken() != null) { // TODO: Replace with actual token check
+					return new Response("success", request.getData(), request.getToken().resetExpire());
+				} else {
+					return new Response("error", "Invalid token", null);
+				}
 			}
 			case "login": {
 				Credentials credentials = null;
@@ -81,21 +85,21 @@ public class SocketHandler {
 					// Cast request data to Credentials class
 					credentials = (Credentials) request.getData();
 				} catch (java.lang.ClassCastException e) {
-					return new Response("error", "Malformed request (data property should be class Credentials)");
+					return new Response("error", "Malformed request (data property should be class Credentials)", null);
 				}
 				String username = credentials.getUsername();
 				String password = credentials.getPassword();
 
-				if (true) { // TODO: Replace with an actual DB check
+				if (false) { // TODO: Replace with an actual DB check
 					String token_data = GenerateToken();
 
 					// TODO: Store the token data/expiry in DB
 
 					// Instantiate a new token object and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
-					return new Response("success", token);
+					return new Response("success", token, token);
 				} else {
-					return new Response("error", "Invalid credentials");
+					return new Response("error", "Invalid credentials", null);
 				}
 			}
 			case "register": {
@@ -104,7 +108,7 @@ public class SocketHandler {
 					// Cast request data to Credentials class
 					credentials = (Credentials) request.getData();
 				} catch (java.lang.ClassCastException e) {
-					return new Response("error", "Malformed request (data property should be class Credentials)");
+					return new Response("error", "Malformed request (data property should be class Credentials)", null);
 				}
 				String username = credentials.getUsername();
 				String password = credentials.getPassword();
@@ -119,13 +123,13 @@ public class SocketHandler {
 
 					// Instantiate a new token object and return it
 					Token token = new Token(username, Instant.now().getEpochSecond() + 86400, token_data);
-					return new Response("success", token);
+					return new Response("success", token, token);
 				} else {
-					return new Response("error", "User already exists");
+					return new Response("error", "User already exists", null);
 				}
 			}
 			default: {
-				return new Response("error", "Endpoint not implemented");
+				return new Response("error", "Endpoint not implemented", null);
 			}
 		}
 	}

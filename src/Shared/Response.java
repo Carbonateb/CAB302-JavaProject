@@ -11,15 +11,17 @@ import java.io.Serializable;
 public class Response implements Serializable {
 	String _status;
 	Object _data;
+	Token _newToken;
 
 	/**
 	 * Request Constructor
 	 * @param status The status of the request
 	 * @param data The raw data that the server returned
 	 */
-	public Response(String status, Object data) {
+	public Response(String status, Object data, Token newToken) {
 		_status = status;
 		_data = data;
+		_newToken = newToken;
 	}
 
 	public String getStatus() {
@@ -30,7 +32,9 @@ public class Response implements Serializable {
 		return _data;
 	}
 
+	public Token getNewToken() { return _newToken; }
+
 	public String toString() {
-		return String.format("{status: \"%s\", data: \"%s\"}", _status, _data);
+		return String.format("{status: \"%s\", data: \"%s\", newTokenProvided: %b}", _status, _data, (_newToken != null));
 	}
 }

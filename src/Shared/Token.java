@@ -1,6 +1,7 @@
 package Shared;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * Token is a class which represents a user's
@@ -35,6 +36,11 @@ public class Token implements Serializable {
 
 	public String getData() {
 		return _data;
+	}
+
+	public Token resetExpire() {
+		_expires = Instant.now().getEpochSecond() + 86400;
+		return this;
 	}
 
 	public String toString() {

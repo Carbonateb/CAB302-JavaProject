@@ -28,6 +28,7 @@ public class dbServer {
 			System.out.println("Connecting to a selected database...");
 			//Class.forName("org.sqlite.JDBC");
 			//Class.forName("org.sqlite.JDBC");
+
 			cn = DriverManager.getConnection("jdbc:sqlite:main.db");
 			stmt = cn.createStatement();
 

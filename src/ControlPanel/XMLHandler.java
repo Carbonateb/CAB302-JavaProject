@@ -3,6 +3,7 @@ package ControlPanel;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -28,7 +29,8 @@ import java.net.URL;
 public class XMLHandler {
 	/**
 	 * Method to read information for an XML file and return it
-	 * @param filePath path to the XML file to work on
+	 * @param isFile boolean that defines whether the XML data provided is a file or a string
+	 * @param xmlData path to the XML file to work on
 	 * @param tag name of the tag to get information from in the XML file
 	 * @param attribute name of the attribute of a tag to get information from in the XML file: if "null" is passed as
 	 *                  this parameter, it is ignored, and information is taken from tag instead
@@ -37,12 +39,18 @@ public class XMLHandler {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public static String xmlReader(String filePath, String tag, String attribute) throws ParserConfigurationException, IOException, SAXException {
-		File file = new File(filePath);
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-			.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse(file);
+	public static String xmlReader(boolean isFile, String xmlData, String tag, String attribute) throws ParserConfigurationException, IOException, SAXException {
+		Document document;
+		if (isFile) {
+			File file = new File(xmlData);
+			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			document = db.parse(file);
+		} else {
+			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			InputSource is = new InputSource();
+			is.setCharacterStream(new StringReader(xmlData));
+			document = db.parse(is);
+		}
 
 		if (document.getElementsByTagName("billboard").getLength() != 0) {
 				if (document.getElementsByTagName(tag).getLength() != 0) {

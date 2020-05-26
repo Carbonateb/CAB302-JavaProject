@@ -15,13 +15,13 @@ public class Schedule implements Serializable {
 	 * The events that are currently active. Normally only one thing is here, but multiple are allowed to support
 	 * layering of events, as specified in the requirements.
 	 */
-	private ArrayList<Event> activeEvents = new ArrayList<Event>();
+	public ArrayList<Event> activeEvents = new ArrayList<Event>();
 
 	/**
 	 * The events that have been scheduled but are not being displayed at the moment. When it's a billboard's turn to be
 	 * displayed, it will be moved into the activeEvents array.
 	 */
-	private ArrayList<Event> upcomingEvents = new ArrayList<Event>();
+	public ArrayList<Event> upcomingEvents = new ArrayList<Event>();
 
 
 	// Constructor
@@ -35,6 +35,8 @@ public class Schedule implements Serializable {
 	 * If there are no events to display, will return a blank event. Use event.isBlank to check
 	 */
 	public Event getEvent() {
+		populateActiveEvents();
+		cleanupActiveEvents();
 		if (activeEvents.size() == 0) {
 			// Return a blank event if there is none to display
 			return new Event(0, 0, 0, "");
@@ -51,6 +53,7 @@ public class Schedule implements Serializable {
 	 * @param newEvent the event to add
 	 */
 	public void scheduleEvent(Event newEvent) {
+		System.out.println("Added new event");
 		upcomingEvents.add(newEvent);
 		populateActiveEvents();
 		cleanupActiveEvents();
@@ -80,7 +83,7 @@ public class Schedule implements Serializable {
 
 		// Check which events are active now, copy them to activeEvents and mark them for death
 		for (int i = 0; i < upcomingEvents.size(); ++i) {
-			if (upcomingEvents.get(i).startTime >= currentTime()) {
+			if (currentTime() >= upcomingEvents.get(i).startTime) {
 				indicesToRemove.add(i);
 				activeEvents.add(upcomingEvents.get(i));
 			}
@@ -101,7 +104,7 @@ public class Schedule implements Serializable {
 
 		// Check which events have passed, mark them for deletion
 		for (int i = 0; i < activeEvents.size(); ++i) {
-			if (activeEvents.get(i).endTime < currentTime()) {
+			if (currentTime() > activeEvents.get(i).endTime) {
 				indicesToRemove.add(i);
 			}
 		}

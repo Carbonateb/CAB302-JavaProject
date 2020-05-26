@@ -39,7 +39,8 @@ public class dbServer {
 				"CREATE TABLE IF NOT EXISTS USERS (" +
 					"usr_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
 					"usr_Name TEXT NOT NULL UNIQUE," +
-					"pw_Hash TEXT NOT NULL" +
+					"pw_Hash TEXT NOT NULL," +
+					"salt TEXT NOT NULL UNIQUE"+
 					");";
 
 			String bb_sql =
@@ -207,7 +208,7 @@ public class dbServer {
 
 		if(table_Name == "USERS")
 		{
-			column_size = 3;
+			column_size = 4;
 		}
 		else if (table_Name == "BILLBOARDS")
 		{

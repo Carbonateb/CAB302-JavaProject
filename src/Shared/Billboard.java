@@ -10,13 +10,25 @@ import java.awt.*;
  * @author Lucas Maldonado
  */
 public class Billboard {
-	int ID;
+	public int ID;
 
-	String topText;
-	String bottomText;
-	Color textColor;
-	Color backgroundColor;
-	Image image;
+	public String topText;
+	public String bottomText;
+	public Color textColor;
+	public Color backgroundColor;
+	public Image image;
 
-	String author;
+	public String author;
+
+
+	/** Default constructor */
+	public Billboard(int ID, String topText, String bottomText, Color textColor, Color backgroundColor, Image image, String author) {
+		this.ID = ID;
+		this.topText = topText;
+		this.bottomText = bottomText;
+		this.textColor = textColor;
+		this.backgroundColor = backgroundColor;
+		this.image = image;
+		this.author = author;
+	}
 }

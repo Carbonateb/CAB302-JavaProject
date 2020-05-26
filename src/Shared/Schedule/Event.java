@@ -1,5 +1,7 @@
 package Shared.Schedule;
 
+import java.io.Serializable;
+
 /**
  * An event is a single billboard time allocation that exists in the Schedule.
  * You can treat startTime as a unique identifier, as no two events should start at the same time
@@ -8,7 +10,7 @@ package Shared.Schedule;
  *
  * @author Lucas Maldonado n10534342
  */
-public class Event {
+public class Event implements Serializable {
 
 	// Times are measured in milliseconds since unix epoch
 	public long startTime;

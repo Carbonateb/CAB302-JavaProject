@@ -1,6 +1,7 @@
 package Shared;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * The all mighty billboard class, the centrepiece of this assignment. This class represents the relevant info for a
@@ -9,7 +10,7 @@ import java.awt.*;
  *
  * @author Lucas Maldonado
  */
-public class Billboard {
+public class Billboard implements Serializable {
 	public int ID;
 
 	public String topText;

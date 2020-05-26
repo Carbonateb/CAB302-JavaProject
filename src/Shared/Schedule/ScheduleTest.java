@@ -16,6 +16,6 @@ class ScheduleTest {
     }
 
     private long sec(long s) {
-    	return System.currentTimeMillis() + (seconds * 1000);
+    	return System.currentTimeMillis() + (s * 1000);
 	}
 }

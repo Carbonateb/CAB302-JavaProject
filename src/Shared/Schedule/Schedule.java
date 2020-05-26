@@ -1,5 +1,6 @@
 package Shared.Schedule;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  *
  * @author Lucas Maldonado n10534342
  */
-public class Schedule {
+public class Schedule implements Serializable {
 
 	/**
 	 * The events that are currently active. Normally only one thing is here, but multiple are allowed to support

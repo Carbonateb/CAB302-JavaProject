@@ -2,7 +2,7 @@ package Shared.Schedule;
 
 /**
  * An event is a single billboard time allocation that exists in the Schedule.
- * This is a data only class, treat it like a struct.
+ * You can treat startTime as a unique identifier, as no two events should start at the same time
  *
  * If you're looking for the more complex behaviour, take a look at the Schedule class.
  *
@@ -39,19 +39,24 @@ public class Event {
 	}
 
 
-	/** Check if this event conflicts with another given event */
-	public boolean overlapsWith(Event other) {
+	/** Check if this event conflicts with another given time slot */
+	public boolean overlapsWith(long testStartTime, long testEndTime) {
 		// If this event is earlier
-		if (startTime < other.startTime) {
-			return endTime > other.startTime;
+		if (startTime < testStartTime) {
+			return endTime > testStartTime;
 		}
 
 		// If this event is later
-		if (startTime > other.startTime) {
-			return other.endTime > startTime;
+		if (startTime > testStartTime) {
+			return testEndTime > startTime;
 		}
 
 		// If we're here it means both startTimes are identical, so there is an overlap
 		return true;
+	}
+
+	/** Overloaded to support passing an entire event for convenience */
+	public boolean overlapsWith(Event otherEvent) {
+		return overlapsWith(otherEvent.startTime, otherEvent.endTime);
 	}
 }

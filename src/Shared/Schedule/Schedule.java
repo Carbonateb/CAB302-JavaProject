@@ -29,6 +29,49 @@ public class Schedule {
 
 
 	/**
+	 * Figures out the event to display, from the list of billboards that can be displayed right now.
+	 * Newer events have priority over older ones.
+	 * If there are no events to display, will return a blank event. Use event.isBlank to check
+	 */
+	public Event getEvent() {
+		if (activeEvents.size() == 0) {
+			// Return a blank event if there is none to display
+			return new Event(0, 0, 0, 0);
+		}
+
+		// TODO unsure if we need a priority system, for now just uses age where newer ones get displayed over old ones
+		return activeEvents.get(activeEvents.size() - 1); // Gets the last element in the array
+	}
+
+
+	/**
+	 * Adds an event to the schedule. Supports hot-swapping active events, so you can add an event that is currently
+	 * active.
+	 * @param newEvent the event to add
+	 */
+	public void scheduleEvent(Event newEvent) {
+		upcomingEvents.add(newEvent);
+		populateActiveEvents();
+		cleanupActiveEvents();
+	}
+
+
+	/**
+	 * Removes an event from the schedule.
+	 * @param e the event to remove
+	 * @param removeActive if false, will not affect currently active events.
+	 * @returns true if the event was found and deleted
+	 */
+	public boolean removeEvent(Event e, boolean removeActive) {
+		if (removeActive) {
+			return upcomingEvents.remove(e) || activeEvents.remove(e);
+		} else {
+			return upcomingEvents.remove(e);
+		}
+	}
+
+
+	/**
 	 * Moves billboards in upcomingEvents to activeEvents if they are to be displayed now.
 	 */
 	private void populateActiveEvents() {

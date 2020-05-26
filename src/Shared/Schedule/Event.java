@@ -18,12 +18,20 @@ public class Event {
 	public String author; // The user that created this event
 
 
-	// Constructor
+	/** Constructor */
 	public Event(long inStartTime, long inEndTime, int inBillboardID, String inAuthor) {
 		startTime = inStartTime;
 		endTime = inEndTime;
 		billboardID = inBillboardID;
 		author = inAuthor;
+	}
+
+	/** Constructor for quickly creating an event for debugging */
+	public Event(long start, long end) {
+		startTime = start;
+		endTime = end;
+		billboardID = 0;
+		author = "";
 	}
 
 

@@ -15,15 +15,15 @@ public class Event {
 	public long endTime;
 
 	public int billboardID; // Reference to the billboard to display
-	public int creatorID; // The user that created this event
+	public String author; // The user that created this event
 
 
 	// Constructor
-	public Event(long inStartTime, long inEndTime, int inBillboardID, int inCreatorID) {
+	public Event(long inStartTime, long inEndTime, int inBillboardID, String inAuthor) {
 		startTime = inStartTime;
 		endTime = inEndTime;
 		billboardID = inBillboardID;
-		creatorID = inCreatorID;
+		author = inAuthor;
 	}
 
 
@@ -58,5 +58,18 @@ public class Event {
 	/** Overloaded to support passing an entire event for convenience */
 	public boolean overlapsWith(Event otherEvent) {
 		return overlapsWith(otherEvent.startTime, otherEvent.endTime);
+	}
+
+
+	/**
+	 * Used to check if this event has no info in it, like when the scheduler has no billboard to display.
+	 * An event is blank when all values are 0 or equivalent.
+	 * @return true if this Event is blank, false otherwise.
+	 */
+	public boolean isBlank() {
+		return startTime == 0
+			&& endTime == 0
+			&& billboardID == 0
+			&& author == "";
 	}
 }

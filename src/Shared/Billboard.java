@@ -18,5 +18,5 @@ public class Billboard {
 	Color backgroundColor;
 	Image image;
 
-	String author; // TODO: A proper way of identifying people
+	String author;
 }

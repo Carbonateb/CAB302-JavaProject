@@ -72,7 +72,11 @@ public class Server {
 		}
 		for(int i=0; i< query2.length; i++)
 		{
-			System.out.println(query2[i]);
+			if (i == 0) {
+				System.out.println(query2[i]);
+			} else {
+				System.out.println(ObjectSerialization.fromString(query2[i]));
+			}
 		}
 		for(int i=0; i< query3.length; i++)
 		{

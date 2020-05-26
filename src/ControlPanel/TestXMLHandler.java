@@ -26,7 +26,7 @@ class TestXMLHandler {
 	 */
     public void readerNonExistentFile() {
 		assertThrows(FileNotFoundException.class, () -> {
-			XMLHandler.xmlReader("invalid file name", "message", "null");
+			XMLHandler.xmlReader(true,"invalid file name", "message", "null");
 		});
     }
 
@@ -36,7 +36,7 @@ class TestXMLHandler {
 	 */
 	public void readerInvalidFile() {
 		assertThrows(SAXParseException.class, () -> {
-			XMLHandler.xmlReader("./src/ControlPanel/unit_test_data/test.txt", "message", "null");
+			XMLHandler.xmlReader(true,"./src/ControlPanel/unit_test_data/test.txt", "message", "null");
 		});
 	}
 
@@ -45,7 +45,7 @@ class TestXMLHandler {
 	 * Confirm that when an invalid tag is passed, the method returns null.
 	 */
     void readerInvalidTag() throws Exception {
-    	String tester = XMLHandler.xmlReader("./src/ControlPanel/unit_test_data/test.xml", "invalid tag", "null");
+    	String tester = XMLHandler.xmlReader(true,"./src/ControlPanel/unit_test_data/test.xml", "invalid tag", "null");
 		assertNull(tester);
 	}
 
@@ -54,7 +54,7 @@ class TestXMLHandler {
 	 * Confirm that when an invalid attribute is passed, the method returns null.
 	 */
 	void readerInvalidAttribute() throws Exception {
-		String tester = XMLHandler.xmlReader("./src/ControlPanel/unit_test_data/test.xml", "invalid tag", "null");
+		String tester = XMLHandler.xmlReader(true,"./src/ControlPanel/unit_test_data/test.xml", "invalid tag", "null");
 		assertNull(tester);
 	}
 }

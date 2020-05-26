@@ -36,7 +36,7 @@ public class Schedule {
 	public Event getEvent() {
 		if (activeEvents.size() == 0) {
 			// Return a blank event if there is none to display
-			return new Event(0, 0, 0, 0);
+			return new Event(0, 0, 0, "");
 		}
 
 		// TODO unsure if we need a priority system, for now just uses age where newer ones get displayed over old ones

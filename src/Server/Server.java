@@ -1,5 +1,8 @@
 package Server;
 
+import Shared.Billboard;
+
+import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -23,10 +26,13 @@ public class Server {
 		db.setupDB();
 
 		// Add data to DB
-		db.addUser("dylan", "faljnfkan");
-		db.addUser("colby", "gggggddd");
-		db.addBillboard("hi", "red", "cat.png");
-		db.addSchedule("12 30 00", "01 00 00");
+		db.addUser("dylan", "faljnfkan", "salt1");
+		db.addUser("colby", "gggggddd", "salt2");
+
+		//Billboard billboard = new Billboard(0, "sample", "sample2", Color.red, Color.blue, null, "admin");
+		// TODO: Figure out how billboard works?
+		//db.addBillboard(billboard);
+
 		System.out.println("Added items");
 
 		if(db.checkPassword("gggggddd", "colby"))
@@ -57,8 +63,8 @@ public class Server {
 
 		// Query data from DB
 		String[] query = db.queryDB("USERS", "1", "usr_ID");
-		String[] query2 = db.queryDB("BILLBOARDS", "1", "bb_ID");
-		String[] query3 = db.queryDB("SCHEDULE", "1", "bb_ID");
+		String[] query2 = db.queryDB("BILLBOARDS", "1", "id");
+		String[] query3 = db.queryDB("SCHEDULE", "1", "id");
 
 		// Print data from DB
 		for(int i=0; i< query.length; i++)

@@ -1,5 +1,10 @@
 package Server;
 
+import ControlPanel.Schedule;
+import Shared.Billboard;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.sql.*;
 
 public class dbServer {
@@ -45,17 +50,14 @@ public class dbServer {
 
 			String bb_sql =
 				"CREATE TABLE IF NOT EXISTS BILLBOARDS (" +
-					"bb_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-					"bb_Text TEXT NOT NULL," +
-					"bb_BGCol TEXT NOT NULL," +
-					"bb_Img TEXT NOT NULL" +
+					"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+					"data TEXT NOT NULL" +
 					");";
 
 			String schedule_sql =
 				"CREATE TABLE IF NOT EXISTS SCHEDULE (" +
-					"bb_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-					"schedule_Time_Start TEXT NOT NULL," +
-					"schedule_Time_End TEXT NOT NULL" +
+					"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+					"data TEXT NOT NULL" +
 					");";
 
 			stmt.executeUpdate(usr_sql);
@@ -212,11 +214,11 @@ public class dbServer {
 		}
 		else if (table_Name == "BILLBOARDS")
 		{
-			column_size = 4;
+			column_size = 2;
 		}
 		else if (table_Name == "SCHEDULE")
 		{
-			column_size = 3;
+			column_size = 2;
 		}
 
 		String sql =
@@ -231,11 +233,11 @@ public class dbServer {
 	 * @param pw_Hash string storing the hashed password of the user
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addUser(String usr_Name, String pw_Hash)
+	public boolean addUser(String usr_Name, String pw_Hash, String salt)
 	{
 		String sql =
-				"INSERT INTO USERS (usr_Name, pw_Hash)" +
-				"VALUES ( '" +usr_Name + "' , '" + pw_Hash + "' )";
+				"INSERT INTO USERS (usr_Name, pw_Hash, salt)" +
+				"VALUES ( '" +usr_Name + "' , '" + pw_Hash + "' , '" + salt + "')";
 		return runSql(sql);
 	}
 
@@ -253,16 +255,15 @@ public class dbServer {
 
 	/***
 	 * adds a billboard to the database
-	 * @param bb_Text text to be displayed on the billboard
-	 * @param bb_BGCol background color of the billboard
-	 * @param bb_Img the url of the image to be displayed
+	 * @param billboard billboard object
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addBillboard(String bb_Text, String bb_BGCol, String bb_Img)
+	public boolean addBillboard(Billboard billboard) throws IOException
 	{
+		String data = ObjectSerialization.toString((Serializable) billboard);
 		String sql =
-			"INSERT INTO BILLBOARDS (bb_Text, bb_BGCol, bb_Img)" +
-			"VALUES ( '" + bb_Text + "' , '" + bb_BGCol + "' , '" + bb_Img + "' )";
+			"INSERT INTO BILLBOARDS (data)" +
+			"VALUES ('" + data + "' )";
 		return runSql(sql);
 	}
 
@@ -280,15 +281,15 @@ public class dbServer {
 
 	/***
 	 * adds a schedule to the database
-	 * @param schedule_Time_Start String containing the time the image is to be displayed
-	 * @param schedule_Time_End String containing the time the image is to stop being displayed
+	 * @param schedule schedule object
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addSchedule(String schedule_Time_Start, String schedule_Time_End)
+	public boolean addSchedule(Schedule schedule) throws IOException
 	{
+		String data = ObjectSerialization.toString((Serializable) schedule);
 		String sql =
-			"INSERT INTO SCHEDULE (schedule_Time_Start, schedule_Time_End)" +
-				"VALUES ('" + schedule_Time_Start+ "' , '"+ schedule_Time_End +"')" ;
+			"INSERT INTO SCHEDULE (id, data)" +
+				"VALUES (" + data + "')" ;
 		return runSql(sql);
 	}
 

@@ -29,9 +29,8 @@ public class Server {
 		db.addUser("dylan", "faljnfkan", "salt1");
 		db.addUser("colby", "gggggddd", "salt2");
 
-		//Billboard billboard = new Billboard(0, "sample", "sample2", Color.red, Color.blue, null, "admin");
-		// TODO: Figure out how billboard works?
-		//db.addBillboard(billboard);
+		Billboard billboard = new Billboard(0, "sample", "sample2", Color.red, Color.blue, null, "admin");
+		db.addBillboard(billboard);
 
 		System.out.println("Added items");
 

@@ -29,6 +29,32 @@ public class Server {
 		db.addSchedule("12 30 00", "01 00 00");
 		System.out.println("Added items");
 
+		if(db.checkPassword("gggggddd", "colby"))
+		{
+			System.out.println("password check for 'gggggddd' and usr colby present");
+		}
+
+		if(!db.checkPassword("faljnfkan", "lionblind"))
+		{
+			System.out.println("password check for 'faljnfkan' and user lionblind NOT PRESENT");
+		}
+
+		if(!db.checkPassword("pogchamp", "pepehands"))
+		{
+			System.out.println("password check for 'pogchamp' and user pepehands NOT PRESENT");
+		}
+
+		if(db.checkUserExists("colby"))
+		{
+			System.out.println("colby exists");
+		}
+
+		if(!db.checkUserExists("fred"))
+		{
+			System.out.println("fred does not exist");
+		}
+
+
 		// Query data from DB
 		String[] query = db.queryDB("USERS", "1", "usr_ID");
 		String[] query2 = db.queryDB("BILLBOARDS", "1", "bb_ID");
@@ -49,10 +75,10 @@ public class Server {
 		}
 
 		// Remove data from DB
-		db.rmUser(1);
-		db.rmUser(2);
-		db.rmSchedule(1);
-		db.rmBillboard(1);
+		//db.rmUser(1);
+		//db.rmUser(2);
+		//db.rmSchedule(1);
+		//db.rmBillboard(1);
 
 		System.out.println("Removed items");
 

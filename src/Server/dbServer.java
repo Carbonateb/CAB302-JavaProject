@@ -4,16 +4,14 @@ import java.sql.*;
 
 public class dbServer {
 
-	// JDBC driver name and database URL
-	static String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-	static String DB_URL;
+	Connection cn = null;
+	Statement stmt = null;
+	ResultSet rs = null;
+
 
 	//  Database credentials
 	static String USER = "x";
 	static String PASS = "x";
-
-	Connection conn = null;
-	Statement stmt = null;
 
 	/**
 	 * set up the database
@@ -22,50 +20,47 @@ public class dbServer {
 	public void setupDB() {
 		//create reader object
 		ServerPropsReader reader = new ServerPropsReader();
-
-		DB_URL = reader.GetURL() + "/" + reader.GetSchema();
 		USER = reader.GetUsername();
 		PASS = reader.GetPassword();
 		try
 		{
-			//Register JDBC driver
-			Class.forName(JDBC_DRIVER);
-
 			//Open a connection
 			System.out.println("Connecting to a selected database...");
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			//Class.forName("org.sqlite.JDBC");
+			//Class.forName("org.sqlite.JDBC");
+			cn = DriverManager.getConnection("jdbc:sqlite:main.db");
+			stmt = cn.createStatement();
+
 			System.out.println("Connected database successfully...");
 
 			//create tables
-			stmt = conn.createStatement();
 			String usr_sql =
 				"CREATE TABLE IF NOT EXISTS USERS (" +
-					"usr_ID INT(11) NOT NULL AUTO_INCREMENT," +
-					"usr_Name VARCHAR(20) NOT NULL," +
-					"pw_Hash VARCHAR(20) NOT NULL," +
-					"PRIMARY KEY (usr_ID)"+
+					"usr_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+					"usr_Name TEXT NOT NULL UNIQUE," +
+					"pw_Hash TEXT NOT NULL" +
 					");";
 
 			String bb_sql =
 				"CREATE TABLE IF NOT EXISTS BILLBOARDS (" +
-					"bb_ID INT(11) NOT NULL AUTO_INCREMENT," +
-					"bb_Text VARCHAR(20) NOT NULL," +
-					"bb_BGCol VARCHAR(20) NOT NULL," +
-					"bb_Img VARCHAR(100) NOT NULL," +
-					"PRIMARY KEY (bb_ID)"+
+					"bb_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+					"bb_Text TEXT NOT NULL," +
+					"bb_BGCol TEXT NOT NULL," +
+					"bb_Img TEXT NOT NULL" +
 					");";
 
 			String schedule_sql =
 				"CREATE TABLE IF NOT EXISTS SCHEDULE (" +
-					"bb_ID INT(11) NOT NULL AUTO_INCREMENT," +
-					"schedule_Time_Start VARCHAR(20) NOT NULL," +
-					"schedule_Time_End VARCHAR(20) NOT NULL," +
-					"PRIMARY KEY (bb_ID)"+
+					"bb_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+					"schedule_Time_Start TEXT NOT NULL," +
+					"schedule_Time_End TEXT NOT NULL" +
 					");";
 
 			stmt.executeUpdate(usr_sql);
 			stmt.executeUpdate(bb_sql);
 			stmt.executeUpdate(schedule_sql);
+
+
 		}
 		catch (SQLException se)
 		{
@@ -79,6 +74,7 @@ public class dbServer {
 		}
 
 	}//end main
+
 
 
 	/***
@@ -96,13 +92,13 @@ public class dbServer {
 		catch (SQLException se)
 		{
 			//Handle errors for JDBC
-			se.printStackTrace();
+			//se.printStackTrace();
 			return false;
 		}
 		catch (Exception e)
 		{
 			//Handle errors for Class.forName
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -146,16 +142,65 @@ public class dbServer {
 		return stringArray;
 	}
 
+
+	public boolean checkUserExists(String usr)
+	{
+		String[] dbpw = queryDB("USERS", usr, "usr_Name");
+		if( dbpw[1] != null)
+		{
+			if(dbpw[1].equals(usr))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/***
+	 *
+	 * @param pw the password hash we are checking is valid
+	 * @return boolean true if password is valid, false if not valid
+	 */
+
+	public boolean checkPassword(String pw, String usr)
+	{
+		String[] dbpw = queryDB("USERS", pw, "pw_Hash");
+		if(dbpw[2] != null && dbpw[1] != null)
+		{
+			if(dbpw[2].equals(pw) && dbpw[1].equals(usr))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+
 	/***
 	 *
 	 * @param table_Name the name of the table you wish to pull from
-	 * @param pk_value the value of the primary key
-	 * @param pk_name the name of the primary key
+	 * @param value the value of the primary key
+	 * @param name the name of the primary key
 	 * @return returns the queried data in the form of a string array
 	 */
-	public String[] queryDB(String table_Name, String pk_value, String pk_name)
+	public String[] queryDB(String table_Name, String value, String name)
 	{
-		pk_value = "'"+pk_value+"'";
+		value = "'"+value+"'";
 
 		int column_size = 0;
 
@@ -173,7 +218,7 @@ public class dbServer {
 		}
 
 		String sql =
-			"SELECT * FROM " + table_Name + " WHERE " + pk_name + " = " + pk_value + ";";
+			"SELECT * FROM " + table_Name + " WHERE " + name + " = " + value + ";";
 		return querySql(sql, column_size);
 	}
 
@@ -265,13 +310,13 @@ public class dbServer {
 		//finally block used to close resources
 		try {
 			if (stmt != null) {
-				conn.close();
+				cn.close();
 			}
 		} catch (SQLException se) {
 		}// do nothing
 		try {
-			if (conn != null) {
-				conn.close();
+			if (cn != null) {
+				cn.close();
 			}
 		} catch (SQLException se) {
 			se.printStackTrace();

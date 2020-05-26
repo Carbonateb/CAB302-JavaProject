@@ -92,13 +92,13 @@ public class dbServer {
 		catch (SQLException se)
 		{
 			//Handle errors for JDBC
-			//se.printStackTrace();
+			se.printStackTrace();
 			return false;
 		}
 		catch (Exception e)
 		{
 			//Handle errors for Class.forName
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		}
 		return true;

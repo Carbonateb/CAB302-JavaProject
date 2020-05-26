@@ -39,8 +39,70 @@ public class Billboard {
 	private JButton cancelButton;
 	public static JFrame billboardFrame;
 
+	private void SetValues(boolean isFile, String xmlData) {
+		try {
+			// Set message text and color
+			Color messageColor;
+			String messageText = XMLHandler.xmlReader(isFile, xmlData, "message", "null");
+			if (messageText != null) {
+				message.setText(messageText);
+				try {
+					messageColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(isFile, xmlData, "message", "colour")));
+				} catch (NullPointerException r) {
+					messageColor = Color.black;
+				}
+				messageColorPreview.setBackground(messageColor);
+			}
 
-	public Billboard() {
+			// Set information text and color
+			Color informationColor;
+			String informationText = XMLHandler.xmlReader(isFile, xmlData, "information", "null");
+			if (informationText != null) {
+				information.setText(informationText);
+				try {
+					informationColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(isFile, xmlData, "information", "colour")));
+				} catch (NullPointerException r) {
+					informationColor = Color.black;
+				}
+				informationColorPreview.setBackground(informationColor);
+
+			}
+
+			// Set background color
+			Color backgroundColor;
+			try {
+				backgroundColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(isFile, xmlData, "billboard", "background")));
+			} catch (NullPointerException r) {
+				backgroundColor = Color.white;
+			}
+			backgroundColorPreview.setBackground(backgroundColor);
+
+			// Set image
+			String image = null;
+			try {
+				image = XMLHandler.xmlReader(isFile, xmlData, "picture", "data");
+			} catch (NullPointerException ignored) {
+			}
+			try {
+				image = XMLHandler.xmlReader(isFile, xmlData, "picture", "url");
+			} catch (NullPointerException ignored) {
+			}
+
+			if (image != null) {
+				System.out.println(image);
+				selectedFileLabel.setText(image);
+			}
+		} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public Billboard(String xmlString) {
+		if (xmlString != null) {
+			System.out.println(xmlString);
+			SetValues(false, xmlString);
+		}
+
 		messageColorButton.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Message Color' button being pressed
@@ -163,81 +225,28 @@ public class Billboard {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					// Open file chooser dialogue to select XML file to load
-					JFileChooser xmlSelect = new JFileChooser();
-					xmlSelect.setAcceptAllFileFilterUsed(false);
-					xmlSelect.setDialogTitle("Select an XML file");
+				// Open file chooser dialogue to select XML file to load
+				JFileChooser xmlSelect = new JFileChooser();
+				xmlSelect.setAcceptAllFileFilterUsed(false);
+				xmlSelect.setDialogTitle("Select an XML file");
 
-					FileNameExtensionFilter restrict = new FileNameExtensionFilter("XML files", "xml");
-					xmlSelect.addChoosableFileFilter(restrict);
+				FileNameExtensionFilter restrict = new FileNameExtensionFilter("XML files", "xml");
+				xmlSelect.addChoosableFileFilter(restrict);
 
-					String xmlImportPath = null;
-					int selected = xmlSelect.showOpenDialog(null);
+				String xmlImportPath = null;
+				int selected = xmlSelect.showOpenDialog(null);
 
-					if (selected == JFileChooser.APPROVE_OPTION) {
-						xmlImportPath = xmlSelect.getSelectedFile().getAbsolutePath();
-						// Clear any current values
-						message.setText(null);
-						messageColorPreview.setBackground(Color.black);
-						information.setText(null);
-						informationColorPreview.setBackground(Color.black);
-						backgroundColorPreview.setBackground(Color.white);
-					}
-
-					// Set message text and color
-					Color messageColor;
-					String messageText = XMLHandler.xmlReader(xmlImportPath, "message", "null");
-					if (messageText != null) {
-						message.setText(messageText);
-						try {
-							messageColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(xmlImportPath, "message", "colour")));
-						} catch (NullPointerException r) {
-							messageColor = Color.black;
-						}
-						messageColorPreview.setBackground(messageColor);
-					}
-
-					// Set information text and color
-					Color informationColor;
-					String informationText = XMLHandler.xmlReader(xmlImportPath, "information", "null");
-					if (informationText != null) {
-						information.setText(informationText);
-						try {
-							informationColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(xmlImportPath, "information", "colour")));
-						} catch (NullPointerException r) {
-							informationColor = Color.black;
-						}
-						informationColorPreview.setBackground(informationColor);
-
-					}
-
-					// Set background color
-					Color backgroundColor;
-					try {
-						backgroundColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(xmlImportPath, "billboard", "background")));
-					} catch (NullPointerException r) {
-						backgroundColor = Color.white;
-					}
-					backgroundColorPreview.setBackground(backgroundColor);
-
-					// Set image
-					String image = null;
-					try {
-						image = XMLHandler.xmlReader(xmlImportPath, "picture", "data");
-					} catch (NullPointerException ignored) {}
-					try {
-						image = XMLHandler.xmlReader(xmlImportPath, "picture", "url");
-					} catch (NullPointerException ignored) {}
-
-					if (image != null) {
-						System.out.println(image);
-						selectedFileLabel.setText(image);
-					}
-
-				} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
-					ex.printStackTrace();
+				if (selected == JFileChooser.APPROVE_OPTION) {
+					xmlImportPath = xmlSelect.getSelectedFile().getAbsolutePath();
+					// Clear any current values
+					message.setText(null);
+					messageColorPreview.setBackground(Color.black);
+					information.setText(null);
+					informationColorPreview.setBackground(Color.black);
+					backgroundColorPreview.setBackground(Color.white);
 				}
+
+				SetValues(true, xmlImportPath);
 			}
 		});
 
@@ -306,9 +315,14 @@ public class Billboard {
 		});
 	}
 
-	public static void main(String[] args, String title) {
+	public static void main(String xmlString, String title) {
 		billboardFrame = new JFrame(title);
-		billboardFrame.setContentPane(new Billboard().BillboardWindow);
+		if (xmlString != null) {
+			billboardFrame.setContentPane(new Billboard(xmlString).BillboardWindow);
+		} else {
+			billboardFrame.setContentPane(new Billboard(null).BillboardWindow);
+		}
+
 		billboardFrame.setDefaultCloseOperation(billboardFrame.HIDE_ON_CLOSE);
 		billboardFrame.pack();
 		billboardFrame.setVisible(true);

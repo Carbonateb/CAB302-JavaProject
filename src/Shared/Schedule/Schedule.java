@@ -86,6 +86,7 @@ public class Schedule implements Serializable {
 			if (currentTime() >= upcomingEvents.get(i).startTime) {
 				indicesToRemove.add(i);
 				activeEvents.add(upcomingEvents.get(i));
+				System.out.printf("Moved an event to Active Events: start time is %d, current time is %d (%dms late)\n", upcomingEvents.get(i).startTime, currentTime(), currentTime() - upcomingEvents.get(i).startTime);
 			}
 		}
 
@@ -106,6 +107,7 @@ public class Schedule implements Serializable {
 		for (int i = 0; i < activeEvents.size(); ++i) {
 			if (currentTime() > activeEvents.get(i).endTime) {
 				indicesToRemove.add(i);
+				System.out.printf("Deleted an old event: end time was %d, current time is %d (finished %dms ago)\n", activeEvents.get(i).endTime, currentTime(), currentTime() - activeEvents.get(i).endTime);
 			}
 		}
 

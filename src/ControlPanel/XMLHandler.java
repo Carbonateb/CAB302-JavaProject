@@ -160,6 +160,7 @@ public class XMLHandler {
 
 
 	public static String colorConverter(Color inputColor) {
+		System.out.println(inputColor);
 		return String.format("#%02X%02X%02X",
 			inputColor.getRed(),
 			inputColor.getGreen(),

@@ -6,6 +6,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.*;
 
 
@@ -118,36 +119,36 @@ class TestXMLHandler {
 	}
 
 	@Test
-		/*
-		 * Confirm that when an invalid tag is passed when isFile is false, the method returns null.
-		 */
+	/*
+	 * Confirm that when an invalid tag is passed when isFile is false, the method returns null.
+	 */
 	void readerStringInvalidTag() throws Exception {
 		String tester = XMLHandler.xmlReader(false, xmlString, "invalid tag", null);
 		assertNull(tester);
 	}
 
 	@Test
-		/*
-		 * Confirm that when an invalid attribute is passed when isFile is false, the method returns null.
-		 */
+	/*
+	 * Confirm that when an invalid attribute is passed when isFile is false, the method returns null.
+	 */
 	void readerStringInvalidAttribute() throws Exception {
 		String tester = XMLHandler.xmlReader(false, xmlString, "invalid tag", null);
 		assertNull(tester);
 	}
 
 	@Test
-		/*
-		 * Confirm that the method works as expected from a string when only a tag is provided
-		 */
+	/*
+	 * Confirm that the method works as expected from a string when only a tag is provided
+	 */
 	void readStringTag() throws IOException, SAXException, ParserConfigurationException {
 		String tester = XMLHandler.xmlReader(false, xmlString, "message", null);
 		assertEquals("Default-coloured message", tester);
 	}
 
 	@Test
-		/*
-		 * Confirm that the method works as expected from a string when both a tag and an attribute are provided
-		 */
+	/*
+	 * Confirm that the method works as expected from a string when both a tag and an attribute are provided
+	 */
 	void readStringTagAttribute() throws IOException, SAXException, ParserConfigurationException {
 		String tester = XMLHandler.xmlReader(false, xmlString, "information", "colour");
 		assertEquals("#60B9FF", tester);
@@ -156,4 +157,34 @@ class TestXMLHandler {
 
 	// Tests for the xmlWriter method //
 
+
+	// Tests for the colorConverter method //
+	@Test
+	/*
+	 *	Confirm that the colorConverter works properly when provided with a valid rgb color
+	 */
+	void validColorConverter() {
+		String tester = XMLHandler.colorConverter(new Color(255, 196, 87));
+		assertEquals("#FFC457", tester);
+	}
+
+	@Test
+	/*
+	 *	Confirm that the colorConverter throws an exception when in invalid color is provided
+	 */
+	void invalidColorConverter() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			XMLHandler.colorConverter(new Color(256, 196, 87));
+		});
+	}
+
+	@Test
+		/*
+		 *	Confirm that the colorConverter throws an exception when null is provided
+		 */
+	void nullColorConverter() {
+		assertThrows(NullPointerException.class, () -> {
+			XMLHandler.colorConverter(null);
+		});
+	}
 }

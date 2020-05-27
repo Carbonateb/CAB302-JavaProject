@@ -20,7 +20,7 @@ public class Action {
 
 	/** Constructor */
 	public Action() {
-		associatedAction = ActionType.none;
+		associatedAction = null;
 	}
 
 

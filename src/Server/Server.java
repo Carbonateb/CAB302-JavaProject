@@ -2,7 +2,6 @@ package Server;
 
 import Shared.Billboard;
 import Shared.Schedule.Event;
-import Shared.Schedule.Schedule;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,22 +17,48 @@ import java.util.ArrayList;
  */
 public class Server {
 
+	public dbServer db;
+	public ServerPropsReader propsReader;
+	public ServerSocket serverSocket;
+	public SocketHandler socketHandler;
 
-	public static void main(String args[]) throws IOException, ClassNotFoundException {
-		dbServer db = new dbServer();
 
+	/** Constructor. Init the server here */
+	public Server() throws IOException, ClassNotFoundException {
+		System.out.println("\nServer Starting...");
+		propsReader = new ServerPropsReader();
+
+		System.out.println("\nInitializing database...");
+		db = new dbServer();
 		db.setupDB();
 		db.loadScheduleToMem();
-		System.out.println("Server Starting...");
+
+		System.out.println("\nInitializing sockets...");
+		serverSocket = new ServerSocket(propsReader.GetPort());
+		socketHandler =  new SocketHandler(serverSocket);
+
+		// Remove in final build
+		testFunc();
+
+		// Do this last!
+		System.out.println("\nServer is ready!");
+		socketHandler.Run(); // Not sure if this method call will ever return
+		db.closeResources(); // Close the DB
+	}
 
 
-		// Define server socket and socket handler
-		ServerPropsReader propsReader = new ServerPropsReader();
-		ServerSocket serverSocket = new ServerSocket(propsReader.GetPort());
-		SocketHandler socketHandler = new SocketHandler(serverSocket);
+	public static void main(String args[]) throws IOException, ClassNotFoundException {
+		Server server = new Server();
+	}
 
 
-
+	/**
+	 * Put all of your experimental code here
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void testFunc() throws IOException, ClassNotFoundException {
+		System.out.println("\nRunning test functions...");
 		// Add data to DB
 		db.addUser("dylan", "faljnfkan", "salt1");
 		db.addUser("colby", "gggggddd", "salt2");
@@ -118,11 +143,5 @@ public class Server {
 		//db.rmBillboard(1);
 
 		System.out.println("Removed items");
-
-		// Run socketHandler forever
-		socketHandler.Run();
-
-		// Close the DB
-		db.closeResources();
 	}
 }

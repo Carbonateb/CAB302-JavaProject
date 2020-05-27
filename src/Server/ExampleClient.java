@@ -1,8 +1,10 @@
 package Server;
 
-import java.io.*;
+import Shared.Credentials;
+import Shared.Network.RequestSender;
+import Shared.Network.Response;
 
-import Shared.*;
+import java.io.IOException;
 
 /**
  * ExampleClient is a class which can send a single request

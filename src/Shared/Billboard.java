@@ -13,8 +13,8 @@ import java.io.Serializable;
 public class Billboard implements Serializable {
 	public int ID;
 
-	public String topText;
-	public String bottomText;
+	public String titleText;
+	public String infoText;
 	public Color textColor;
 	public Color backgroundColor;
 	public Image image;
@@ -23,10 +23,10 @@ public class Billboard implements Serializable {
 
 
 	/** Default constructor */
-	public Billboard(int ID, String topText, String bottomText, Color textColor, Color backgroundColor, Image image, String author) {
+	public Billboard(int ID, String titleText, String infoText, Color textColor, Color backgroundColor, Image image, String author) {
 		this.ID = ID;
-		this.topText = topText;
-		this.bottomText = bottomText;
+		this.titleText = titleText;
+		this.infoText = infoText;
 		this.textColor = textColor;
 		this.backgroundColor = backgroundColor;
 		this.image = image;

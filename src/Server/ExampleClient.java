@@ -39,6 +39,12 @@ public class ExampleClient {
 
 		Thread.sleep(1500);
 
+		System.out.println("Sending: " + requestSender.toString("getEvents", null));
+		response = requestSender.SendData("getEvents", null);
+		System.out.println("Response: " + response);
+
+		Thread.sleep(1500);
+
 		// Logout
 		System.out.println("Logging out");
 		response = requestSender.logout();

@@ -2,6 +2,7 @@ package Server;
 
 import Shared.Credentials;
 import Shared.Network.*;
+import Shared.Schedule.Event;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -20,14 +21,17 @@ import java.util.Base64;
 public class SocketHandler {
 
 	ServerSocket serverSocket;
+	dbServer db;
 	ArrayList<Token> tokens = new ArrayList<Token>();
 
 	/**
 	 * SocketHandler Constructor
 	 * @param inputSocket The ServerSocket to run on
+	 * @param inputDB The database instance
 	 */
-	public SocketHandler(ServerSocket inputSocket) {
+	public SocketHandler(ServerSocket inputSocket, dbServer inputDB) {
 		serverSocket = inputSocket;
+		db = inputDB;
 	}
 
 	/**
@@ -71,7 +75,7 @@ public class SocketHandler {
 	/**
 	 * Generate a response for a given request
 	 */
-	private Response CalculateResponse(Request request) {
+	private Response CalculateResponse(Request request) throws IOException, ClassNotFoundException {
 		switch (request.getEndpoint()) {
 			case "echo": {
 				if (tokens.contains(request.getToken())) {
@@ -136,6 +140,19 @@ public class SocketHandler {
 				if (tokens.contains(request.getToken())) {
 					removeToken(request.getToken());
 					return new Response("success", null, null);
+				} else {
+					return new Response("error", "Invalid token", null);
+				}
+			}
+			case "getEvents": {
+				if (tokens.contains(request.getToken())) {
+					if (request.getToken().getExpires() >= Instant.now().getEpochSecond()) {
+						ArrayList<Event> eventList = db.returnEventList();
+						return new Response("success", eventList, resetExpire(request.getToken()));
+					} else {
+						removeToken(request.getToken());
+						return new Response("error", "Expired token", null);
+					}
 				} else {
 					return new Response("error", "Invalid token", null);
 				}

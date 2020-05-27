@@ -35,14 +35,14 @@ public class Server {
 
 		System.out.println("\nInitializing sockets...");
 		serverSocket = new ServerSocket(propsReader.GetPort());
-		socketHandler =  new SocketHandler(serverSocket);
+		socketHandler =  new SocketHandler(serverSocket, db);
 
 		// Remove in final build
 		testFunc();
 
 		// Do this last!
 		System.out.println("\nServer is ready!");
-		socketHandler.Run(); // Not sure if this method call will ever return
+		socketHandler.Run(); // Not sure if this method call will ever return     (it shouldn't)
 		db.closeResources(); // Close the DB
 	}
 

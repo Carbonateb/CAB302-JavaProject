@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import Server.Server;
 import Server.dbServer;
 import Shared.Schedule.Event;
+
+import static Server.dbServer.*;
 
 public class Schedule {
 	private JPanel Schedule;
@@ -58,12 +61,12 @@ public class Schedule {
 
 		//Queries server to return billboard schedule
 		try {
-			// Query server
-			ArrayList<Event> events = dbServer.requestEvents();
 
-			System.out.println(events);
+
 		}
-		catch (java.lang.NullPointerException | java.io.IOException | java.lang.ClassNotFoundException e) {
+
+		catch (java.lang.NullPointerException e) {
+			System.out.println(e);
 			System.out.println("No billboards to show");
 		}
 

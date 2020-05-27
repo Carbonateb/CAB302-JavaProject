@@ -10,9 +10,9 @@ import java.util.Date;
 public class times {
 	private JPanel timesWindow;
 	private JTextField txtStart;
-	private JTextField txtEnd;
 	private JButton btnCancel;
 	private JButton btnOk;
+	private JSpinner spinner;
 	public static JFrame timesFrame;
 
 	/**
@@ -26,23 +26,20 @@ public class times {
 			public void actionPerformed(ActionEvent e) {
 				//Send data to server
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-				//Retrieve strings in UTC format
+				//Retrieve start string in UTC format
 				String startTime = txtStart.getText();
-				String endTime = txtEnd.getText();
+
+				//Retrieve end time in minutes int
+				int endTime = (int) spinner.getValue();
+				endTime = endTime * 60 * 1000;
 
 				try {
 					//Convert UTC strings to Date objects
 					Date start = sdf.parse(startTime);
-					Date end = sdf.parse(endTime);
-
-					if (end.before(start)) {
-						System.out.println("Start time is after end time");
-						return;
-					}
 
 					//Convert Date objects to Unix time for server
 					long startTimeStamp = start.getTime();
-					long endTimestamp = end.getTime();
+					long endTimestamp = startTimeStamp + endTime;
 
 					System.out.println(startTimeStamp);
 					System.out.println(endTimestamp);

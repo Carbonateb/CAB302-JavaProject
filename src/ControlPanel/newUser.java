@@ -24,6 +24,25 @@ public class newUser {
 		btnSet.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String username = textField1.getText();
+				String password = textField2.getText();
+
+				if (chkCreate.isSelected()) {
+					Boolean create = true;
+				}
+				else if (chkEdit.isSelected()) {
+					Boolean edit = true;
+				}
+				else if (chkSchedule.isSelected()) {
+					Boolean schedule = true;
+				}
+				else if (chkEditUsers.isSelected()) {
+					Boolean editUsers = true;
+				}
+				else {
+					// No permissions
+				}
+
 				newUserFrame.dispose();
 			}
 		});

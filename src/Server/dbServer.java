@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class dbServer {
 
+
 	Connection cn = null;
 	Statement stmt = null;
 	ResultSet rs = null;
@@ -23,6 +24,7 @@ public class dbServer {
 	/**
 	 * set up the database
 	 */
+	Shared.Schedule.Schedule schedule = new Shared.Schedule.Schedule();
 
 	public void setupDB() {
 		//create reader object
@@ -80,7 +82,17 @@ public class dbServer {
 
 	}//end main
 
+	public void loadScheduleToMem() throws IOException, ClassNotFoundException {
+		String[] query3 = queryDB("SCHEDULE", "1", "id");
 
+		System.out.println("should be empty : "+schedule.exportEvents().size());
+
+		Object obj = ObjectSerialization.fromString((query3[1]));
+		Schedule bbPrint = Schedule.class.cast(obj);
+		schedule = bbPrint;
+		System.out.println("should contain 2 :" +schedule.exportEvents().size());
+
+	}
 
 	/***
 	 *
@@ -107,6 +119,17 @@ public class dbServer {
 			return false;
 		}
 		return true;
+	}
+
+	public ArrayList<Event> returnEventList() throws IOException, ClassNotFoundException {
+		ArrayList<Event> test = requestEvents();
+		return test;
+	}
+
+	public void addEvent(long startTime, long endTime, int bbId, String author) throws IOException, ClassNotFoundException {
+		Event event = new Event(startTime,endTime, bbId, author);
+		schedule.scheduleEvent(event);
+		saveSchedule(schedule);
 	}
 
 	/***
@@ -252,9 +275,9 @@ public class dbServer {
 		return runSql(sql);
 	}
 
-	public static ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
-		dbServer db = new dbServer();
-		String[] query3 = db.queryDB("SCHEDULE", "1", "id");
+	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
+
+		String[] query3 = queryDB("SCHEDULE", "1", "id");
 
 		System.out.println("QUERY LENGTH "+query3.length + " id = " +query3[0] + " string = " + query3[1]);
 
@@ -296,12 +319,12 @@ public class dbServer {
 	 * @param schedule schedule object
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addSchedule(Schedule schedule) throws IOException
+	public boolean saveSchedule(Schedule schedule) throws IOException
 	{
 		String data = ObjectSerialization.toString((Serializable) schedule);
 		String sql =
-			"INSERT INTO SCHEDULE (data)" +
-				"VALUES ('" + data + "')" ;
+			"INSERT OR REPLACE INTO SCHEDULE (id,data)" +
+				"VALUES (1, '" + data + "')" ;
 		return runSql(sql);
 	}
 

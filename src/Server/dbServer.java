@@ -252,7 +252,7 @@ public class dbServer {
 		return runSql(sql);
 	}
 
-	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
+	public static ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
 		dbServer db = new dbServer();
 		String[] query3 = db.queryDB("SCHEDULE", "1", "id");
 

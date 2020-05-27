@@ -62,11 +62,6 @@ public class Schedule {
 		//Queries server to return billboard schedule
 		try {
 			dbServer db = new dbServer();
-			//Event event = new Event(1000,2000, 3, "bob");
-			//Shared.Schedule.Schedule schedule = new Shared.Schedule.Schedule();
-			//schedule.scheduleEvent(event);
-
-			//db.addSchedule(schedule);
 			db.setupDB();
 			// Query server
 			ArrayList<Event> events = db.requestEvents();
@@ -75,6 +70,7 @@ public class Schedule {
 		}
 
 		catch (java.lang.NullPointerException | java.io.IOException | java.lang.ClassNotFoundException e) {
+			System.out.println(e);
 			System.out.println("No billboards to show");
 		}
 

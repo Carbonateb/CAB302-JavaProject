@@ -20,6 +20,7 @@ class ScheduleTest {
 		//s.scheduleEvent(new Event(sec(20), sec(10), 0, "Broken event lol"));
 	//	s.scheduleEvent(new RepeatingEvent(sec(3), sec(6), 0, "Repeating event", 5 * 1000));
 
+
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 
@@ -43,7 +44,7 @@ class ScheduleTest {
 
 			}
 
-		}, 0, 1000);
+		}, 0, 15000);
 
 	}
 

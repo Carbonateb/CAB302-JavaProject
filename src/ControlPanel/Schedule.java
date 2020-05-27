@@ -9,6 +9,7 @@ public class Schedule {
 	private JTable table1;
 	private JButton btnDelete;
 	private JButton btnOK;
+	private JButton btnSchedule;
 	private static JFrame scheduleFrame;
 
 	public JFrame getScheduleFrame() {
@@ -26,6 +27,12 @@ public class Schedule {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getScheduleFrame().dispose();
+			}
+		});
+		btnSchedule.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				times.main(null);
 			}
 		});
 	}

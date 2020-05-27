@@ -27,6 +27,7 @@ public class Server {
 
 	private static final Class[] allActions = new Class[]{
 		// List all of the Actions you want to make available here
+		// Should mirror the ActionType enum
 		Echo.class,
 	};
 
@@ -52,7 +53,7 @@ public class Server {
 			for (Class c : allActions) {
 				Action newAction = (Action)c.getDeclaredConstructor().newInstance();
 				socketHandler.actions.add(newAction);
-				newAction.init(this, socketHandler);
+				newAction.init(this);
 			}
 		} catch (Exception e) {
 			System.out.println("Error: Invalid Action provided, check Server.allActions variable");

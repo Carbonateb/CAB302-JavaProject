@@ -1,5 +1,7 @@
 package Shared.Network;
 
+import Server.Actions.ActionType;
+
 import java.io.Serializable;
 
 /**
@@ -10,18 +12,18 @@ import java.io.Serializable;
  */
 public class Request implements Serializable {
 	Token _token;
-	String _endpoint;
+	ActionType _action;
 	Object _data;
 
 	/**
 	 * Request Constructor
 	 * @param token The users's token (`null` for users who are not logged in)
-	 * @param endpoint Which endpoint on the server to query
-	 * @param data The raw data the server will receive
+	 * @param action Which action on the server to invoke
+	 * @param data The raw data the server will receive, passed to the action
 	 */
-	public Request(Token token, String endpoint, Object data) {
+	public Request(Token token, ActionType action, Object data) {
 		_token = token;
-		_endpoint = endpoint;
+		_action = action;
 		_data = data;
 	}
 
@@ -29,8 +31,8 @@ public class Request implements Serializable {
 		return _token;
 	}
 
-	public String getEndpoint() {
-		return _endpoint;
+	public ActionType getAction() {
+		return _action;
 	}
 
 	public Object getData() {
@@ -38,6 +40,6 @@ public class Request implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("{token: \"%s\", endpoint: \"%s\", data: \"%s\"}", _token, _endpoint, _data);
+		return String.format("{token: \"%s\", endpoint: \"%s\", data: \"%s\"}", _token, _action, _data);
 	}
 }

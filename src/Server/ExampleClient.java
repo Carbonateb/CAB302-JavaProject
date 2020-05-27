@@ -1,5 +1,6 @@
 package Server;
 
+import Server.Actions.ActionType;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
@@ -34,13 +35,13 @@ public class ExampleClient {
 
 		// Print the payload to console, send it to the server, amd print the response
 		System.out.println("Sending: " + requestSender.toString("echo", "hello world!"));
-		response = requestSender.SendData("echo", "hello world!");
+		response = requestSender.SendData(ActionType.echo, "hello world!");
 		System.out.println("Response: " + response);
 
 		Thread.sleep(1500);
 
 		System.out.println("Sending: " + requestSender.toString("getEvents", null));
-		response = requestSender.SendData("getEvents", null);
+		response = requestSender.SendData(ActionType.getEvents, null);
 		System.out.println("Response: " + response);
 
 		Thread.sleep(1500);

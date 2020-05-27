@@ -1,9 +1,8 @@
 package Server;
 
 import Server.Actions.Action;
-import Shared.Credentials;
+import Server.Actions.InvalidAction;
 import Shared.Network.*;
-import Shared.Schedule.Event;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -78,7 +77,16 @@ public class SocketHandler {
 	 * Generate a response for a given request
 	 */
 	private Response CalculateResponse(Request request) throws IOException, ClassNotFoundException {
-		switch (request.getEndpoint()) {
+		Action invokedAction;
+		try {
+			invokedAction = actions.get(actions.indexOf(request.getAction()));
+		} catch (Exception e) {
+			invokedAction = new InvalidAction();
+		}
+
+		return invokedAction.Run(request);
+
+		/* switch (request.getEndpoint()) {
 			case "echo": {
 				if (tokens.contains(request.getToken())) {
 					if (request.getToken().getExpires() >= Instant.now().getEpochSecond()) {
@@ -162,6 +170,32 @@ public class SocketHandler {
 			default: {
 				return new Response("error", "Endpoint not implemented", null);
 			}
+		} */
+	}
+
+
+	/**
+	 * Checks if a token is valid or not. Provides a reason why the token was not accepted.
+	 * If the token is valid, will renew it.
+	 * If the token is expired, will remove it from the token array.
+	 *
+	 * @param token the token to examine
+	 * @returns valid if usable, invalid or expired otherwise
+	 */
+	public TokenStatus validateToken(Token token) {
+		if (tokens.contains(token)) {
+			if (token.getExpires() >= Instant.now().getEpochSecond()) {
+				// token is valid
+				resetExpire(token);
+				return TokenStatus.valid;
+			} else {
+				// token has expired
+				removeToken(token);
+				return TokenStatus.expired;
+			}
+		} else {
+			// token is invalid
+			return TokenStatus.invalid;
 		}
 	}
 
@@ -175,7 +209,7 @@ public class SocketHandler {
 		return token;
 	}
 
-	private Token resetExpire(Token token) {
+	public Token resetExpire(Token token) {
 		Token tempToken = removeToken(token);
 		addToken(tempToken.resetExpire());
 		return tempToken;

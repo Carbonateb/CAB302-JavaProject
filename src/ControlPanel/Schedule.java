@@ -61,15 +61,11 @@ public class Schedule {
 
 		//Queries server to return billboard schedule
 		try {
-			dbServer db = new dbServer();
-			db.setupDB();
-			// Query server
-			ArrayList<Event> events = db.requestEvents();
-			System.out.println(events);
+
 
 		}
 
-		catch (java.lang.NullPointerException | java.io.IOException | java.lang.ClassNotFoundException e) {
+		catch (java.lang.NullPointerException e) {
 			System.out.println(e);
 			System.out.println("No billboards to show");
 		}

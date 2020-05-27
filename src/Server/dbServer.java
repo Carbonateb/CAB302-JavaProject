@@ -24,7 +24,7 @@ public class dbServer {
 	/**
 	 * set up the database
 	 */
-
+	Shared.Schedule.Schedule schedule = new Shared.Schedule.Schedule();
 	public void setupDB() {
 		//create reader object
 		ServerPropsReader reader = new ServerPropsReader();
@@ -108,6 +108,17 @@ public class dbServer {
 			return false;
 		}
 		return true;
+	}
+
+	public ArrayList<Event> returnEventList() throws IOException, ClassNotFoundException {
+		ArrayList<Event> test = requestEvents();
+		return test;
+	}
+
+	public void addEvent(long startTime, long endTime, int bbId, String author) throws IOException, ClassNotFoundException {
+		Event event = new Event(startTime,endTime, bbId, author);
+		schedule.scheduleEvent(event);
+		saveSchedule(schedule);
 	}
 
 	/***
@@ -297,12 +308,12 @@ public class dbServer {
 	 * @param schedule schedule object
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addSchedule(Schedule schedule) throws IOException
+	public boolean saveSchedule(Schedule schedule) throws IOException
 	{
 		String data = ObjectSerialization.toString((Serializable) schedule);
 		String sql =
-			"INSERT INTO SCHEDULE (data)" +
-				"VALUES ('" + data + "')" ;
+			"INSERT OR REPLACE INTO SCHEDULE (id,data)" +
+				"VALUES (1, '" + data + "')" ;
 		return runSql(sql);
 	}
 

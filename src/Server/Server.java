@@ -37,14 +37,15 @@ public class Server {
 		Billboard billboard = new Billboard(1, "sample", "sample2", Color.red, Color.blue, null, "admin");
 		db.addBillboard(billboard);
 
-		Event event = new Event(1000,2000, 3, "bob");
-		Shared.Schedule.Schedule schedule = new Shared.Schedule.Schedule();
-		schedule.scheduleEvent(event);
 
-		db.addSchedule(schedule);
 
-		ArrayList<Event> test = db.requestEvents();
-		System.out.println(test.size());
+		db.addEvent(10000000, 300000000, 1,"bob");
+		db.addEvent(10000010, 300000001, 2,"jerry");
+
+		ArrayList<Event> example = db.returnEventList();
+
+		System.out.println("THE AUTHOR IS "+example.get(0).author);
+		System.out.println("THE AUTHOR IS "+example.get(1).author);
 
 		//System.out.println("THE START TIME IS" + db.requestBillBoard(1));
 
@@ -94,7 +95,7 @@ public class Server {
 			}
 			else
 			{
-				System.out.println("billboard : " +ObjectSerialization.fromString(query2[i]));
+				//System.out.println("billboard : " +ObjectSerialization.fromString(query2[i]));
 				Object obj = ObjectSerialization.fromString((query2[i]));
 				Billboard bbPrint = Billboard.class.cast(obj);
 

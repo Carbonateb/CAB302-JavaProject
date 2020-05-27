@@ -12,9 +12,9 @@ class ScheduleTest {
 	/** Launches a console that debugs Schedule */
 	public static void main(String args[]) {
 		final Schedule s = new Schedule();
-		s.scheduleEvent(new Event(sec(1), sec(10), 0, "My Event 1"));
-		s.scheduleEvent(new Event(sec(4), sec(7), 0, "The other event"));
-		s.scheduleEvent(new RepeatingEvent(sec(3), sec(6), 0, "Repeating event", 5 * 1000));
+		s.scheduleEvent(new Event(sec(60), sec(600), 0, "My Event 1"));
+		s.scheduleEvent(new Event(sec(240), sec(630), 0, "The other event"));
+		s.scheduleEvent(new RepeatingEvent(sec(180), sec(360), 0, "Repeating event", 5 * 1000));
 
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -39,7 +39,7 @@ class ScheduleTest {
 
 			}
 
-		}, 0, 1000);
+		}, 0, 15000);
 
 	}
 

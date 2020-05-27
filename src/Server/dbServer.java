@@ -85,12 +85,13 @@ public class dbServer {
 	public void loadScheduleToMem() throws IOException, ClassNotFoundException {
 		String[] query3 = queryDB("SCHEDULE", "1", "id");
 
-		System.out.println("should be empty : "+schedule.exportEvents().size());
-
-		Object obj = ObjectSerialization.fromString((query3[1]));
-		Schedule bbPrint = Schedule.class.cast(obj);
-		schedule = bbPrint;
-		System.out.println("should contain 2 :" +schedule.exportEvents().size());
+		Schedule schedule = new Schedule();
+		System.out.println("should be empty : " + schedule.exportEvents().size());
+		if (query3[1] != null) {
+			Object obj = ObjectSerialization.fromString((query3[1]));
+			schedule = (Schedule) obj;
+		}
+		System.out.println("should contain 2 :" + schedule.exportEvents().size());
 
 	}
 

@@ -7,7 +7,6 @@ package Server.Actions;
  * In case you're wondering, I did try to
  */
 public enum ActionType {
-	none,
 	echo,
 	login,
 	logout,

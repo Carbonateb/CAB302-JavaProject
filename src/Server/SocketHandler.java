@@ -161,7 +161,7 @@ public class SocketHandler {
 					return new Response("error", "Invalid token", null);
 				}
 			}
-			case "getEvents": {
+			case "GetEvents": {
 				if (tokens.contains(request.getToken())) {
 					if (request.getToken().getExpires() >= Instant.now().getEpochSecond()) {
 						ArrayList<Event> eventList = db.returnEventList();

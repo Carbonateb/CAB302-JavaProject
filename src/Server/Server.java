@@ -27,9 +27,8 @@ public class Server {
 	private static final Class[] allActions = new Class[]{
 		// List all of the Actions you want to make available here
 		// Should mirror the ActionType enum
-		Action.class,
 		Echo.class,
-		getEvents.class,
+		GetEvents.class,
 		Login.class,
 		Logout.class,
 		Register.class,

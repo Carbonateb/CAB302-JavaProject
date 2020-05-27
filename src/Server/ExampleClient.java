@@ -40,7 +40,7 @@ public class ExampleClient {
 
 		Thread.sleep(1500);
 
-		System.out.println("Sending: " + requestSender.toString("getEvents", null));
+		System.out.println("Sending: " + requestSender.toString("GetEvents", null));
 		response = requestSender.SendData(ActionType.getEvents, null);
 		System.out.println("Response: " + response);
 

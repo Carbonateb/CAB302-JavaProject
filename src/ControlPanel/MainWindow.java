@@ -67,6 +67,14 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				String testXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">All custom colours</message><information colour=\"#3FFFC7\">All custom colours</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
 				Billboard.main(testXML, "Edit Billboard");
+
+				// Query server to get billboard information
+				try {
+					//Query server
+				}
+				catch (NullPointerException billErr) {
+					System.out.println("No billboard information to display");
+				}
 			}
 		});
 	}

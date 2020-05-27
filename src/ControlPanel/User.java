@@ -26,6 +26,14 @@ public class User {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newUser.main(null);
+
+				//Query server to get user data
+				try {
+					//Query server
+				}
+				catch (NullPointerException err) {
+					System.out.println("No user data");
+				}
 			}
 		});
 	}
@@ -43,6 +51,14 @@ public class User {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
 			// handle exception
+		}
+
+		// Query users table
+		try {
+			//Query server
+		}
+		catch (NullPointerException e) {
+			System.out.println("No users to display");
 		}
 
 		// Create and setup Users window

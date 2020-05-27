@@ -45,6 +45,14 @@ public class Schedule {
 			// handle exception
 		}
 
+		//Queries server to return billboard schedule
+		try {
+			// Query server
+		}
+		catch (NullPointerException e) {
+			System.out.println("No billboards to show");
+		}
+
 		// Create and setup Schedule window
 		scheduleFrame = new JFrame("Billboard Schedule");
 		scheduleFrame.setContentPane(new Schedule().Schedule);

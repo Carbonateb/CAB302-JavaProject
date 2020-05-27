@@ -316,6 +316,7 @@ public class Billboard {
 	}
 
 	public static void main(String xmlString, String title) {
+
 		billboardFrame = new JFrame(title);
 		if (xmlString != null) {
 			billboardFrame.setContentPane(new Billboard(xmlString).BillboardWindow);

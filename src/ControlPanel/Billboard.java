@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+
 /**
  * Form for creating a new billboard
  *
@@ -43,7 +44,7 @@ public class Billboard {
 		try {
 			// Set message text and color
 			Color messageColor;
-			String messageText = XMLHandler.xmlReader(isFile, xmlData, "message", "null");
+			String messageText = XMLHandler.xmlReader(isFile, xmlData, "message", null);
 			if (messageText != null) {
 				message.setText(messageText);
 				try {
@@ -56,7 +57,7 @@ public class Billboard {
 
 			// Set information text and color
 			Color informationColor;
-			String informationText = XMLHandler.xmlReader(isFile, xmlData, "information", "null");
+			String informationText = XMLHandler.xmlReader(isFile, xmlData, "information", null);
 			if (informationText != null) {
 				information.setText(informationText);
 				try {

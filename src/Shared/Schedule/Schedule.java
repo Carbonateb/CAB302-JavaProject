@@ -38,17 +38,10 @@ public class Schedule implements Serializable {
 		populateActiveEvents();
 		cleanupActiveEvents();
 
-		activeEvents.trimToSize();
-
 		if (activeEvents.size() == 0) {
 			// Return a blank event if there is none to display
 			return new Event(0, 0, 0, "");
 
-		}
-
-		System.out.println("Active Events 2:");
-		for (Event e : activeEvents) {
-			System.out.printf("\t%s\n", e.author);
 		}
 
 		// TODO unsure if we need a priority system, for now just uses age where newer ones get displayed over old ones
@@ -116,7 +109,7 @@ public class Schedule implements Serializable {
 		ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
 
 		// Check which events are active now, copy them to activeEvents and mark them for death
-		for (int i = 0; i < upcomingEvents.size(); ++i) {
+		for (int i = upcomingEvents.size() - 1; i >= 0; --i) {
 			if (currentTime() >= upcomingEvents.get(i).startTime) {
 				indicesToRemove.add(i);
 				activeEvents.add(upcomingEvents.get(i));

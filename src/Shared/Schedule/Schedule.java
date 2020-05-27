@@ -60,18 +60,21 @@ public class Schedule implements Serializable {
 	}
 
 
+
 	/**
 	 * Removes an event from the schedule.
 	 * @param e the event to remove
 	 * @param removeActive if false, will not affect currently active events.
+	 * @param removeThisOnly only applies for looping events. If true, the next event will still be scheduled
 	 * @returns true if the event was found and deleted
 	 */
-	public boolean removeEvent(Event e, boolean removeActive) {
-		if (removeActive) {
-			return upcomingEvents.remove(e) || activeEvents.remove(e);
-		} else {
-			return upcomingEvents.remove(e);
-		}
+	public boolean removeEvent(Event e, boolean removeActive, boolean removeThisOnly) {
+		boolean foundInUpcomingE = upcomingEvents.remove(e);
+		boolean foundInActiveE = removeActive && activeEvents.remove(e);
+
+		// Only schedule the next event if we found and deleted something, otherwise we would be creating a new event
+		if (removeThisOnly && (foundInActiveE || foundInUpcomingE)) { scheduleNextRepeatingEvent(e); }
+		return foundInActiveE || foundInUpcomingE;
 	}
 
 
@@ -113,7 +116,22 @@ public class Schedule implements Serializable {
 
 		// Delete the events that got marked
 		for (int i : indicesToRemove) {
+			scheduleNextRepeatingEvent(activeEvents.get(i));
 			activeEvents.remove(i);
+		}
+	}
+
+
+	/**
+	 * Given a repeating event, calculates when it should next be displayed and schedules it at that time.
+	 * This will not schedule the event at the times given on the variables. Use
+	 * the regular scheduleEvent function to do that. This function is intended to be used
+	 * to schedule the next event once the current event event has expired.
+	 * @param re the event to repeat. Will silently fail if not a Repeating Event
+	 */
+	private void scheduleNextRepeatingEvent(Event re) {
+		if (re instanceof RepeatingEvent) {
+			scheduleEvent(new RepeatingEvent((RepeatingEvent)re));
 		}
 	}
 

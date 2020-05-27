@@ -1,9 +1,7 @@
 package Server;
 
 import Shared.Credentials;
-import Shared.Request;
-import Shared.Response;
-import Shared.Token;
+import Shared.Network.*
 
 import java.io.*;
 import java.net.ServerSocket;

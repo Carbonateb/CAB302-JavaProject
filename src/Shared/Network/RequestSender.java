@@ -1,4 +1,6 @@
-package Shared;
+package Shared.Network;
+
+import Shared.Credentials;
 
 import java.io.*;
 import java.net.Socket;

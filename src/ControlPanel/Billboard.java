@@ -1,5 +1,7 @@
 package ControlPanel;
 
+import Shared.Display.IMGHandler;
+import Shared.Display.XMLHandler;
 import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;

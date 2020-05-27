@@ -1,4 +1,4 @@
-package ControlPanel;
+package Shared.Display;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

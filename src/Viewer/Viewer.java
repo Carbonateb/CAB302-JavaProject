@@ -1,6 +1,7 @@
 package Viewer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,10 +9,12 @@ import java.util.TimerTask;
 /**
  * The viewer is the dummy client that displays the billboard.
  *
- * @author Lucas Maldonado N10534342
+ * @author Lucas Maldonado - n10534342
+ * @author Connor McHugh - n10522662
  */
 public class Viewer {
 	private JPanel mainPanel;
+	private JTextPane testTextPane;
 
 	/**
 	 * How often the Viewer should get an update from the server, in seconds.
@@ -70,6 +73,9 @@ public class Viewer {
 			@Override public void mouseExited(MouseEvent e) { }
 		});
 		mainPanel.getActionMap().put("exitProgram", exitProgram);
+
+		testTextPane.setBackground(new Color(0,0,0,0));
+		mainPanel.setBackground(Color.BLACK);
 	}
 
 

@@ -47,7 +47,7 @@ public class times {
 					System.out.println(startTimeStamp);
 					System.out.println(endTimestamp);
 				} catch (ParseException err) {
-
+					System.out.println("DateTime in wrong format please use yyyy-MM-dd'T'HH:mm:ss format");
 				}
 			}
 		});

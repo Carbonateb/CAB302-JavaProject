@@ -1,6 +1,8 @@
 package Server;
 
 import Shared.Billboard;
+import Shared.Schedule.Event;
+import Shared.Schedule.Schedule;
 
 import java.awt.*;
 import java.io.IOException;
@@ -29,8 +31,16 @@ public class Server {
 		db.addUser("dylan", "faljnfkan", "salt1");
 		db.addUser("colby", "gggggddd", "salt2");
 
-		Billboard billboard = new Billboard(0, "sample", "sample2", Color.red, Color.blue, null, "admin");
+		Billboard billboard = new Billboard(1, "sample", "sample2", Color.red, Color.blue, null, "admin");
 		db.addBillboard(billboard);
+
+		Event event = new Event(1000,2000, 3, "bob");
+		Schedule schedule = new Schedule();
+		schedule.scheduleEvent(event);
+
+		db.addSchedule(schedule);
+
+		//System.out.println("THE START TIME IS" + db.requestBillBoard(1));
 
 		System.out.println("Added items");
 
@@ -72,10 +82,17 @@ public class Server {
 		}
 		for(int i=0; i< query2.length; i++)
 		{
-			if (i == 0) {
+			if (i == 0)
+			{
 				System.out.println(query2[i]);
-			} else {
-				System.out.println(ObjectSerialization.fromString(query2[i]));
+			}
+			else
+			{
+				System.out.println("billboard : " +ObjectSerialization.fromString(query2[i]));
+				Object obj = ObjectSerialization.fromString((query2[i]));
+				Billboard bbPrint = Billboard.class.cast(obj);
+
+				System.out.println("id : " + bbPrint.ID);
 			}
 		}
 		for(int i=0; i< query3.length; i++)

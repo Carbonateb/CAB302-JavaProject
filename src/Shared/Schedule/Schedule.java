@@ -55,8 +55,8 @@ public class Schedule implements Serializable {
 	public void scheduleEvent(Event newEvent) {
 		System.out.println("Added new event");
 		upcomingEvents.add(newEvent);
-		populateActiveEvents();
-		cleanupActiveEvents();
+		// populateActiveEvents();
+		// cleanupActiveEvents();
 	}
 
 

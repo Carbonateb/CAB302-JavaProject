@@ -22,5 +22,6 @@ public class RepeatingEvent extends Event {
 			oldRE.billboardID,
 			oldRE.author);
 		loopInterval = oldRE.loopInterval;
+		//System.out.printf("Remade RE: Old end: %d, new end is %d. Difference of %d", oldRE.endTime, endTime, endTime - oldRE.endTime);
 	}
 }

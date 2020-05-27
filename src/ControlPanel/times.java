@@ -24,8 +24,6 @@ public class times {
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				timesFrame.dispose();
-
 				//Send data to server
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 				//Retrieve strings in UTC format
@@ -45,13 +43,15 @@ public class times {
 					//Convert Date objects to Unix time for server
 					long startTimeStamp = start.getTime();
 					long endTimestamp = end.getTime();
-					
+
 					System.out.println(startTimeStamp);
 					System.out.println(endTimestamp);
 
 				} catch (ParseException err) {
 					System.out.println("DateTime in wrong format please use yyyy-MM-dd'T'HH:mm:ss format");
 				}
+
+				timesFrame.dispose();
 			}
 		});
 		btnCancel.addActionListener(new ActionListener() {

@@ -77,10 +77,17 @@ public class SocketHandler {
 	 * Generate a response for a given request
 	 */
 	private Response CalculateResponse(Request request) throws IOException, ClassNotFoundException {
-		Action invokedAction;
-		try {
-			invokedAction = actions.get(actions.indexOf(request.getAction()));
-		} catch (Exception e) {
+		Action invokedAction = null;
+		System.out.printf("Received request for action: %s", request.getAction().toString());
+
+		// Search for the requested action
+		for (Action a : actions) {
+			if (a.associatedAction == request.getAction()) {
+				invokedAction = a;
+			}
+		}
+
+		if (invokedAction == null) {
 			invokedAction = new InvalidAction();
 		}
 
@@ -215,14 +222,16 @@ public class SocketHandler {
 		return tempToken;
 	}
 
-	private String GenerateToken() {
+	public Token generateToken(String username) {
 		// Generate a random array of bytes, and encode it to base64 text
 		SecureRandom secureRandom = new SecureRandom();
 		byte[] values = new byte[128];
 		secureRandom.nextBytes(values);
 		Base64.Encoder base64 = Base64.getEncoder();
 		String encoded = new String(base64.encode(values));
-
-		return encoded;
+		// Instantiate a new token object, store it, and return it
+		Token token = new Token(username, Instant.now().getEpochSecond() + 86400, encoded);
+		addToken(token);
+		return token;
 	}
 }

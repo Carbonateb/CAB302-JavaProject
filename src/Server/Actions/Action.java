@@ -13,7 +13,7 @@ import Shared.Network.TokenStatus;
 public class Action {
 
 	/** This is the action command used to access this action */
-	ActionType associatedAction;
+	public ActionType associatedAction;
 
 	Server server;
 
@@ -49,8 +49,7 @@ public class Action {
 	 * Override this method to add functionality to your Action
 	 */
 	public Object executeAction(Object input){
-		System.out.println("Action was run!");
-		return "This action was successfully run";
+		return "Action not implemented yet, but was called correctly";
 	}
 
 

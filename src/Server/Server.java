@@ -1,7 +1,6 @@
 package Server;
 
-import Server.Actions.Action;
-import Server.Actions.Echo;
+import Server.Actions.*;
 import Shared.Billboard;
 import Shared.Schedule.Event;
 
@@ -28,7 +27,12 @@ public class Server {
 	private static final Class[] allActions = new Class[]{
 		// List all of the Actions you want to make available here
 		// Should mirror the ActionType enum
+		Action.class,
 		Echo.class,
+		getEvents.class,
+		Login.class,
+		Logout.class,
+		Register.class,
 	};
 
 

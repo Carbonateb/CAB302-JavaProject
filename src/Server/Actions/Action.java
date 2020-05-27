@@ -59,6 +59,6 @@ public class Action {
 	 */
 	public void init(Server inServer) {
 		server = inServer;
-		System.out.printf(" - Action '%s' is ready, access with '%s'\n", getClass().getSimpleName(), associatedAction.toString());
+		System.out.printf(" - Action '%s' is ready, access with 'ActionType.%s'\n", getClass().getSimpleName(), associatedAction.toString());
 	}
 }

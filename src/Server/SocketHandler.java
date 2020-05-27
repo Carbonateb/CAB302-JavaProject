@@ -1,7 +1,7 @@
 package Server;
 
 import Shared.Credentials;
-import Shared.Network.*
+import Shared.Network.*;
 
 import java.io.*;
 import java.net.ServerSocket;

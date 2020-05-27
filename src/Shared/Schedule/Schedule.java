@@ -88,6 +88,28 @@ public class Schedule implements Serializable {
 
 
 	/**
+	 * Gets every event scheduled (passed events are deleted for good).
+	 * Useful for saving the data to disk.
+	 */
+	public ArrayList<Event> exportEvents() {
+		ArrayList<Event> returnValue = new ArrayList<Event>();
+		returnValue.addAll(upcomingEvents);
+		returnValue.addAll(activeEvents);
+		return returnValue;
+	}
+
+
+	/**
+	 * Bulk add a list of events. This will schedule everything in the list
+	 */
+	public void importEvents(ArrayList<Event> events) {
+		for (Event e : events) {
+			scheduleEvent(e);
+		}
+	}
+
+
+	/**
 	 * Moves billboards in upcomingEvents to activeEvents if they are to be displayed now.
 	 */
 	private void populateActiveEvents() {

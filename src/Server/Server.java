@@ -20,15 +20,19 @@ public class Server {
 
 
 	public static void main(String args[]) throws IOException, ClassNotFoundException {
-		System.out.println("Server Starting...");
 		dbServer db = new dbServer();
+
+		db.setupDB();
+		db.loadScheduleToMem();
+		System.out.println("Server Starting...");
+
 
 		// Define server socket and socket handler
 		ServerPropsReader propsReader = new ServerPropsReader();
 		ServerSocket serverSocket = new ServerSocket(propsReader.GetPort());
 		SocketHandler socketHandler = new SocketHandler(serverSocket);
 
-		db.setupDB();
+
 
 		// Add data to DB
 		db.addUser("dylan", "faljnfkan", "salt1");

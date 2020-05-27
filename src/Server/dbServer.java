@@ -25,6 +25,7 @@ public class dbServer {
 	 * set up the database
 	 */
 	Shared.Schedule.Schedule schedule = new Shared.Schedule.Schedule();
+
 	public void setupDB() {
 		//create reader object
 		ServerPropsReader reader = new ServerPropsReader();
@@ -81,7 +82,17 @@ public class dbServer {
 
 	}//end main
 
+	public void loadScheduleToMem() throws IOException, ClassNotFoundException {
+		String[] query3 = queryDB("SCHEDULE", "1", "id");
 
+		System.out.println("should be empty : "+schedule.exportEvents().size());
+
+		Object obj = ObjectSerialization.fromString((query3[1]));
+		Schedule bbPrint = Schedule.class.cast(obj);
+		schedule = bbPrint;
+		System.out.println("should contain 2 :" +schedule.exportEvents().size());
+
+	}
 
 	/***
 	 *

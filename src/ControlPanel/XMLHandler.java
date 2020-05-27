@@ -159,6 +159,11 @@ public class XMLHandler {
 	}
 
 
+	/**
+	 * Small method to convert an rgb color to hexadecimal
+	 * @param inputColor color in rgb format that needs to be converted
+	 * @return color encoded as hexadecimal
+	 */
 	public static String colorConverter(Color inputColor) {
 		System.out.println(inputColor);
 		return String.format("#%02X%02X%02X",

@@ -37,13 +37,24 @@ public class Schedule implements Serializable {
 	public Event getEvent() {
 		populateActiveEvents();
 		cleanupActiveEvents();
+
+		activeEvents.trimToSize();
+
 		if (activeEvents.size() == 0) {
 			// Return a blank event if there is none to display
 			return new Event(0, 0, 0, "");
+
+		}
+
+		System.out.println("Active Events 2:");
+		for (Event e : activeEvents) {
+			System.out.printf("\t%s\n", e.author);
 		}
 
 		// TODO unsure if we need a priority system, for now just uses age where newer ones get displayed over old ones
 		return activeEvents.get(activeEvents.size() - 1); // Gets the last element in the array
+
+
 	}
 
 
@@ -55,8 +66,6 @@ public class Schedule implements Serializable {
 	public void scheduleEvent(Event newEvent) {
 		System.out.println("Added new event");
 		upcomingEvents.add(newEvent);
-		// populateActiveEvents();
-		// cleanupActiveEvents();
 	}
 
 
@@ -107,12 +116,13 @@ public class Schedule implements Serializable {
 		ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
 
 		// Check which events have passed, mark them for deletion
-		for (int i = 0; i < activeEvents.size(); ++i) {
+		for (int i = activeEvents.size() - 1; i >= 0; --i) {
 			if (currentTime() > activeEvents.get(i).endTime) {
 				indicesToRemove.add(i);
 				System.out.printf("Deleted an old event: end time was %d, current time is %d (finished %dms ago)\n", activeEvents.get(i).endTime, currentTime(), currentTime() - activeEvents.get(i).endTime);
 			}
 		}
+
 
 		// Delete the events that got marked
 		for (int i : indicesToRemove) {

@@ -53,7 +53,7 @@ public class XMLHandler {
 
 		if (document.getElementsByTagName("billboard").getLength() != 0) {
 				if (document.getElementsByTagName(tag).getLength() != 0) {
-					if (attribute.equals("null")) {
+					if (attribute == null) {
 						return document.getElementsByTagName(tag).item(0).getTextContent();
 					} else {
 						return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();

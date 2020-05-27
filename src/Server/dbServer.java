@@ -1,18 +1,20 @@
 package Server;
 
-import ControlPanel.Schedule;
 import Shared.Billboard;
+import Shared.Schedule.*;
+
+
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class dbServer {
 
 	Connection cn = null;
 	Statement stmt = null;
 	ResultSet rs = null;
-
 
 	//  Database credentials
 	static String USER = "x";
@@ -63,7 +65,6 @@ public class dbServer {
 			stmt.executeUpdate(usr_sql);
 			stmt.executeUpdate(bb_sql);
 			stmt.executeUpdate(schedule_sql);
-
 
 		}
 		catch (SQLException se)
@@ -194,7 +195,6 @@ public class dbServer {
 
 	}
 
-
 	/***
 	 *
 	 * @param table_Name the name of the table you wish to pull from
@@ -226,7 +226,6 @@ public class dbServer {
 		return querySql(sql, column_size);
 	}
 
-
 	/***
 	 * adds a user to the database
 	 * @param usr_Name string storing the username of the user
@@ -251,6 +250,19 @@ public class dbServer {
 		String sql =
 			"DELETE FROM USERS WHERE usr_ID = " + usr_ID ;
 		return runSql(sql);
+	}
+
+	public static ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
+		dbServer db = new dbServer();
+		String[] query3 = db.queryDB("SCHEDULE", "1", "id");
+
+		System.out.println("QUERY LENGTH "+query3.length + " id = " +query3[0] + " string = " + query3[1]);
+
+		Object obj = ObjectSerialization.fromString((query3[1]));
+
+		Schedule bbPrint = Schedule.class.cast(obj);
+
+		return bbPrint.exportEvents();
 	}
 
 	/***
@@ -288,8 +300,8 @@ public class dbServer {
 	{
 		String data = ObjectSerialization.toString((Serializable) schedule);
 		String sql =
-			"INSERT INTO SCHEDULE (id, data)" +
-				"VALUES (" + data + "')" ;
+			"INSERT INTO SCHEDULE (data)" +
+				"VALUES ('" + data + "')" ;
 		return runSql(sql);
 	}
 

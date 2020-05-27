@@ -28,24 +28,27 @@ public class times {
 
 				//Send data to server
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+				//Retrieve strings in UTC format
 				String startTime = txtStart.getText();
 				String endTime = txtEnd.getText();
 
-				System.out.println(startTime);
-				System.out.println(endTime);
-
 				try {
+					//Convert UTC strings to Date objects
 					Date start = sdf.parse(startTime);
 					Date end = sdf.parse(endTime);
 
-					System.out.println(start);
-					System.out.println(end);
+					if (end.before(start)) {
+						System.out.println("Start time is after end time");
+						return;
+					}
 
+					//Convert Date objects to Unix time for server
 					long startTimeStamp = start.getTime();
 					long endTimestamp = end.getTime();
-
+					
 					System.out.println(startTimeStamp);
 					System.out.println(endTimestamp);
+
 				} catch (ParseException err) {
 					System.out.println("DateTime in wrong format please use yyyy-MM-dd'T'HH:mm:ss format");
 				}

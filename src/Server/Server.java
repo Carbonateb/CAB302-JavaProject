@@ -1,5 +1,7 @@
 package Server;
 
+import Server.Actions.Action;
+import Server.Actions.Echo;
 import Shared.Billboard;
 import Shared.Schedule.Event;
 
@@ -23,6 +25,12 @@ public class Server {
 	public SocketHandler socketHandler;
 
 
+	private static final Class[] allActions = new Class[]{
+		// List all of the Actions you want to make available here
+		Echo.class,
+	};
+
+
 	/** Constructor. Init the server here */
 	public Server() throws IOException, ClassNotFoundException {
 		System.out.println("\nServer Starting...");
@@ -37,8 +45,22 @@ public class Server {
 		serverSocket = new ServerSocket(propsReader.GetPort());
 		socketHandler =  new SocketHandler(serverSocket);
 
+
+		// Create the Actions specified in allActions
+		System.out.println("\nCreating Actions...");
+		try{
+			for (Class c : allActions) {
+				Action newAction = (Action)c.getDeclaredConstructor().newInstance();
+				socketHandler.actions.add(newAction);
+				newAction.init(this, socketHandler);
+			}
+		} catch (Exception e) {
+			System.out.println("Error: Invalid Action provided, check Server.allActions variable");
+		}
+
+
 		// Remove in final build
-		testFunc();
+		//testFunc();
 
 		// Do this last!
 		System.out.println("\nServer is ready!");

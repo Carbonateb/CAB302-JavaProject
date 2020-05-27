@@ -1,7 +1,10 @@
 package Server;
 
+import Server.Actions.Action;
 import Shared.Credentials;
-import Shared.Network.*;
+import Shared.Network.Request;
+import Shared.Network.Response;
+import Shared.Network.Token;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -21,6 +24,7 @@ public class SocketHandler {
 
 	ServerSocket serverSocket;
 	ArrayList<Token> tokens = new ArrayList<Token>();
+	ArrayList<Action> actions = new ArrayList<Action>();
 
 	/**
 	 * SocketHandler Constructor

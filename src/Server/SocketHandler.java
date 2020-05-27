@@ -234,4 +234,13 @@ public class SocketHandler {
 		addToken(token);
 		return token;
 	}
+
+	public boolean logout(Token token) {
+		if (tokens.contains(token)) {
+			removeToken(token);
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

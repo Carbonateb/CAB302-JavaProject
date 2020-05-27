@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class dbServer {
 
+
 	Connection cn = null;
 	Statement stmt = null;
 	ResultSet rs = null;
@@ -252,9 +253,9 @@ public class dbServer {
 		return runSql(sql);
 	}
 
-	public static ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
-		dbServer db = new dbServer();
-		String[] query3 = db.queryDB("SCHEDULE", "1", "id");
+	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
+
+		String[] query3 = queryDB("SCHEDULE", "1", "id");
 
 		System.out.println("QUERY LENGTH "+query3.length + " id = " +query3[0] + " string = " + query3[1]);
 

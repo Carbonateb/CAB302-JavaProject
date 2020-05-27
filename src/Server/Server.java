@@ -7,6 +7,7 @@ import Shared.Schedule.Schedule;
 import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 
 /**
  * Server is a class which can receive requests and respond to them
@@ -16,6 +17,8 @@ import java.net.ServerSocket;
  * @author Dylan Robertson n10487310
  */
 public class Server {
+
+
 	public static void main(String args[]) throws IOException, ClassNotFoundException {
 		System.out.println("Server Starting...");
 		dbServer db = new dbServer();
@@ -35,10 +38,13 @@ public class Server {
 		db.addBillboard(billboard);
 
 		Event event = new Event(1000,2000, 3, "bob");
-		Schedule schedule = new Schedule();
+		Shared.Schedule.Schedule schedule = new Shared.Schedule.Schedule();
 		schedule.scheduleEvent(event);
 
 		db.addSchedule(schedule);
+
+		ArrayList<Event> test = db.requestEvents();
+		System.out.println(test.size());
 
 		//System.out.println("THE START TIME IS" + db.requestBillBoard(1));
 

@@ -2,6 +2,9 @@ package Shared.Schedule;
 
 // import org.junit.jupiter.api.Test;
 
+import Shared.Permissions.Perm;
+import Shared.Permissions.Permissions;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,6 +14,19 @@ class ScheduleTest {
 
 	/** Launches a console that debugs Schedule */
 	public static void main(String args[]) {
+		// Create the source permissions thing, populate it
+		Permissions originalP = new Permissions();
+		originalP.addPermission(Perm.CREATE_BILLBOARDS);
+		originalP.addPermission(Perm.EDIT_USERS);
+		System.out.println(originalP.toString());
+
+		// Create a new permissions, using the constructor that takes in an int
+		Permissions newP = new Permissions(originalP.toint());
+		System.out.println(newP.toString());
+
+
+		if (true) {return;}
+
 		final Schedule s = new Schedule();
 		s.scheduleEvent(new RepeatingEvent(sec(3), sec(6), 0, "Repeating event", 5 * 1000));
 		s.scheduleEvent(new Event(sec(1), sec(5), 0, "My Event 1"));

@@ -9,6 +9,55 @@ import java.util.EnumSet;
  */
 public class Permissions {
 
+	// Default constructor
+	public Permissions(){}
+
+	// Constructor that inits from an int
+	public Permissions(int data) {
+		if ((data & 0b0001) != 0) {
+			addPermission(Perm.CREATE_BILLBOARDS);
+		}
+
+		if ((data & 0b0010) != 0) {
+			addPermission(Perm.SCHEDULE_BILLBOARDS);
+		}
+
+		if ((data & 0b0100) != 0) {
+			addPermission(Perm.EDIT_ALL_BILLBOARDS);
+		}
+
+		if ((data & 0b1000) != 0) {
+			addPermission(Perm.EDIT_USERS);
+		}
+	}
+
+	// Converts this permissions to a int for easy serialization
+	public int toint() {
+		int returnValue = 0b0000;
+
+		if (hasPermission(Perm.CREATE_BILLBOARDS)) {
+			returnValue += 0b0001;
+		}
+
+		if (hasPermission(Perm.SCHEDULE_BILLBOARDS)) {
+			returnValue += 0b0010;
+		}
+
+		if (hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
+			returnValue += 0b0100;
+		}
+
+		if (hasPermission(Perm.EDIT_USERS)) {
+			returnValue += 0b1000;
+		}
+
+		return returnValue;
+	}
+
+	public String toString() {
+		return PSet.toString();
+	}
+
 	public boolean hasPermission(Perm PermissionToCheck){
 		return PSet.contains(PermissionToCheck);
 	}
@@ -22,4 +71,6 @@ public class Permissions {
 	}
 
 	private EnumSet<Perm> PSet = EnumSet.noneOf(Perm.class);
+
+
 }

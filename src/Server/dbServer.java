@@ -307,16 +307,14 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
-
 		String[] query3 = queryDB("SCHEDULE", "1", "id");
-
 		System.out.println("QUERY LENGTH "+query3.length + " id = " +query3[0] + " string = " + query3[1]);
+		Schedule schedule = new Schedule();
+		if (query3[1] != null) {
+			schedule = (Schedule) ObjectSerialization.fromString((query3[1]));
+		}
 
-		Object obj = ObjectSerialization.fromString((query3[1]));
-
-		Schedule bbPrint = Schedule.class.cast(obj);
-
-		return bbPrint.exportEvents();
+		return schedule.exportEvents();
 	}
 
 	/***

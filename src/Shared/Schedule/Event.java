@@ -1,6 +1,7 @@
 package Shared.Schedule;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * An event is a single billboard time allocation that exists in the Schedule.
@@ -33,7 +34,8 @@ public class Event implements Serializable {
 		startTime = start;
 		endTime = end;
 		billboardID = 0;
-		author = "";
+		Random r = new Random(System.currentTimeMillis());
+		author = "Test Event " + (r.nextInt() % 100);
 	}
 
 
@@ -52,7 +54,7 @@ public class Event implements Serializable {
 	/**
 	 * Used to check if this event has no info in it, like when the scheduler has no billboard to display.
 	 * An event is blank when all values are 0 or equivalent.
-	 * @return true if this Event is blank, false otherwise.
+	 * @returns true if this Event is blank, false otherwise.
 	 */
 	public boolean isBlank() {
 		return startTime == 0

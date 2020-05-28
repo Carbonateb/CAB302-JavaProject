@@ -4,6 +4,9 @@ import Shared.Credentials;
 import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Network.Token;
+import Shared.Permissions.Permissions;
+
+import java.security.NoSuchAlgorithmException;
 
 public class Register extends Action{
 	public Register(){
@@ -21,13 +24,18 @@ public class Register extends Action{
 		}
 		String username = credentials.getUsername();
 		String password = credentials.getPassword();
+		int permissions = credentials.getPermissions();
 
-		if (true) { // TODO: Check that user does not already exist
-			// TODO: Add user to DB
-			Token token = server.socketHandler.generateToken(username);
-			return new Response("success", token, token);
-		} else {
-			return new Response("error", "User already exists", null);
+		try {
+			if (!server.db.checkUserExists(username)) {
+				server.db.addUser(username, password, permissions); // TODO: Add user to DB
+				Token token = server.socketHandler.generateToken(username);
+				return new Response("success", token, token);
+			} else {
+				return new Response("error", "User already exists", null);
+			}
+		} catch (java.security.NoSuchAlgorithmException e) {
+			return new Response("error", "Server error - SHA-256 not implemented", null);
 		}
 	}
 }

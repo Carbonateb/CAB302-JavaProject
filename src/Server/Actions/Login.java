@@ -22,11 +22,15 @@ public class Login extends Action {
 		String username = credentials.getUsername();
 		String password = credentials.getPassword();
 
-		if (true) { // TODO: Replace with an actual DB check
-			Token token = server.socketHandler.generateToken(username);
-			return new Response("success", token, token);
-		} else {
-			return new Response("error", "Invalid credentials", null);
+		try {
+			if (server.db.checkPassword(username, password)) {
+				Token token = server.socketHandler.generateToken(username);
+				return new Response("success", token, token);
+			} else {
+				return new Response("error", "Invalid credentials", null);
+			}
+		} catch (java.security.NoSuchAlgorithmException e) {
+			return new Response("error", "Server error - SHA-256 not implemented", null);
 		}
 	}
 }

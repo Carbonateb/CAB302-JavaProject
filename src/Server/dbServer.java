@@ -7,8 +7,13 @@ import Shared.Schedule.*;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 
 public class dbServer {
 
@@ -50,7 +55,7 @@ public class dbServer {
 					"usr_Name TEXT NOT NULL UNIQUE," +
 					"pw_Hash TEXT NOT NULL," +
 					"salt TEXT NOT NULL UNIQUE,"+
-					"permissions INTEGER NOT NULL"+
+					"permissions INTEGER"+
 					");";
 
 			String bb_sql =
@@ -65,7 +70,17 @@ public class dbServer {
 					"data TEXT NOT NULL" +
 					");";
 
-			stmt.executeUpdate(usr_sql);
+			try {
+				stmt.executeUpdate(usr_sql);
+				Base64.Encoder base64 = Base64.getEncoder();
+				MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+				byte[] hash = md.digest("secure_password".getBytes());
+				String hashed_password = new String(base64.encode(hash));
+
+				addUser("admin", hashed_password, 16);
+			} catch (Exception ignored) {}
+
 			stmt.executeUpdate(bb_sql);
 			stmt.executeUpdate(schedule_sql);
 
@@ -222,26 +237,34 @@ public class dbServer {
 	 * @param pw the password hash we are checking is valid
 	 * @return boolean true if password is valid, false if not valid
 	 */
-
-	public boolean checkPassword(String pw, String usr)
-	{
-		String[] dbpw = queryDB("USERS", pw, "pw_Hash");
-		if(dbpw[2] != null && dbpw[1] != null)
-		{
-			if(dbpw[2].equals(pw) && dbpw[1].equals(usr))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
+	public boolean checkPassword(String usr, String pw) throws NoSuchAlgorithmException {
+		System.out.println(usr);
+		String[] dbsalt = queryDB("USERS", usr, "usr_Name");
+		String salt = null;
+		if (dbsalt[3] != null) {
+			salt = dbsalt[3];
+		} else {
 			return false;
 		}
 
+		String combined = pw + salt;
+
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] hash = md.digest(combined.getBytes());
+
+		Base64.Encoder base64 = Base64.getEncoder();
+		String final_hash = new String(base64.encode(hash));
+
+		String[] dbpw = queryDB("USERS", final_hash, "pw_Hash");
+		if (dbpw[2] != null && dbpw[1] != null) {
+			if (dbpw[2].equals(final_hash) && dbpw[1].equals(usr)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	/***
@@ -279,13 +302,28 @@ public class dbServer {
 	 * adds a user to the database
 	 * @param usr_Name string storing the username of the user
 	 * @param pw_Hash string storing the hashed password of the user
+	 * @param usr_Perms int storing permissions for the new user
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addUser(String usr_Name, String pw_Hash, String salt)
-	{
+	public boolean addUser(String usr_Name, String pw_Hash, int usr_Perms) throws NoSuchAlgorithmException {
+		SecureRandom secureRandom = new SecureRandom();
+		byte[] byes_salt = new byte[64];
+		secureRandom.nextBytes(byes_salt);
+		Base64.Encoder base64 = Base64.getEncoder();
+		String encoded_salt = new String(base64.encode(byes_salt));
+
+		String combined = pw_Hash + encoded_salt;
+
+		String final_hash = null;
+
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] hash = md.digest(combined.getBytes());
+
+		final_hash = new String(base64.encode(hash));
+
 		String sql =
-				"INSERT INTO USERS (usr_Name, pw_Hash, salt)" +
-				"VALUES ( '" +usr_Name + "' , '" + pw_Hash + "' , '" + salt + "')";
+				"INSERT INTO USERS (usr_Name, pw_Hash, salt, permissions)" +
+				"VALUES ( '" + usr_Name + "' , '" + final_hash + "' , '" + encoded_salt + "' , " + usr_Perms + ")";
 		return runSql(sql);
 	}
 

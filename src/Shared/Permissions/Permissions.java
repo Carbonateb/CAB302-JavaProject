@@ -1,5 +1,6 @@
 package Shared.Permissions;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 
 /**
@@ -7,7 +8,7 @@ import java.util.EnumSet;
  *
  * @author Lucas Maldonado n10534342
  */
-public class Permissions {
+public class Permissions implements Serializable {
 
 	// Default constructor
 	public Permissions(){}

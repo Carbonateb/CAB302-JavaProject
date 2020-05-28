@@ -5,9 +5,14 @@ import Shared.Credentials;
 import Shared.Network.Request;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
+import Shared.Permissions.Permissions;
 import Shared.Schedule.Event;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * ExampleClient is a class which can send a single request
@@ -18,19 +23,35 @@ import java.io.IOException;
  * @author Colby Derix n10475991
  */
 public class ExampleClient {
-	public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException {
+	public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException, NoSuchAlgorithmException {
 		// Define server address
 		String serverIP = "localhost";
 		int serverPort = 9977;
+
+		Base64.Encoder base64 = Base64.getEncoder();
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
 
 		// Create RequestSender
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
 		// Define payload data
-		Credentials credentials = new Credentials("test", "secure (hashed) password");
+		String password = "password";
+		byte[] hash = md.digest(password.getBytes());
+
+		String hashed_password = new String(base64.encode(hash));
+
+		Credentials credentials = new Credentials("colby", hashed_password, null);
 		// Login
 		System.out.println("Logging in with: " + credentials);
 		Response response = requestSender.login(credentials);
+		System.out.println("Response: " + response);
+
+		Thread.sleep(1500);
+
+		Credentials newUser = new Credentials("colby", hashed_password, new Permissions(16));
+
+		System.out.println("Sending: " + requestSender.toString("register", newUser));
+		response = requestSender.SendData(ActionType.register, newUser);
 		System.out.println("Response: " + response);
 
 		Thread.sleep(1500);

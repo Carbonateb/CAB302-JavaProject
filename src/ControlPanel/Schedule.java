@@ -66,7 +66,7 @@ public class Schedule {
 		ArrayList<Event> list = null;
 		try {
 			RequestSender requestSender = new RequestSender("localhost", 9977);
-			Credentials credentials = new Credentials("username1234", "password1234");
+			Credentials credentials = new Credentials("username1234", "password1234", null);
 			requestSender.login(credentials);
 
 			Response response = requestSender.SendData(ActionType.getEvents, null);

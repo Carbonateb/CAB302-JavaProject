@@ -59,7 +59,7 @@ public class times {
 
 					//Send data to server
 					RequestSender requestSender = new RequestSender("localhost", 9977);
-					Credentials credentials = new Credentials("username1234", "password1234");
+					Credentials credentials = new Credentials("username1234", "password1234", null);
 					requestSender.login(credentials);
 
 

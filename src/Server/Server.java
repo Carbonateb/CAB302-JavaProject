@@ -7,6 +7,7 @@ import Shared.Schedule.Event;
 import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 /**
@@ -84,11 +85,11 @@ public class Server {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private void testFunc() throws IOException, ClassNotFoundException {
+	private void testFunc() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
 		System.out.println("\nRunning test functions...");
 		// Add data to DB
-		db.addUser("dylan", "faljnfkan", "salt1");
-		db.addUser("colby", "gggggddd", "salt2");
+		//db.addUser("dylan", "faljnfkan", "salt1");
+		//db.addUser("colby", "gggggddd", "salt2");
 
 		Billboard billboard = new Billboard(1, "sample", "sample2", Color.red, Color.blue, null, "admin");
 		db.addBillboard(billboard);

@@ -49,7 +49,8 @@ public class dbServer {
 					"usr_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
 					"usr_Name TEXT NOT NULL UNIQUE," +
 					"pw_Hash TEXT NOT NULL," +
-					"salt TEXT NOT NULL UNIQUE"+
+					"salt TEXT NOT NULL UNIQUE,"+
+					"permissions INTEGER NOT NULL"+
 					");";
 
 			String bb_sql =
@@ -258,7 +259,7 @@ public class dbServer {
 
 		if(table_Name == "USERS")
 		{
-			column_size = 4;
+			column_size = 5;
 		}
 		else if (table_Name == "BILLBOARDS")
 		{

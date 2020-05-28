@@ -1,5 +1,8 @@
 package ControlPanel;
 
+import Server.Actions.ActionType;
+import Shared.Schedule.Event;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,10 +32,16 @@ public class times {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 				//Retrieve start string in UTC format
 				String startTime = txtStart.getText();
+				System.out.println(startTime);
 
 				//Retrieve end time in minutes int
 				int endTime = (int) spinner.getValue();
 				endTime = endTime * 60 * 1000;
+				System.out.println(endTime);
+
+				//Retrieve billboard ID
+				String billboardID = txtID.getText();
+				System.out.println(billboardID);
 
 				try {
 					//Convert UTC strings to Date objects
@@ -45,9 +54,21 @@ public class times {
 					System.out.println(startTimeStamp);
 					System.out.println(endTimestamp);
 
-				} catch (ParseException err) {
+					//Send data to server
+					int ID = Integer.parseInt(billboardID);
+					Event eventObj = new Event(startTimeStamp, endTimestamp, ID, "Author Goes Here");
+					//request = requestSender.SendData(ActionType.addEvents, eventObj);
+					System.out.println(eventObj);
+
+				}
+				catch (ParseException err) {
 					System.out.println("DateTime in wrong format please use yyyy-MM-dd'T'HH:mm:ss format");
 				}
+				catch (NumberFormatException numerr) {
+					System.out.println("Please use only whole numbers in Billboard ID");
+				}
+
+
 
 				timesFrame.dispose();
 			}

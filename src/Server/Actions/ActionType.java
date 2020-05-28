@@ -12,4 +12,5 @@ public enum ActionType {
 	logout,
 	register,
 	getEvents,
+	addEvents,
 }

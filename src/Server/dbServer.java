@@ -82,6 +82,11 @@ public class dbServer {
 
 	}//end main
 
+	/***
+	 * Method that loads the saved database schedule to memory to edit later
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void loadScheduleToMem() throws IOException, ClassNotFoundException {
 		String[] query3 = queryDB("SCHEDULE", "1", "id");
 
@@ -91,7 +96,7 @@ public class dbServer {
 			Object obj = ObjectSerialization.fromString((query3[1]));
 			schedule = (Schedule) obj;
 		}
-		System.out.println("should contain 2 :" + schedule.exportEvents().size());
+		System.out.println("after fetching db :" + schedule.exportEvents().size());
 
 	}
 
@@ -122,11 +127,26 @@ public class dbServer {
 		return true;
 	}
 
+	/***
+	 *
+	 * @return returns a list of all the events
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public ArrayList<Event> returnEventList() throws IOException, ClassNotFoundException {
 		ArrayList<Event> test = requestEvents();
 		return test;
 	}
 
+	/***
+	 *  adds an event to the schedule, and saves the schedule to the database
+	 * @param startTime unix time for start
+	 * @param endTime unix time for end
+	 * @param bbId the id of the black board
+	 * @param author the user who added the event
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void addEvent(long startTime, long endTime, int bbId, String author) throws IOException, ClassNotFoundException {
 		Event event = new Event(startTime,endTime, bbId, author);
 		schedule.scheduleEvent(event);
@@ -171,7 +191,11 @@ public class dbServer {
 		return stringArray;
 	}
 
-
+	/***
+	 * checks if a user exists
+	 * @param usr string containing username
+	 * @return
+	 */
 	public boolean checkUserExists(String usr)
 	{
 		String[] dbpw = queryDB("USERS", usr, "usr_Name");
@@ -193,7 +217,7 @@ public class dbServer {
 	}
 
 	/***
-	 *
+	 *checks password hash and user
 	 * @param pw the password hash we are checking is valid
 	 * @return boolean true if password is valid, false if not valid
 	 */
@@ -276,6 +300,12 @@ public class dbServer {
 		return runSql(sql);
 	}
 
+	/***
+	 * fetches schedule from database
+	 * @return returns list of events (call returnEventList to get list)
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
 
 		String[] query3 = queryDB("SCHEDULE", "1", "id");

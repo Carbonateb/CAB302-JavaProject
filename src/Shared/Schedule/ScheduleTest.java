@@ -21,7 +21,7 @@ class ScheduleTest {
 		System.out.println(originalP.toString());
 
 		// Create a new permissions, using the constructor that takes in an int
-		Permissions newP = new Permissions(originalP.toint());
+		Permissions newP = new Permissions(originalP.toInt());
 		System.out.println(newP.toString());
 
 

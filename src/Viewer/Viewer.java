@@ -1,5 +1,9 @@
 package Viewer;
 
+import Shared.Display.IMGHandler;
+import Shared.Display.XMLHandler;
+import org.xml.sax.SAXException;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -7,18 +11,17 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.Buffer;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-import Shared.Display.IMGHandler;
-import Shared.Display.XMLHandler;
-import org.xml.sax.SAXException;
 
 /**
  * The viewer is the dummy client that displays the billboard.
@@ -27,6 +30,7 @@ import org.xml.sax.SAXException;
  */
 public class Viewer {
 	private JPanel mainPanel;
+	private JTextPane testTextPane; // temporary
 	private JTextPane message;
 	private JTextPane information;
 	private JTextPane image;

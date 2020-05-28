@@ -32,7 +32,7 @@ public class Permissions {
 	}
 
 	// Converts this permissions to a int for easy serialization
-	public int toint() {
+	public int toInt() {
 		int returnValue = 0b0000;
 
 		if (hasPermission(Perm.CREATE_BILLBOARDS)) {

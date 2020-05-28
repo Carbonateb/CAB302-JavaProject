@@ -46,9 +46,17 @@ public class ExampleClient {
 		response = requestSender.SendData(ActionType.getEvents, null);
 		System.out.println("Response: " + response);
 
+		Thread.sleep(1500);
+
 		System.out.println("Sending: " + requestSender.toString("AddEvents", null));
 		Event eventObj = new Event(10000, 20000, 1, "hi");
 		response = requestSender.SendData(ActionType.addEvents, eventObj);
+		System.out.println("Response: " + response);
+
+		Thread.sleep(1500);
+
+		System.out.println("Sending: " + requestSender.toString("GetEvents", null));
+		response = requestSender.SendData(ActionType.getEvents, null);
 		System.out.println("Response: " + response);
 
 		Thread.sleep(1500);

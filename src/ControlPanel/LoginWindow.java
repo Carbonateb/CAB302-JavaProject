@@ -1,13 +1,19 @@
 package ControlPanel;
 
+import Shared.Credentials;
+import Shared.Network.RequestSender;
+import Shared.Network.Response;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class LoginWindow {
 	public JPanel loginWindow;
@@ -110,19 +116,30 @@ public class LoginWindow {
 
 				// Converts password to a SHA-256 encoded password
 				try {
-					MessageDigest md = MessageDigest.getInstance("SHA-256");
-					byte[] encodedhash = md.digest(
-						password.getBytes(StandardCharsets.UTF_8));
+					//MessageDigest md = MessageDigest.getInstance("SHA-256");
+					//byte[] encodedhash = md.digest(
+						//password.getBytes(StandardCharsets.UTF_8));
 
-					encodedPassword = bytesToHex(encodedhash);
-					System.out.println(encodedPassword);
+					//encodedPassword = bytesToHex(encodedhash);
+					//System.out.println(encodedPassword);
+
+					RequestSender requestSender = new RequestSender("localhost", 9977);
+					Base64.Encoder base64 = Base64.getEncoder();
+					MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+					byte[] hash = md.digest(password.getBytes());
+					String hashed_password = new String(base64.encode(hash));
+					System.out.println(hashed_password);
+
+					Credentials credentials = new Credentials(username, hashed_password, null);
+					Response response = requestSender.login(credentials);
+					System.out.println(response);
 				}
 				catch (NoSuchAlgorithmException nsae) {
 					System.err.println("SHA-256 is not a valid message digest algorithm");
+				} catch (IOException | ClassNotFoundException ex) {
+					System.out.println("Incorrect Login Response");
 				}
-
-
-
 
 
 				// Checks if username and password are correct (placeholder for real

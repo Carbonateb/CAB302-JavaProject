@@ -5,8 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import Server.Actions.ActionType;
 import Server.Server;
 import Server.dbServer;
+import Shared.Credentials;
+import Shared.Network.RequestSender;
+import Shared.Network.Response;
 import Shared.Schedule.Event;
 
 import static Server.dbServer.*;
@@ -61,11 +65,15 @@ public class Schedule {
 
 		//Queries server to return billboard schedule
 		try {
+			String localhost = "localhost";
+			RequestSender requestSender = new RequestSender(localhost, 9977);
+			Credentials credentials = new Credentials("username", "password");
+			requestSender.login(credentials);
 
-
+			Response response = requestSender.SendData(ActionType.getEvents, null);
 		}
 
-		catch (java.lang.NullPointerException e) {
+		catch (java.lang.NullPointerException | java.lang.ClassNotFoundException | java.io.IOException e) {
 			System.out.println(e);
 			System.out.println("No billboards to show");
 		}

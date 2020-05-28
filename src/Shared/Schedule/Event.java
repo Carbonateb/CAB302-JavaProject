@@ -49,28 +49,6 @@ public class Event implements Serializable {
 	}
 
 
-	/** Check if this event conflicts with another given time slot */
-	public boolean overlapsWith(long testStartTime, long testEndTime) {
-		// If this event is earlier
-		if (startTime < testStartTime) {
-			return endTime > testStartTime;
-		}
-
-		// If this event is later
-		if (startTime > testStartTime) {
-			return testEndTime > startTime;
-		}
-
-		// If we're here it means both startTimes are identical, so there is an overlap
-		return true;
-	}
-
-	/** Overloaded to support passing an entire event for convenience */
-	public boolean overlapsWith(Event otherEvent) {
-		return overlapsWith(otherEvent.startTime, otherEvent.endTime);
-	}
-
-
 	/**
 	 * Used to check if this event has no info in it, like when the scheduler has no billboard to display.
 	 * An event is blank when all values are 0 or equivalent.

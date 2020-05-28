@@ -1,11 +1,14 @@
 package ControlPanel;
-
 import Server.Actions.ActionType;
+import Shared.Credentials;
+import Shared.Network.RequestSender;
+import Shared.Network.Response;
 import Shared.Schedule.Event;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,10 +58,15 @@ public class times {
 					System.out.println(endTimestamp);
 
 					//Send data to server
+					RequestSender requestSender = new RequestSender("localhost", 9977);
+					Credentials credentials = new Credentials("username1234", "password1234");
+					requestSender.login(credentials);
+
+
 					int ID = Integer.parseInt(billboardID);
-					Event eventObj = new Event(startTimeStamp, endTimestamp, ID, "Author Goes Here");
-					//request = requestSender.SendData(ActionType.addEvents, eventObj);
-					System.out.println(eventObj);
+					Event eventObj = new Event(startTimeStamp, endTimestamp, ID, credentials.getUsername());
+					Response request = requestSender.SendData(ActionType.addEvents, eventObj);
+					System.out.println(request);
 
 				}
 				catch (ParseException err) {
@@ -66,6 +74,9 @@ public class times {
 				}
 				catch (NumberFormatException numerr) {
 					System.out.println("Please use only whole numbers in Billboard ID");
+				}
+				catch (IOException | ClassNotFoundException e1) {
+					System.out.println("Error in POST");
 				}
 
 

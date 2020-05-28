@@ -65,8 +65,7 @@ public class Schedule {
 		//Queries server to return billboard schedule
 		ArrayList<Event> list = null;
 		try {
-			String localhost = "localhost";
-			RequestSender requestSender = new RequestSender(localhost, 9977);
+			RequestSender requestSender = new RequestSender("localhost", 9977);
 			Credentials credentials = new Credentials("username1234", "password1234");
 			requestSender.login(credentials);
 

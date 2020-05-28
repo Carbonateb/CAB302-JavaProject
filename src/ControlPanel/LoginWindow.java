@@ -134,31 +134,30 @@ public class LoginWindow {
 					Credentials credentials = new Credentials(username, hashed_password, null);
 					Response response = requestSender.login(credentials);
 					System.out.println(response);
+
+					// Checks if username and password are correct (placeholder for real
+					// check that will be implemented later
+					if (response.getStatus().equals("success")) {
+						// If the username and password are correct, close the login window
+						// and open the main window
+
+						getLoginFrame().dispose();
+						JFrame mainFrame = new JFrame("Billboard Control Panel");
+						mainFrame.setContentPane(new MainWindow().mainWindow);
+						mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						mainFrame.pack();
+						mainFrame.setVisible(true);
+					} else {
+						// If the password is incorrect, hide the placeholder label and show
+						// the label informing the user that the password is incorrect.
+						placeholderLabel.setVisible(false);
+						passIncorrect.setVisible(true);
+					}
 				}
 				catch (NoSuchAlgorithmException nsae) {
 					System.err.println("SHA-256 is not a valid message digest algorithm");
 				} catch (IOException | ClassNotFoundException ex) {
 					System.out.println("Incorrect Login Response");
-				}
-
-
-				// Checks if username and password are correct (placeholder for real
-				// check that will be implemented later
-				if (username.equals("username") && encodedPassword.equals(encodedPassword)) {
-					// If the username and password are correct, close the login window
-					// and open the main window
-
-					getLoginFrame().dispose();
-					JFrame mainFrame = new JFrame("Billboard Control Panel");
-					mainFrame.setContentPane(new MainWindow().mainWindow);
-					mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					mainFrame.pack();
-					mainFrame.setVisible(true);
-				} else {
-					// If the password is incorrect, hide the placeholder label and show
-					// the label informing the user that the password is incorrect.
-					placeholderLabel.setVisible(false);
-					passIncorrect.setVisible(true);
 				}
 			}
 		});

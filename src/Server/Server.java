@@ -29,6 +29,7 @@ public class Server {
 		// Should mirror the ActionType enum
 		Echo.class,
 		GetEvents.class,
+		AddEvents.class,
 		Login.class,
 		Logout.class,
 		Register.class,

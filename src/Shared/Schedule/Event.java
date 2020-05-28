@@ -46,7 +46,7 @@ public class Event implements Serializable {
 
 
 	/** Sets endTime so that Duration will be this amount */
-	public void setEndTime(long duration) {
+	public void setDuration(long duration) {
 		endTime = startTime + duration;
 	}
 

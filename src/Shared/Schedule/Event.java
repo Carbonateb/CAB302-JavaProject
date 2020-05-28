@@ -1,6 +1,7 @@
 package Shared.Schedule;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * An event is a single billboard time allocation that exists in the Schedule.
@@ -33,7 +34,8 @@ public class Event implements Serializable {
 		startTime = start;
 		endTime = end;
 		billboardID = 0;
-		author = "";
+		Random r = new Random(System.currentTimeMillis());
+		author = "Test Event " + (r.nextInt() % 100);
 	}
 
 
@@ -44,37 +46,15 @@ public class Event implements Serializable {
 
 
 	/** Sets endTime so that Duration will be this amount */
-	public void setEndTime(long duration) {
+	public void setDuration(long duration) {
 		endTime = startTime + duration;
-	}
-
-
-	/** Check if this event conflicts with another given time slot */
-	public boolean overlapsWith(long testStartTime, long testEndTime) {
-		// If this event is earlier
-		if (startTime < testStartTime) {
-			return endTime > testStartTime;
-		}
-
-		// If this event is later
-		if (startTime > testStartTime) {
-			return testEndTime > startTime;
-		}
-
-		// If we're here it means both startTimes are identical, so there is an overlap
-		return true;
-	}
-
-	/** Overloaded to support passing an entire event for convenience */
-	public boolean overlapsWith(Event otherEvent) {
-		return overlapsWith(otherEvent.startTime, otherEvent.endTime);
 	}
 
 
 	/**
 	 * Used to check if this event has no info in it, like when the scheduler has no billboard to display.
 	 * An event is blank when all values are 0 or equivalent.
-	 * @return true if this Event is blank, false otherwise.
+	 * @returns true if this Event is blank, false otherwise.
 	 */
 	public boolean isBlank() {
 		return startTime == 0

@@ -13,6 +13,7 @@ public class times {
 	private JButton btnCancel;
 	private JButton btnOk;
 	private JSpinner spinner;
+	private JTextField txtID;
 	public static JFrame timesFrame;
 
 	/**

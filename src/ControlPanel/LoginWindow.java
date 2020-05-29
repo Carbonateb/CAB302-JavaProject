@@ -159,9 +159,13 @@ public class LoginWindow {
 					}
 				}
 				catch (NoSuchAlgorithmException nsae) {
-					System.err.println("SHA-256 is not a valid message digest algorithm");
-				} catch (IOException | ClassNotFoundException ex) {
-					System.out.println("Incorrect Login Response");
+					System.err.println("Error: SHA-256 is not a valid message digest algorithm.");
+				} catch (ClassNotFoundException ex) {
+					System.out.println("Error: Server sent an unexpected response.");
+				} catch (IOException ex) {
+					System.out.printf("Error: Unable to connect to server!\n" +
+						"Make sure it's running and you're using the correct address & port.\n" +
+						"Currently configured IP address: %s:%d", serverIPAddress, serverPort);
 				}
 			}
 		});

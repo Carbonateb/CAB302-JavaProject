@@ -34,14 +34,14 @@ public class dbServer {
 	public void setupDB() {
 		//create reader object
 		ServerPropsReader reader = new ServerPropsReader();
+
 		USER = reader.GetUsername();
 		PASS = reader.GetPassword();
+		
 		try
 		{
 			//Open a connection
 			System.out.println("Connecting to a selected database...");
-			//Class.forName("org.sqlite.JDBC");
-			//Class.forName("org.sqlite.JDBC");
 
 			cn = DriverManager.getConnection("jdbc:sqlite:main.db");
 			stmt = cn.createStatement();
@@ -105,14 +105,23 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public void loadScheduleToMem() throws IOException, ClassNotFoundException {
-		String[] query3 = queryDB("SCHEDULE", "1", "id");
+		//query the database for the only object the SCHEDULE table stores
+		String[] query = queryDB("SCHEDULE", "1", "id");
 
 		schedule = new Schedule();
+
 		System.out.println("should be empty : " + schedule.exportEvents().size());
-		if (query3[1] != null) {
-			Object obj = ObjectSerialization.fromString((query3[1]));
+
+		// [0] is the name of the billboard [1] is the billboard object
+		if (query[1] != null)
+		{
+			//converts database stored string to object
+			Object obj = ObjectSerialization.fromString((query[1]));
+
+			//casts the object fetched from the database to Schedule class
 			schedule = (Schedule) obj;
 		}
+
 		System.out.println("after fetching db :" + schedule.exportEvents().size());
 
 	}
@@ -165,8 +174,11 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public void addEvent(long startTime, long endTime, String bbName, String author) throws IOException, ClassNotFoundException {
+		//create a new event and add it to the memory Schedule
 		Event event = new Event(startTime,endTime, bbName, author);
 		schedule.scheduleEvent(event);
+
+		//save memory schedule to database
 		saveSchedule(schedule);
 	}
 
@@ -349,15 +361,24 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
-		String[] query3 = queryDB("SCHEDULE", "1", "id");
-		System.out.println("QUERY LENGTH "+query3.length + " id = " +query3[0] + " string = " + query3[1]);
+		//query the database for the schedule object
+		String[] query = queryDB("SCHEDULE", "1", "id");
+		System.out.println("QUERY LENGTH "+query.length + " id = " +query[0] + " string = " + query[1]);
 		Schedule schedule = new Schedule();
-		if (query3[1] != null) {
-			schedule = (Schedule) ObjectSerialization.fromString((query3[1]));
+
+		//[0] is name [1] is schedule object
+		if (query[1] != null) {
+			//get the database object, convert it to schedule
+			schedule = (Schedule) ObjectSerialization.fromString((query[1]));
 		}
 
 		return schedule.exportEvents();
 	}
+
+	/***
+	 * gets the current active event
+	 * @return returns Event
+	 */
 	public Event requestCurrentEvent()
 	{
 		return schedule.getCurrentEvent();
@@ -370,10 +391,14 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public Billboard requestBillbaord(String name) throws IOException, ClassNotFoundException {
+		//gets the database billboard object
 		String[] query = queryDB("BILLBOARDS", name, "name");
+
 		System.out.println("QUERY LENGTH "+ query.length + " name = "  +query[0] + " string = " + query[1]);
+
 		Billboard billboard = null;
 		if (query[1] != null) {
+			//converts database billboard object to the Billboard class
 			billboard = (Billboard) ObjectSerialization.fromString((query[1]));
 		}
 
@@ -399,6 +424,7 @@ public class dbServer {
 	{
 		if (checkBillboardExists(billboard.name)) { return false; }
 
+		//converts the billboard object to a string to save into the database
 		String data = ObjectSerialization.toString((Serializable) billboard);
 		String sql =
 			"INSERT INTO BILLBOARDS (name, data)" +

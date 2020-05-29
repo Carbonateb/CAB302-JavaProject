@@ -1,17 +1,7 @@
 package ControlPanel;
-import Server.Endpoints.EndpointType;
-import Shared.Credentials;
-import Shared.Network.RequestSender;
-import Shared.Network.Response;
-import Shared.Schedule.Event;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class times {
 	private JPanel timesWindow;
@@ -37,6 +27,20 @@ public class times {
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+							timesFrame.dispose();
+			}
+		});
+		btnCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timesFrame.dispose();
+			}
+		});
+	}
+}
+
+/*
+
 				//Send data to server
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 				//Retrieve start string in UTC format
@@ -85,16 +89,4 @@ public class times {
 					System.out.println("Error in POST");
 				}
 
-
-
-				timesFrame.dispose();
-			}
-		});
-		btnCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				timesFrame.dispose();
-			}
-		});
-	}
-}
+ */

@@ -1,5 +1,6 @@
 package ControlPanel;
 
+import Shared.ClientPropsReader;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
@@ -10,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -114,6 +114,10 @@ public class LoginWindow {
 				}
 				System.out.println("\n" + password);
 
+				ClientPropsReader propsReader = new ClientPropsReader();
+				String serverIPAddress = propsReader.GetStringProperty("ip address", "localhost");
+				int serverPort = propsReader.GetIntProperty("port", 9977);
+
 				// Converts password to a SHA-256 encoded password
 				try {
 					//MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -123,7 +127,7 @@ public class LoginWindow {
 					//encodedPassword = bytesToHex(encodedhash);
 					//System.out.println(encodedPassword);
 
-					RequestSender requestSender = new RequestSender("localhost", 9977);
+					RequestSender requestSender = new RequestSender(serverIPAddress, serverPort);
 					Base64.Encoder base64 = Base64.getEncoder();
 					MessageDigest md = MessageDigest.getInstance("SHA-256");
 

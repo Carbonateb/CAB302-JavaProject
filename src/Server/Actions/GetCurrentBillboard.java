@@ -11,7 +11,7 @@ public class GetCurrentBillboard extends Action {
 
 	public Object executeAction(Request input) {
 		try{
-			return server.db.requestBillbaord(server.db.requestCurrentEvent().billboardID);
+			return server.db.requestBillbaord(server.db.requestCurrentEvent().billboardName);
 		} catch (Exception ex) {
 			return null;
 		}

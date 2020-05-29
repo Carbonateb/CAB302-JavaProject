@@ -4,7 +4,7 @@ import Shared.Billboard;
 import Shared.Schedule.*;
 
 
-
+import java.io.Console;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -70,16 +70,17 @@ public class dbServer {
 					"data TEXT NOT NULL" +
 					");";
 
-			try {
-				stmt.executeUpdate(usr_sql);
-				Base64.Encoder base64 = Base64.getEncoder();
-				MessageDigest md = MessageDigest.getInstance("SHA-256");
+			stmt.executeUpdate(usr_sql);
 
-				byte[] hash = md.digest("secure_password".getBytes());
-				String hashed_password = new String(base64.encode(hash));
+			Base64.Encoder base64 = Base64.getEncoder();
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
 
-				addUser("admin", hashed_password, 16);
-			} catch (Exception ignored) {}
+			byte[] hash = md.digest("secure_password".getBytes());
+			String hashed_password = new String(base64.encode(hash));
+
+			if (addUser("admin", hashed_password, 16)) {
+				System.out.println("Default user added, username `admin`, password `secure_password` ");
+			}
 
 			stmt.executeUpdate(bb_sql);
 			stmt.executeUpdate(schedule_sql);
@@ -306,6 +307,8 @@ public class dbServer {
 	 * @return true if sql ran successfully else false
 	 */
 	public boolean addUser(String usr_Name, String pw_Hash, int usr_Perms) throws NoSuchAlgorithmException {
+		if (checkUserExists(usr_Name)) { return false; }
+
 		SecureRandom secureRandom = new SecureRandom();
 		byte[] byes_salt = new byte[64];
 		secureRandom.nextBytes(byes_salt);

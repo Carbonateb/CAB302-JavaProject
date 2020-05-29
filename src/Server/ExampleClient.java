@@ -35,24 +35,26 @@ public class ExampleClient {
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
 		// Define payload data
-		String password = "password";
+		String password = "secure_password";
 		byte[] hash = md.digest(password.getBytes());
 
 		String hashed_password = new String(base64.encode(hash));
 
-		Credentials credentials = new Credentials("colby", hashed_password, null);
+		System.out.println(hashed_password);
+
+		Credentials credentials = new Credentials("admin", hashed_password, null);
 		// Login
 		System.out.println("Logging in with: " + credentials);
 		Response response = requestSender.login(credentials);
 		System.out.println("Response: " + response);
 
-		Thread.sleep(1500);
+		//Thread.sleep(1500);
 
-		Credentials newUser = new Credentials("colby", hashed_password, new Permissions(16));
+		//Credentials newUser = new Credentials("colby", hashed_password, new Permissions(16));
 
-		System.out.println("Sending: " + requestSender.toString("register", newUser));
-		response = requestSender.SendData(ActionType.register, newUser);
-		System.out.println("Response: " + response);
+		//System.out.println("Sending: " + requestSender.toString("register", newUser));
+		//response = requestSender.SendData(ActionType.register, newUser);
+		//System.out.println("Response: " + response);
 
 		Thread.sleep(1500);
 

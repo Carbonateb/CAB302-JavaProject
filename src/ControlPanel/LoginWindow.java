@@ -1,8 +1,6 @@
 package ControlPanel;
 
-import Shared.ClientPropsReader;
 import Shared.Credentials;
-import Shared.Network.RequestSender;
 import Shared.Network.Response;
 
 import javax.swing.*;
@@ -18,26 +16,12 @@ import java.util.Base64;
 public class LoginWindow {
 	public JPanel loginWindow;
 	private JLabel lblUsername;
-	private JButton testButton;
 	private JTextField enterUsernameTextField;
 	private JLabel lblPassword;
 	private JButton btnLogin;
 	private JPasswordField enterPasswordPasswordField;
 	private JLabel passIncorrect;
 	private JLabel placeholderLabel;
-	private static JFrame loginFrame;
-
-	public static String encodedPassword;
-
-	/**
-	 * Getter to allow actions to be performed on the login window JFrame from outside
-	 * of the main function.
-	 * @author Connor McHugh - n10522662
-	 * @return Returns the JFrame loginFrame
-	 */
-	public JFrame getLoginFrame() {
-		return loginFrame;
-	}
 
 	// Handle button click
 	public LoginWindow() {
@@ -97,80 +81,67 @@ public class LoginWindow {
 		 * When pressed checks user credentials and authenticates
 		 * @author Callum McNeilage - n10482652
 		 * @contributor Connor McHugh - n10522662
+		 * @contributor Lucas Maldonado - n10534342
 		 */
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Button pressed");
+				System.out.println("Attempting login...");
 
 				String username = enterUsernameTextField.getText();
 				char[] pwd = enterPasswordPasswordField.getPassword();
-				String password = "";
 
-				System.out.println(username);
-				for (int i = 0; i < pwd.length; i++) {
-					System.out.print(pwd[i]);
-					password += pwd[i];
-				}
-				System.out.println("\n" + password);
+				// Turn the character array in pwd into a String using StringBuilder
+				StringBuilder password = new StringBuilder();
+				password.append(pwd);
 
-				ClientPropsReader propsReader = new ClientPropsReader();
-				String serverIPAddress = propsReader.GetStringProperty("ip address", "localhost");
-				int serverPort = propsReader.GetIntProperty("port", 9977);
-
-				// Converts password to a SHA-256 encoded password
-				try {
-					//MessageDigest md = MessageDigest.getInstance("SHA-256");
-					//byte[] encodedhash = md.digest(
-						//password.getBytes(StandardCharsets.UTF_8));
-
-					//encodedPassword = bytesToHex(encodedhash);
-					//System.out.println(encodedPassword);
-
-					RequestSender requestSender = new RequestSender(serverIPAddress, serverPort);
-					Base64.Encoder base64 = Base64.getEncoder();
+				/* Not sure if we still need this code, can we delete it?
 					MessageDigest md = MessageDigest.getInstance("SHA-256");
+					byte[] encodedhash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+					encodedPassword = bytesToHex(encodedhash);
+					System.out.println(encodedPassword);
+					*/
 
-					byte[] hash = md.digest(password.getBytes());
-					String hashed_password = new String(base64.encode(hash));
-					System.out.println(hashed_password);
+				// The result of hashing the password
+				String hashed_password = "";
 
+				try { // Encode the password with SHA-256
+					MessageDigest md = MessageDigest.getInstance("SHA-256");
+					byte[] hash = md.digest(password.toString().getBytes());
+					Base64.Encoder base64 = Base64.getEncoder();
+					hashed_password = new String(base64.encode(hash));
+				} catch (NoSuchAlgorithmException exception) {
+					System.err.println("Error: SHA-256 is not a valid message digest algorithm.");
+				}
+
+				try {
+					// Construct a credentials class with the login info, and send it off to the server
 					Credentials credentials = new Credentials(username, hashed_password, null);
-					Response response = requestSender.login(credentials);
-					System.out.println(response);
+					Response response = ControlPanel.get().requestSender.login(credentials);
 
-					// Checks if username and password are correct (placeholder for real
-					// check that will be implemented later
+					// The request is a blocking operation, no need for delegates
 					if (response.getStatus().equals("success")) {
-						// If the username and password are correct, close the login window
-						// and open the main window
-
-						getLoginFrame().dispose();
-						JFrame mainFrame = new JFrame("Billboard Control Panel");
-						mainFrame.setContentPane(new MainWindow().mainWindow);
-						mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						mainFrame.pack();
-						mainFrame.setVisible(true);
+						ControlPanel.get().loggedIn(response);
 					} else {
 						// If the password is incorrect, hide the placeholder label and show
 						// the label informing the user that the password is incorrect.
 						placeholderLabel.setVisible(false);
 						passIncorrect.setVisible(true);
 					}
-				}
-				catch (NoSuchAlgorithmException nsae) {
-					System.err.println("Error: SHA-256 is not a valid message digest algorithm.");
 				} catch (ClassNotFoundException ex) {
 					System.out.println("Error: Server sent an unexpected response.");
 				} catch (IOException ex) {
+					String serverIPAddress = ControlPanel.get().propsReader.getIPAddress();
+					int serverPort = ControlPanel.get().propsReader.getPort();
 					System.out.printf("Error: Unable to connect to server!\n" +
 						"Make sure it's running and you're using the correct address & port.\n" +
-						"Currently configured IP address: %s:%d", serverIPAddress, serverPort);
+						"Currently configured IP address: '%s:%d' (restart to refresh data)", serverIPAddress, serverPort);
 				}
 			}
 		});
 	}
 
+	/* FUNCTION IS NEVER USED. DELETE?
 	private static String bytesToHex(byte[] hash) {
 		StringBuffer hexString = new StringBuffer();
 		for (int i = 0; i < hash.length; i++){
@@ -180,48 +151,5 @@ public class LoginWindow {
 		}
 		return hexString.toString();
 	}
-
-	public static void main(String[] args) {
-		// Won't compile without the exceptions unhandled
-		try {
-			// Set System L&F
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
-			// handle exception
-		}
-
-		// Create and setup main window
-		loginFrame = new JFrame("Billboard Control Panel");
-		loginFrame.setContentPane(new LoginWindow().loginWindow);
-		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginFrame.pack();
-		loginFrame.setVisible(true);
-	}
-
+	*/
 }
-
-/* ========== CODE GRAVEYARD ==========
-Unused code goes here:
-
-// controls login button enabled status
-	btnLogin.addKeyListener(new KeyAdapter() {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (user) {
-				btnLogin.setEnabled(true);
-				if (password) {
-
-				}
-			}
-		}
-	});
-
-// another better attempt at controlling login button enabled status
-	public void keyPressed(KeyEvent e) {
-				if(!enterUsernameTextField.getText().trim().isEmpty()) {
-					enterPasswordPasswordField.setEnabled(true);
-					//user = true;
-				}
-
-
- */

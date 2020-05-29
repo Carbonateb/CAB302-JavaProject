@@ -20,6 +20,8 @@ public class times {
 	private JButton btnOk;
 	private JSpinner spinner;
 	private JTextField txtID;
+	private JComboBox comboBox1;
+	private JCheckBox loopThisBillboardCheckBox;
 	public static JFrame timesFrame;
 
 	/**

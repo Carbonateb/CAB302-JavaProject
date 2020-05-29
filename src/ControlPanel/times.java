@@ -5,14 +5,17 @@ import java.awt.event.ActionListener;
 
 public class times {
 	private JPanel timesWindow;
-	private JButton btnCancel;
-	private JButton btnOk;
-	private JSpinner spinner;
-	private JComboBox comboBox1;
-	private JCheckBox enableLoopingCheckBox;
-	private JTextField a05062001TextField;
-	private JTextField a1223AmTextField;
-	public static JFrame timesFrame;
+	private JButton cancel_Button;
+	private JButton ok_Button;
+	private JSpinner duration_Spinner;
+	private JComboBox billboardSelector_ComboBox;
+	private JCheckBox enableLooping_ChkBox;
+	private JTextField startDate_TextField;
+	private JTextField startTime_TextField;
+	private JSpinner loopWeeks_Spinner;
+	private JSpinner loopDays_Spinner;
+	private JSpinner loopHours_spinner;
+	private JSpinner loopMinutes_Spinner;
 
 	/**
 	 * Allows the user to schedule a billboard. Has controls for setting a start date & time, duration, and looping
@@ -24,16 +27,20 @@ public class times {
 	 * @contributor Lucas Maldonado - n10534342
 	 */
 	public times() {
-		btnOk.addActionListener(new ActionListener() {
+
+
+
+		ok_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-							timesFrame.dispose();
+
+
+
 			}
 		});
-		btnCancel.addActionListener(new ActionListener() {
+		cancel_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				timesFrame.dispose();
 			}
 		});
 	}
@@ -44,11 +51,11 @@ public class times {
 				//Send data to server
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 				//Retrieve start string in UTC format
-				String startTime = txtStart.getText();
-				System.out.println(startTime);
+				String startTime_TextField = txtStart.getText();
+				System.out.println(startTime_TextField);
 
 				//Retrieve end time in minutes int
-				int endTime = (int) spinner.getValue();
+				int endTime = (int) duration_Spinner.getValue();
 				endTime = endTime * 60 * 1000;
 				System.out.println(endTime);
 
@@ -58,7 +65,7 @@ public class times {
 
 				try {
 					//Convert UTC strings to Date objects
-					Date start = sdf.parse(startTime);
+					Date start = sdf.parse(startTime_TextField);
 
 					//Convert Date objects to Unix time for server
 					long startTimeStamp = start.getTime();

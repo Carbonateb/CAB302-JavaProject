@@ -31,13 +31,17 @@ public class dbServer {
 	 */
 	Schedule schedule = new Schedule();
 
+	/***
+	 * run on start to create the database
+	 * and other initialisations
+	 */
 	public void setupDB() {
 		//create reader object
 		ServerPropsReader reader = new ServerPropsReader();
 
 		USER = reader.GetUsername();
 		PASS = reader.GetPassword();
-		
+
 		try
 		{
 			//Open a connection

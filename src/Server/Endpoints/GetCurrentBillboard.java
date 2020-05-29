@@ -8,7 +8,11 @@ public class GetCurrentBillboard extends Endpoint {
 		associatedEndpoint = EndpointType.getCurrentBillboard;
 	}
 
-
+	/***
+	 * end point to request the current billboard
+	 * @param input
+	 * @return null
+	 */
 	public Object executeEndpoint(Request input) {
 		try{
 			return server.db.requestBillbaord(server.db.requestCurrentEvent().billboardName);

@@ -8,14 +8,18 @@ package Server.Endpoints;
 
 	import java.io.IOException;
 
-//!!UNTESTED!!
-
 public class AddEvents extends Endpoint {
 	public AddEvents(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.addEvents;
 	}
 
+	/***
+	 * end point for addEvent method which adds an event to the schedule object
+	 * and saves it to the database
+	 * @param input contains data for the Event class
+	 * @return boolean
+	 */
 	public Object executeEndpoint(Request input){
 
 		Token token = input.getToken();

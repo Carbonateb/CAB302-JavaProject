@@ -12,6 +12,11 @@ public class GetEvents extends Endpoint {
 		associatedEndpoint = EndpointType.getEvents;
 	}
 
+	/***
+	 * end point for retrieving the event list from the database
+	 * @param input
+	 * @return ArrayList of events
+	 */
 	public Object executeEndpoint(Request input){
 		ArrayList<Event> eventList = null;
 		try {

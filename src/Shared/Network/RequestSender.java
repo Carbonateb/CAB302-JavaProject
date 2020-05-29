@@ -70,10 +70,19 @@ public class RequestSender {
 		return response;
 	}
 
+	/***
+	 * sends login request
+	 * @param credentials
+	 * @return a response from the server
+	 */
 	public Response login(Credentials credentials) throws IOException, ClassNotFoundException {
 		return SendData(EndpointType.login, credentials);
 	}
 
+	/***
+	 * sends logout request
+	 * @return a response from the server
+	 */
 	public Response logout() throws IOException, ClassNotFoundException {
 		Response response = SendData(EndpointType.logout, null);
 		if (response.getStatus().equals("success")) {

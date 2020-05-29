@@ -75,16 +75,16 @@ public class Schedule {
 
 			if (response.getData() instanceof ArrayList) {
 				list = (ArrayList<Event>) response.getData();
-			} else {
+			} else if(response.getData().toString().equals("")){
+				System.out.println("No billboards to show");
+			}
+			else {
 				System.out.printf("Server replied with unexpected data: '%s'\n", response.getData().toString());
 				return;
 			}
-
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
-			System.out.println("No billboards to show");
+			System.out.println("There was an issue when retrieving billboards");
 		}
 
 		//Data to be displayed in the JTable

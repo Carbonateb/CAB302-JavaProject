@@ -373,6 +373,11 @@ public class dbServer {
 
 		return schedule.exportEvents();
 	}
+	public Event requestCurrentEvent()
+	{
+		return schedule.getCurrentEvent();
+	}
+
 
 	/***
 	 * adds a billboard to the database

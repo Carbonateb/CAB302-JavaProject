@@ -33,7 +33,12 @@ public class Endpoint {
 
 		switch (tokenStatus) {
 			case valid:
-				return new Response("success", executeEndpoint(request), request.getToken());
+				Object result = executeEndpoint(request);
+				if (result instanceof Response) {
+					return (Response) result;
+				} else {
+					return new Response("success", result, request.getToken());
+				}
 			case expired:
 				return new Response("error", "Expired token", null);
 			case invalid:

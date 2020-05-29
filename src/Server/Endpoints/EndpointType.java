@@ -11,6 +11,7 @@ public enum EndpointType {
 	echo,
 	getCurrentBillboard,
 	getEvents,
+	listUsers,
 	login,
 	logout,
 	register,

@@ -8,9 +8,13 @@ import Shared.Permissions.Permissions;
 import Shared.Schedule.Event;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * ExampleClient is a class which can send a single request
@@ -55,6 +59,14 @@ public class ExampleClient {
 		System.out.println("Sending: " + requestSender.toString("register", newUser));
 		response = requestSender.SendData(EndpointType.register, newUser);
 		System.out.println("Response: " + response);
+
+		System.out.println();
+		Thread.sleep(1500);
+
+		System.out.println("Sending: " + requestSender.toString("listUsers", null));
+		response = requestSender.SendData(EndpointType.listUsers, null);
+		System.out.println("Response: " + (response));
+		System.out.println("List of users: " + response.getData());
 
 		System.out.println();
 		Thread.sleep(1500);

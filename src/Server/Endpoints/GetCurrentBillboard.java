@@ -1,11 +1,11 @@
-package Server.Actions;
+package Server.Endpoints;
 
 import Shared.Network.Request;
 
-public class GetCurrentBillboard extends Action {
+public class GetCurrentBillboard extends Endpoint {
 	public GetCurrentBillboard(){
 		// This is the enum value bound to this action
-		associatedAction = ActionType.getCurrentBillboard;
+		associatedEndpoint = EndpointType.getCurrentBillboard;
 	}
 
 

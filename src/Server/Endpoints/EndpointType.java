@@ -1,4 +1,4 @@
-package Server.Actions;
+package Server.Endpoints;
 
 /**
  * Enum used to refer to the different action types.
@@ -6,7 +6,7 @@ package Server.Actions;
  *
  * In case you're wondering, I did try to
  */
-public enum ActionType {
+public enum EndpointType {
 	addEvents,
 	echo,
 	getCurrentBillboard,

@@ -1,4 +1,4 @@
-package Server.Actions;
+package Server.Endpoints;
 
 import Server.Server;
 import Shared.Network.Request;
@@ -6,21 +6,21 @@ import Shared.Network.Response;
 import Shared.Network.TokenStatus;
 
 /**
- * An Action is something that the server can be requested to do remotely.
+ * An Endpoint is something that the server can be requested to do remotely.
  *
  * @author Lucas Maldonado n10534342
  */
-public class Action {
+public class Endpoint {
 
 	/** This is the action command used to access this action */
-	public ActionType associatedAction;
+	public EndpointType associatedEndpoint;
 
 	Server server;
 
 
 	/** Constructor */
-	public Action() {
-		associatedAction = null;
+	public Endpoint() {
+		associatedEndpoint = null;
 	}
 
 
@@ -46,10 +46,10 @@ public class Action {
 
 
 	/**
-	 * Override this method to add functionality to your Action
+	 * Override this method to add functionality to your Endpoint
 	 */
 	public Object executeAction(Request input){
-		return "Action not implemented yet, but was called correctly";
+		return "Endpoint not implemented yet, but was called correctly";
 	}
 
 
@@ -58,6 +58,6 @@ public class Action {
 	 */
 	public void init(Server inServer) {
 		server = inServer;
-		System.out.printf(" - Action '%s' is ready, access with 'ActionType.%s'\n", getClass().getSimpleName(), associatedAction.toString());
+		System.out.printf(" - Endpoint '%s' is ready, access with 'EndpointType.%s'\n", getClass().getSimpleName(), associatedEndpoint.toString());
 	}
 }

@@ -1,5 +1,5 @@
 package ControlPanel;
-import Server.Actions.ActionType;
+import Server.Endpoints.EndpointType;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
@@ -65,7 +65,7 @@ public class times {
 
 					String name = billboardName;
 					Event eventObj = new Event(startTimeStamp, endTimestamp, name, credentials.getUsername());
-					Response request = requestSender.SendData(ActionType.addEvents, eventObj);
+					Response request = requestSender.SendData(EndpointType.addEvents, eventObj);
 					System.out.println(request);
 
 				}

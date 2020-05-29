@@ -1,7 +1,7 @@
 package Server;
 
-import Server.Actions.Action;
-import Server.Actions.InvalidAction;
+import Server.Endpoints.Endpoint;
+import Server.Endpoints.InvalidEndpoint;
 import Shared.Network.*;
 import Shared.Permissions.Perm;
 import Shared.Permissions.Permissions;
@@ -25,7 +25,7 @@ public class SocketHandler {
 	ServerSocket serverSocket;
 	dbServer db;
 	ArrayList<Token> tokens = new ArrayList<Token>();
-	ArrayList<Action> actions = new ArrayList<Action>();
+	ArrayList<Endpoint> endpoints = new ArrayList<Endpoint>();
 
 	/**
 	 * SocketHandler Constructor
@@ -80,21 +80,21 @@ public class SocketHandler {
 	 */
 	private Response CalculateResponse(Request request) throws IOException, ClassNotFoundException {
 		System.out.println();
-		Action invokedAction = null;
+		Endpoint invokedEndpoint = null;
 		System.out.printf("Received request for action: %s\n", request.getAction().toString());
 
 		// Search for the requested action
-		for (Action a : actions) {
-			if (a.associatedAction == request.getAction()) {
-				invokedAction = a;
+		for (Endpoint a : endpoints) {
+			if (a.associatedEndpoint == request.getAction()) {
+				invokedEndpoint = a;
 			}
 		}
 
-		if (invokedAction == null) {
-			invokedAction = new InvalidAction();
+		if (invokedEndpoint == null) {
+			invokedEndpoint = new InvalidEndpoint();
 		}
 
-		return invokedAction.Run(request);
+		return invokedEndpoint.Run(request);
 	}
 
 

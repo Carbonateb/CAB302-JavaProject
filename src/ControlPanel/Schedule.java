@@ -7,11 +7,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.TimeZone;
 
-import Server.Actions.ActionType;
+import Server.Endpoints.EndpointType;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
@@ -35,7 +33,7 @@ public class Schedule {
 
 	public Schedule() {
 		/**
-		 * Action listener for OK button to close window
+		 * Endpoint listener for OK button to close window
 		 *
 		 * @author Callum McNeilage - n10482652
 		 */
@@ -46,7 +44,7 @@ public class Schedule {
 			}
 		});
 		/**
-		 * Action Listener for Schedule button
+		 * Endpoint Listener for Schedule button
 		 *
 		 * @author Callum McNeilage - n10482652
 		 */
@@ -69,7 +67,7 @@ public class Schedule {
 			Credentials credentials = new Credentials("username1234", "password1234", null);
 			requestSender.login(credentials);
 
-			Response response = requestSender.SendData(ActionType.getEvents, null);
+			Response response = requestSender.SendData(EndpointType.getEvents, null);
 
 			list = (ArrayList<Event>) response.getData();
 		}

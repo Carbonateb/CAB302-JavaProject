@@ -1,6 +1,6 @@
 package Server;
 
-import Server.Actions.*;
+import Server.Endpoints.*;
 import Shared.Billboard;
 import Shared.Schedule.Event;
 
@@ -25,9 +25,9 @@ public class Server {
 	public SocketHandler socketHandler;
 
 
-	private static final Class[] allActions = new Class[]{
-		// List all of the Actions you want to make available here
-		// Should mirror the ActionType enum
+	private static final Class[] allEndpoints = new Class[]{
+		// List all of the Endpoints you want to make available here
+		// Should mirror the EndpointType enum
 		AddEvents.class,
 		Echo.class,
 		GetCurrentBillboard.class,
@@ -53,16 +53,16 @@ public class Server {
 		socketHandler =  new SocketHandler(serverSocket, db);
 
 
-		// Create the Actions specified in allActions
-		System.out.println("\nCreating Actions...");
+		// Create the Actions specified in allEndpoints
+		System.out.println("\nCreating Endpoints...");
 		try{
-			for (Class c : allActions) {
-				Action newAction = (Action)c.getDeclaredConstructor().newInstance();
-				socketHandler.actions.add(newAction);
-				newAction.init(this);
+			for (Class c : allEndpoints) {
+				Endpoint newEndpoint = (Endpoint)c.getDeclaredConstructor().newInstance();
+				socketHandler.endpoints.add(newEndpoint);
+				newEndpoint.init(this);
 			}
 		} catch (Exception e) {
-			System.out.println("Error: Invalid Action provided, check Server.allActions variable");
+			System.out.println("Error: Invalid Endpoint provided, check Server.allEndpoints variable");
 		}
 
 

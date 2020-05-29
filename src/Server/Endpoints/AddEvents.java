@@ -1,4 +1,4 @@
-package Server.Actions;
+package Server.Endpoints;
 
 	import Shared.Network.Request;
 	import Shared.Network.Response;
@@ -7,14 +7,13 @@ package Server.Actions;
 	import Shared.Schedule.Event;
 
 	import java.io.IOException;
-	import java.util.ArrayList;
 
-	//!!UNTESTED!!
+//!!UNTESTED!!
 
-public class AddEvents extends Action {
+public class AddEvents extends Endpoint {
 	public AddEvents(){
 		// This is the enum value bound to this action
-		associatedAction = ActionType.addEvents;
+		associatedEndpoint = EndpointType.addEvents;
 	}
 
 	public Object executeAction(Request input){

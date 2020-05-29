@@ -1,6 +1,6 @@
 package Shared.Network;
 
-import Server.Actions.ActionType;
+import Server.Endpoints.EndpointType;
 import Shared.Credentials;
 
 import java.io.*;
@@ -31,10 +31,10 @@ public class RequestSender {
 
 	/**
 	 * Sends data to the server, and returns the response provided by the server
-	 * @param action The action to invoke on the server
-	 * @param data The data that is to be sent, passed to the action
+	 * @param endpoint The endpoint to invoke on the server
+	 * @param data The data that is to be sent, passed to the endpoint
 	 */
-	public Response SendData(ActionType action, Object data) throws IOException, ClassNotFoundException {
+	public Response SendData(EndpointType endpoint, Object data) throws IOException, ClassNotFoundException {
 		// Connect to server
 		Socket socket = new Socket(ipAddress, port);
 
@@ -45,7 +45,7 @@ public class RequestSender {
 		ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
 		// Define payload
-		Request request = new Request(token, action, data);
+		Request request = new Request(token, endpoint, data);
 
 		// Send the payload
 		objectOutputStream.writeObject(request);
@@ -71,11 +71,11 @@ public class RequestSender {
 	}
 
 	public Response login(Credentials credentials) throws IOException, ClassNotFoundException {
-		return SendData(ActionType.login, credentials);
+		return SendData(EndpointType.login, credentials);
 	}
 
 	public Response logout() throws IOException, ClassNotFoundException {
-		Response response = SendData(ActionType.logout, null);
+		Response response = SendData(EndpointType.logout, null);
 		if (response.getStatus().equals("success")) {
 			token = null;
 		}

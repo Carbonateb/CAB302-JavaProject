@@ -1,6 +1,6 @@
 package Shared.Network;
 
-import Server.Actions.ActionType;
+import Server.Endpoints.EndpointType;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class Request implements Serializable {
 	Token _token;
-	ActionType _action;
+	EndpointType _action;
 	Object _data;
 
 	/**
@@ -21,7 +21,7 @@ public class Request implements Serializable {
 	 * @param action Which action on the server to invoke
 	 * @param data The raw data the server will receive, passed to the action
 	 */
-	public Request(Token token, ActionType action, Object data) {
+	public Request(Token token, EndpointType action, Object data) {
 		_token = token;
 		_action = action;
 		_data = data;
@@ -31,7 +31,7 @@ public class Request implements Serializable {
 		return _token;
 	}
 
-	public ActionType getAction() {
+	public EndpointType getAction() {
 		return _action;
 	}
 

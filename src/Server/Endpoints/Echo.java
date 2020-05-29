@@ -1,16 +1,16 @@
-package Server.Actions;
+package Server.Endpoints;
 
 import Shared.Network.Request;
 
 /**
- * The echo class is meant to be a simple demonstration of the Action system.
- * You can copy its setup to get your own Action up and running
+ * The echo class is meant to be a simple demonstration of the Endpoint system.
+ * You can copy its setup to get your own Endpoint up and running
  */
-public class Echo extends Action {
+public class Echo extends Endpoint {
 
 	public Echo(){
 		// This is the enum value bound to this action
-		associatedAction = ActionType.echo;
+		associatedEndpoint = EndpointType.echo;
 	}
 
 	/**

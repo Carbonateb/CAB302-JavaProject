@@ -1,9 +1,8 @@
 package ControlPanel;
 
 import Shared.ClientPropsReader;
+import Shared.Credentials;
 import Shared.Network.RequestSender;
-import Shared.Network.Response;
-import Shared.Network.Token;
 
 import javax.swing.*;
 
@@ -12,7 +11,6 @@ public class ControlPanel extends JFrame {
 
 	public ClientPropsReader propsReader;
 	public RequestSender requestSender;
-	public Token sessionToken;
 
 
 	/**
@@ -34,27 +32,32 @@ public class ControlPanel extends JFrame {
 			propsReader.getPort()
 		);
 
-
+		this.setVisible(true);
+		/* TODO DISABLED FOR TESTING! RE-ENABLE BEFORE SUBMITTING
 		// Create the login window and display it
 		LoginWindow loginWindow = new LoginWindow();
 		this.setContentPane(loginWindow.loginWindow);
 		this.pack();
-		this.setVisible(true);
-
 		System.out.println("Waiting for user to log in...");
+		 */
+
+		try {
+			requestSender.login(new Credentials("admin", "secure_password", null));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		loggedIn();
+
 	}
 
 
 	/**
 	 * Called by the loginWindow once the user has successfully logged in.
-	 * The server's response is saved so that we can keep the token it gives us.
 	 * The main window is created here.
-	 * @param serverMessage Response from the server to our login request
 	 */
-	public void loggedIn(Response serverMessage) {
+	public void loggedIn() {
 		System.out.println("Logged in successfully. Control panel is ready!");
-
-		sessionToken = serverMessage.getNewToken();
 
 		// Create main window
 		MainWindow mainWindow = new MainWindow();

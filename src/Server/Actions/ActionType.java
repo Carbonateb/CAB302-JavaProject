@@ -9,7 +9,7 @@ package Server.Actions;
 public enum ActionType {
 	addEvents,
 	echo,
-	getCurrentEvent,
+	getCurrentBillboard,
 	getEvents,
 	login,
 	logout,

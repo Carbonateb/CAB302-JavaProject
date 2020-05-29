@@ -30,7 +30,7 @@ public class Server {
 		// Should mirror the ActionType enum
 		AddEvents.class,
 		Echo.class,
-		GetCurrentEvent.class,
+		GetCurrentBillboard.class,
 		GetEvents.class,
 		Login.class,
 		Logout.class,

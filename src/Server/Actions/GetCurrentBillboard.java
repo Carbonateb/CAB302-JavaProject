@@ -10,6 +10,10 @@ public class GetCurrentBillboard extends Action {
 
 
 	public Object executeAction(Request input) {
-		return server.db.requestCurrentEvent();
+		try{
+			return server.db.requestBillbaord(server.db.requestCurrentEvent().billboardID);
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 }

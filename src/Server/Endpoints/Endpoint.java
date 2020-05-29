@@ -12,7 +12,7 @@ import Shared.Network.TokenStatus;
  */
 public class Endpoint {
 
-	/** This is the action command used to access this action */
+	/** This is the endpoint command used to access this endpoint */
 	public EndpointType associatedEndpoint;
 
 	Server server;
@@ -33,7 +33,7 @@ public class Endpoint {
 
 		switch (tokenStatus) {
 			case valid:
-				return new Response("success", executeAction(request), request.getToken());
+				return new Response("success", executeEndpoint(request), request.getToken());
 			case expired:
 				return new Response("error", "Expired token", null);
 			case invalid:
@@ -48,7 +48,7 @@ public class Endpoint {
 	/**
 	 * Override this method to add functionality to your Endpoint
 	 */
-	public Object executeAction(Request input){
+	public Object executeEndpoint(Request input){
 		return "Endpoint not implemented yet, but was called correctly";
 	}
 

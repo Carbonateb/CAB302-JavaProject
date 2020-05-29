@@ -12,11 +12,11 @@ package Server.Endpoints;
 
 public class AddEvents extends Endpoint {
 	public AddEvents(){
-		// This is the enum value bound to this action
+		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.addEvents;
 	}
 
-	public Object executeAction(Request input){
+	public Object executeEndpoint(Request input){
 
 		Token token = input.getToken();
 		if (!server.socketHandler.hasPerm(token.getUser(), Perm.SCHEDULE_BILLBOARDS)) {

@@ -53,7 +53,7 @@ public class Server {
 		socketHandler =  new SocketHandler(serverSocket, db);
 
 
-		// Create the Actions specified in allEndpoints
+		// Create the Endpoints specified in allEndpoints
 		System.out.println("\nCreating Endpoints...");
 		try{
 			for (Class c : allEndpoints) {

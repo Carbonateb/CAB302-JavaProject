@@ -9,7 +9,7 @@ import Shared.Network.Request;
 public class Echo extends Endpoint {
 
 	public Echo(){
-		// This is the enum value bound to this action
+		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.echo;
 	}
 
@@ -23,7 +23,7 @@ public class Echo extends Endpoint {
 	 * @param input the data given to the server, used to process the request. Use this however you like!
 	 * @returns the resulting data to give back to the sender. Can be null.
 	 */
-	public Object executeAction(Request input) {
+	public Object executeEndpoint(Request input) {
 		return input;
 	}
 }

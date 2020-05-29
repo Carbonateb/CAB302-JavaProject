@@ -8,7 +8,7 @@ import Shared.Permissions.Perm;
 
 public class Register extends Endpoint {
 	public Register(){
-		// This is the enum value bound to this action
+		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.register;
 	}
 

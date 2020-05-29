@@ -7,7 +7,7 @@ import Shared.Network.Token;
 
 public class Login extends Endpoint {
 	public Login(){
-		// This is the enum value bound to this action
+		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.login;
 	}
 

@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class Request implements Serializable {
 	Token _token;
-	EndpointType _action;
+	EndpointType _endpoint;
 	Object _data;
 
 	/**
@@ -23,7 +23,7 @@ public class Request implements Serializable {
 	 */
 	public Request(Token token, EndpointType action, Object data) {
 		_token = token;
-		_action = action;
+		_endpoint = action;
 		_data = data;
 	}
 
@@ -31,8 +31,8 @@ public class Request implements Serializable {
 		return _token;
 	}
 
-	public EndpointType getAction() {
-		return _action;
+	public EndpointType getEndpoint() {
+		return _endpoint;
 	}
 
 	public Object getData() {
@@ -40,6 +40,6 @@ public class Request implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("{token: \"%s\", endpoint: \"%s\", data: \"%s\"}", _token, _action, _data);
+		return String.format("{token: \"%s\", endpoint: \"%s\", data: \"%s\"}", _token, _endpoint, _data);
 	}
 }

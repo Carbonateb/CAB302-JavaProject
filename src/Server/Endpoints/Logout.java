@@ -5,7 +5,7 @@ import Shared.Network.Response;
 
 public class Logout extends Endpoint {
 	public Logout(){
-		// This is the enum value bound to this action
+		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.logout;
 	}
 

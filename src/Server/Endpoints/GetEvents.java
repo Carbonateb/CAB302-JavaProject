@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class GetEvents extends Endpoint {
 	public GetEvents(){
-		// This is the enum value bound to this action
+		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.getEvents;
 	}
 
-	public Object executeAction(Request input){
+	public Object executeEndpoint(Request input){
 		ArrayList<Event> eventList = null;
 		try {
 			eventList = server.db.returnEventList();

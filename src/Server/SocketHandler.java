@@ -81,11 +81,11 @@ public class SocketHandler {
 	private Response CalculateResponse(Request request) throws IOException, ClassNotFoundException {
 		System.out.println();
 		Endpoint invokedEndpoint = null;
-		System.out.printf("Received request for action: %s\n", request.getAction().toString());
+		System.out.printf("Received request for action: %s\n", request.getEndpoint().toString());
 
 		// Search for the requested action
 		for (Endpoint a : endpoints) {
-			if (a.associatedEndpoint == request.getAction()) {
+			if (a.associatedEndpoint == request.getEndpoint()) {
 				invokedEndpoint = a;
 			}
 		}

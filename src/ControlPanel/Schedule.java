@@ -1,8 +1,6 @@
 package ControlPanel;
 
 import Server.Endpoints.EndpointType;
-import Shared.Credentials;
-import Shared.Network.RequestSender;
 import Shared.Network.Response;
 import Shared.Schedule.Event;
 
@@ -62,11 +60,7 @@ public class Schedule {
 		//Queries server to return billboard schedule
 		ArrayList<Event> list = null;
 		try {
-			RequestSender requestSender = new RequestSender("localhost", 9977);
-			Credentials credentials = new Credentials("username1234", "password1234", null);
-			requestSender.login(credentials);
-
-			Response response = requestSender.SendData(EndpointType.getEvents, null);
+			Response response = ControlPanel.get().requestSender.SendData(EndpointType.getEvents, null);
 
 			// Check if the server replied with an error
 			if (response.getStatus().equals("error")) {

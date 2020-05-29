@@ -378,6 +378,22 @@ public class dbServer {
 		return schedule.getCurrentEvent();
 	}
 
+	/***
+	 * fetches billboard from database
+	 * @return returns billboard from a given ID
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public Billboard requestBillbaord(int id) throws IOException, ClassNotFoundException {
+		String[] query = queryDB("BILLBOARDS", String.valueOf(id), "id");
+		System.out.println("QUERY LENGTH "+ query.length + " id = "  +query[0] + " string = " + query[1]);
+		Billboard billboard = null;
+		if (query[1] != null) {
+			billboard = (Billboard) ObjectSerialization.fromString((query[1]));
+		}
+
+		return billboard;
+	}
 
 	/***
 	 * adds a billboard to the database

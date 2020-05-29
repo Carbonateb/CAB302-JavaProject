@@ -15,19 +15,23 @@ import java.util.Date;
 
 public class times {
 	private JPanel timesWindow;
-	private JTextField txtStart;
 	private JButton btnCancel;
 	private JButton btnOk;
 	private JSpinner spinner;
-	private JTextField txtID;
 	private JComboBox comboBox1;
-	private JCheckBox loopThisBillboardCheckBox;
+	private JCheckBox enableLoopingCheckBox;
+	private JTextField a05062001TextField;
+	private JTextField a1223AmTextField;
 	public static JFrame timesFrame;
 
 	/**
-	 * Takes two DateTime strings written in UTC time and converts them to Date objects and Unix time
+	 * Allows the user to schedule a billboard. Has controls for setting a start date & time, duration, and looping
+	 * behaviours. All user input is sanitized. The inputs are converted to unix time for convenience.
+	 *
+	 * When the user presses OK, a new Event is created, which is handed off to WIP
 	 *
 	 * @author Callum McNeilage - n10482652
+	 * @contributor Lucas Maldonado - n10534342
 	 */
 	public times() {
 		btnOk.addActionListener(new ActionListener() {
@@ -92,19 +96,5 @@ public class times {
 				timesFrame.dispose();
 			}
 		});
-	}
-
-	/**
-	 * Loads the schedule times window
-	 *
-	 * @author Callum McNeilage - n10482652
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		timesFrame = new JFrame("Schedule Times");
-		timesFrame.setContentPane(new times().timesWindow);
-		timesFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		timesFrame.pack();
-		timesFrame.setVisible(true);
 	}
 }

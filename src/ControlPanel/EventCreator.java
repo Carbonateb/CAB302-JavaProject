@@ -1,7 +1,10 @@
 package ControlPanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class EventCreator extends JFrame {
 	private JPanel main_Panel;
@@ -34,8 +37,11 @@ public class EventCreator extends JFrame {
 		pack();
 		setVisible(true);
 
-		startTime_TextField.setText("Current time");
-		startDate_TextField.setText("Current date");
+
+
+
+		startTime_TextField.setText(new SimpleDateFormat("h:mm a").format(new Date()));
+		startDate_TextField.setText(new SimpleDateFormat("dd/mm/yyyy").format(new Date()));
 
 		ok_Button.addActionListener(new ActionListener() {
 			@Override

@@ -159,13 +159,13 @@ public class dbServer {
 	 *  adds an event to the schedule, and saves the schedule to the database
 	 * @param startTime unix time for start
 	 * @param endTime unix time for end
-	 * @param bbId the id of the black board
+	 * @param bbName the name of the billboard
 	 * @param author the user who added the event
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void addEvent(long startTime, long endTime, int bbId, String author) throws IOException, ClassNotFoundException {
-		Event event = new Event(startTime,endTime, bbId, author);
+	public void addEvent(long startTime, long endTime, String bbName, String author) throws IOException, ClassNotFoundException {
+		Event event = new Event(startTime,endTime, bbName, author);
 		schedule.scheduleEvent(event);
 		saveSchedule(schedule);
 	}

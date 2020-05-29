@@ -86,7 +86,7 @@ public class Schedule {
 
 		for (int i = 0; i < list.size(); i++) {
 			Object[] row = new Object[2];
-			row[0] = Integer.toString(list.get(i).billboardID);
+			row[0] = list.get(i).billboardName;
 			row[1] = DateFormat(list.get(i).startTime);
 
 			model.addRow(row);

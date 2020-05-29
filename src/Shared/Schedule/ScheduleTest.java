@@ -12,8 +12,8 @@ class ScheduleTest {
 	/** Launches a console that debugs Schedule */
 	public static void main(String args[]) {
 		final Schedule s = new Schedule();
-		s.scheduleEvent(new RepeatingEvent(sec(3), sec(6), 0, "Repeating event", 5 * 1000));
-		s.scheduleEvent(new Event(sec(1), sec(5), 0, "My Event 1"));
+		s.scheduleEvent(new RepeatingEvent(sec(3), sec(6), "repeating_event", "Repeating event", 5 * 1000));
+		s.scheduleEvent(new Event(sec(1), sec(5), "my_event_1", "My Event 1"));
 
 
 		Timer timer = new Timer();

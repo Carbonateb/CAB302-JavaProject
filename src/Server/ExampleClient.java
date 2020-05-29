@@ -79,7 +79,7 @@ public class ExampleClient {
 
 		// Add event
 		System.out.println("Sending: " + requestSender.toString("AddEvents", null));
-		Event eventObj = new Event(10000, 20000, 1, "hi");
+		Event eventObj = new Event(10000, 20000, "bb_1", "hi");
 		response = requestSender.SendData(ActionType.addEvents, eventObj);
 		System.out.println("Response: " + response);
 

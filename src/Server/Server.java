@@ -97,8 +97,8 @@ public class Server {
 
 
 
-		db.addEvent(10000000, 300000000, 1,"bob");
-		db.addEvent(10000010, 300000001, 2,"jerry");
+		db.addEvent(10000000, 300000000, "bb_ex_1","bob");
+		db.addEvent(10000010, 300000001, "bb_ex_2","jerry");
 
 		ArrayList<Event> example = db.returnEventList();
 

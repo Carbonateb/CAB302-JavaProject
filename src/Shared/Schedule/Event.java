@@ -17,15 +17,15 @@ public class Event implements Serializable {
 	public long startTime;
 	public long endTime;
 
-	public int billboardID; // Reference to the billboard to display
+	public String billboardName; // Reference to the billboard to display
 	public String author; // The user that created this event
 
 
 	/** Constructor */
-	public Event(long inStartTime, long inEndTime, int inBillboardID, String inAuthor) {
+	public Event(long inStartTime, long inEndTime, String inBillboardName, String inAuthor) {
 		startTime = inStartTime;
 		endTime = inEndTime;
-		billboardID = inBillboardID;
+		billboardName = inBillboardName;
 		author = inAuthor;
 	}
 
@@ -33,7 +33,7 @@ public class Event implements Serializable {
 	public Event(long start, long end) {
 		startTime = start;
 		endTime = end;
-		billboardID = 0;
+		billboardName = "test";
 		Random r = new Random(System.currentTimeMillis());
 		author = "Test Event " + (r.nextInt() % 100);
 	}
@@ -59,7 +59,7 @@ public class Event implements Serializable {
 	public boolean isBlank() {
 		return startTime == 0
 			&& endTime == 0
-			&& billboardID == 0
+			&& billboardName == ""
 			&& author == "";
 	}
 }

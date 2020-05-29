@@ -27,7 +27,7 @@ public class AddEvents extends Action {
 		Event event = (Event) input.getData();
 		try {
 			//adds an event to the schedule and database
-			server.db.addEvent(event.startTime, event.endTime, event.billboardID, event.author);
+			server.db.addEvent(event.startTime, event.endTime, event.billboardName, event.author);
 			return true;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

@@ -40,7 +40,7 @@ public class Schedule implements Serializable {
 
 		if (activeEvents.size() == 0) {
 			// Return a blank event if there is none to display
-			return new Event(0, 0, 0, "");
+			return new Event(0, 0, "", "");
 
 		}
 

@@ -43,8 +43,8 @@ public class times {
 				System.out.println(endTime);
 
 				//Retrieve billboard ID
-				String billboardID = txtID.getText();
-				System.out.println(billboardID);
+				String billboardName = txtID.getText();
+				System.out.println(billboardName);
 
 				try {
 					//Convert UTC strings to Date objects
@@ -63,8 +63,8 @@ public class times {
 					requestSender.login(credentials);
 
 
-					int ID = Integer.parseInt(billboardID);
-					Event eventObj = new Event(startTimeStamp, endTimestamp, ID, credentials.getUsername());
+					String name = billboardName;
+					Event eventObj = new Event(startTimeStamp, endTimestamp, name, credentials.getUsername());
 					Response request = requestSender.SendData(ActionType.addEvents, eventObj);
 					System.out.println(request);
 

@@ -2,15 +2,19 @@ package Shared;
 
 public class ClientPropsReader extends PropsReader {
 
-	/** Path to server.props file */
-	private static final String clientPropsFileLocation = "ClientConfig/client.props";
+	/** Path to client.props file */
+	private static final String clientPropsFileLocation = "ClientConfig/";
 
-
+	/** Name of the client.props file */
+	private static final String clientPropsFileName= "client.props";
 
 
 	/** Constructor */
-	ClientPropsReader(){
+	public ClientPropsReader(){
 		super();
-		ReadPropFile(clientPropsFileLocation);
+		// Put all of the default values here
+		defaultKeysValues.put("ip address", "localhost");
+		defaultKeysValues.put("port", "9977");
+		ReadPropFile(clientPropsFileLocation, clientPropsFileName);
 	}
 }

@@ -4,11 +4,15 @@ import Shared.PropsReader;
 
 public final class ServerPropsReader extends PropsReader {
 
-	/** Path to db.props file */
-	private static final String dbPropsFileLocation = "ServerConfig/db.props";
+	/** Path to both .props files */
+	private static final String propsFileLocation = "ServerConfig/";
 
-	/** Path to server.props file */
-	private static final String serverPropsFileLocation = "ServerConfig/server.props";
+	/** Path to db.props file */
+	private static final String dbPropsFileName = "db.props";
+
+	/** Path to db.props file */
+	private static final String serverPropsFileName = "server.props";
+
 
 
 	public int GetPort(){
@@ -38,7 +42,12 @@ public final class ServerPropsReader extends PropsReader {
 	/** Constructor */
 	ServerPropsReader(){
 		super();
-		dbPropsReader.ReadPropFile(dbPropsFileLocation);
-		ReadPropFile(serverPropsFileLocation);
+		defaultKeysValues.put("port", "9977");
+		dbPropsReader.defaultKeysValues.put("jdbc.URL", "jdbc:mysql://localhost:3306");
+		dbPropsReader.defaultKeysValues.put("jdbc.schema", "cab302");
+		dbPropsReader.defaultKeysValues.put("jdbc.username", "root");
+		dbPropsReader.defaultKeysValues.put("jdbc.password", "root");
+		dbPropsReader.ReadPropFile(propsFileLocation, dbPropsFileName);
+		ReadPropFile(propsFileLocation, serverPropsFileName);
 	}
 }

@@ -1,8 +1,8 @@
 package Shared;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -92,9 +92,9 @@ public class PropsReader {
 	 *
 	 * @author Lucas Maldonado N10534342
 	 */
-	public void ReadPropFile(String filePath) {
+	public void ReadPropFile(String filePath, String fileName) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(GetCWD() + "/" + filePath));
+			BufferedReader reader = new BufferedReader(new FileReader(GetCWD() + "/" + filePath + fileName));
 			String line = reader.readLine();
 			while (line != null) {
 				try {
@@ -114,9 +114,32 @@ public class PropsReader {
 				line = reader.readLine();
 			}
 			reader.close();
-		} catch (Exception e) {
-			Log.warning("Could not find file: '" + filePath + "'. Will always fall back to default values!");
+		} catch (FileNotFoundException e) {
+			System.out.println("Could not find file: '" + filePath + fileName + "'. Creating it...");
+
+			try {
+				createPropsFile(filePath, fileName);
+				ReadPropFile(filePath, fileName); // try again
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	private void createPropsFile(String filePath, String fileName) throws IOException {
+		StringBuilder fileContents = new StringBuilder();
+		for (Map.Entry<String, String> entry : defaultKeysValues.entrySet()) {
+			fileContents.append(String.format("%s: %s\n", entry.getKey(), entry.getValue()));
+		}
+
+		File file = new File(filePath);
+		file.mkdirs();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(GetCWD() + "/" + filePath + fileName));
+		writer.write(fileContents.toString());
+		writer.close();
+		System.out.println("Default props file created successfully.");
 	}
 
 	/**
@@ -132,6 +155,9 @@ public class PropsReader {
 
 	/** The map we store the contents of the prop file in, for easy access. Use this for more control */
 	private HashMap<String, String> propMap = new HashMap<>();
+
+	/** The default keys and values expected to be found in the props file */
+	public HashMap<String, String> defaultKeysValues = new HashMap<>();
 
 	/** Log class for logging PropsReader specific messages with more helpful info */
 	private static final Logger Log = Logger.getLogger(PropsReader.class.getName());

@@ -100,3 +100,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 *.db
 CAB302-JavaProject.iml
+*.props

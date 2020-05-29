@@ -1,19 +1,18 @@
 package ControlPanel;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import Server.Endpoints.EndpointType;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
 import Shared.Schedule.Event;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Schedule {
 	private JPanel Schedule;
@@ -69,10 +68,27 @@ public class Schedule {
 
 			Response response = requestSender.SendData(EndpointType.getEvents, null);
 
-			list = (ArrayList<Event>) response.getData();
+			// Check if the server replied with an error
+			if (response.getStatus().equals("error")) {
+				if (response.getData().equals("Invalid token")) {
+					System.out.println("Your session token is invalid (probably expired), try logging in again");
+				}
+				else {
+					System.out.println("Server replied with an error: " + response.getData().toString());
+				}
+				return;
+			}
+
+			if (response.getData() instanceof ArrayList) {
+				list = (ArrayList<Event>) response.getData();
+			} else {
+				System.out.printf("Server replied with unexpected data: '%s'\n", response.getData().toString());
+				return;
+			}
+
 		}
 
-		catch (NullPointerException | ClassNotFoundException | IOException e) {
+		catch (Exception e) {
 			System.out.println(e);
 			System.out.println("No billboards to show");
 		}
@@ -101,8 +117,7 @@ public class Schedule {
 	private String DateFormat(long unix) {
 		Date date = new Date(unix*1000L);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-		String formattedDate = sdf.format(date);
-		return formattedDate;
+		return sdf.format(date);
 	}
 
 	/**
@@ -112,13 +127,9 @@ public class Schedule {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Won't compile without the exceptions unhandled
-		try {
-			// Set System L&F
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
-			// handle exception
-		}
+		// Set look and feel of frame
+		// try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// } catch (Exception e) { e.printStackTrace(); }
 
 		// Create and setup Schedule window
 		scheduleFrame = new JFrame("Billboard Schedule");

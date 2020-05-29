@@ -9,6 +9,15 @@ public class ClientPropsReader extends PropsReader {
 	private static final String clientPropsFileName= "client.props";
 
 
+	public String getIPAddress() {
+		return GetStringProperty("ip address", "localhost");
+	}
+
+	public int getPort() {
+		return GetIntProperty("port", 9977);
+	}
+
+
 	/** Constructor */
 	public ClientPropsReader(){
 		super();

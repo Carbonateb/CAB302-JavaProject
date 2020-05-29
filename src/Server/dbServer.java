@@ -60,7 +60,7 @@ public class dbServer {
 
 			String bb_sql =
 				"CREATE TABLE IF NOT EXISTS BILLBOARDS (" +
-					"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+					"name TEXT PRIMARY KEY NOT NULL," +
 					"data TEXT NOT NULL" +
 					");";
 
@@ -213,24 +213,9 @@ public class dbServer {
 	 * @param usr string containing username
 	 * @return
 	 */
-	public boolean checkUserExists(String usr)
-	{
+	public boolean checkUserExists(String usr)	{
 		String[] dbpw = queryDB("USERS", usr, "usr_Name");
-		if( dbpw[1] != null)
-		{
-			if(dbpw[1].equals(usr))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		return dbpw[1] != null;
 	}
 
 	/***
@@ -384,9 +369,9 @@ public class dbServer {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Billboard requestBillbaord(int id) throws IOException, ClassNotFoundException {
-		String[] query = queryDB("BILLBOARDS", String.valueOf(id), "id");
-		System.out.println("QUERY LENGTH "+ query.length + " id = "  +query[0] + " string = " + query[1]);
+	public Billboard requestBillbaord(String name) throws IOException, ClassNotFoundException {
+		String[] query = queryDB("BILLBOARDS", name, "name");
+		System.out.println("QUERY LENGTH "+ query.length + " name = "  +query[0] + " string = " + query[1]);
 		Billboard billboard = null;
 		if (query[1] != null) {
 			billboard = (Billboard) ObjectSerialization.fromString((query[1]));
@@ -396,28 +381,40 @@ public class dbServer {
 	}
 
 	/***
+	 * checks if a billboard exists
+	 * @param name string containing name
+	 * @return
+	 */
+	public boolean checkBillboardExists(String name)	{
+		String[] query = queryDB("BILLBOARDS", name, "name");
+		return query[1] != null;
+	}
+
+	/***
 	 * adds a billboard to the database
 	 * @param billboard billboard object
 	 * @return true if sql ran successfully else false
 	 */
 	public boolean addBillboard(Billboard billboard) throws IOException
 	{
+		if (checkBillboardExists(billboard.name)) { return false; }
+
 		String data = ObjectSerialization.toString((Serializable) billboard);
 		String sql =
-			"INSERT INTO BILLBOARDS (data)" +
-			"VALUES ('" + data + "' )";
+			"INSERT INTO BILLBOARDS (name, data)" +
+			"VALUES ('" + billboard.name + "', '" + data + "' )";
 		return runSql(sql);
 	}
 
 	/***
 	 * removes a billboard from the database
-	 * @param bb_ID unique identification for the billboard (PK)
+	 * @param name unique identification for the billboard (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean rmBillboard(int bb_ID)
+	public boolean rmBillboard(String name)
 	{
 		String sql =
-			"DELETE FROM BILLBOARDS WHERE bb_ID = " + bb_ID ;
+			"DELETE FROM BILLBOARDS WHERE name = " + name ;
 		return runSql(sql);
 	}
 

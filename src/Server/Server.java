@@ -92,7 +92,7 @@ public class Server {
 		//db.addUser("dylan", "faljnfkan", "salt1");
 		//db.addUser("colby", "gggggddd", "salt2");
 
-		Billboard billboard = new Billboard(1, "sample", "sample2", Color.red, Color.blue, null, "admin");
+		Billboard billboard = new Billboard("sample_billboard", "sample", "sample2", Color.red, Color.blue, null, "admin");
 		db.addBillboard(billboard);
 
 
@@ -157,7 +157,7 @@ public class Server {
 				Object obj = ObjectSerialization.fromString((query2[i]));
 				Billboard bbPrint = Billboard.class.cast(obj);
 
-				System.out.println("id : " + bbPrint.ID);
+				System.out.println("name : " + bbPrint.name);
 			}
 		}
 		for(int i=0; i< query3.length; i++)

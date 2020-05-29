@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Lucas Maldonado
  */
 public class Billboard implements Serializable {
-	public int ID;
+	public String name;
 
 	public String titleText;
 	public String infoText;
@@ -23,8 +23,8 @@ public class Billboard implements Serializable {
 
 
 	/** Default constructor */
-	public Billboard(int ID, String titleText, String infoText, Color textColor, Color backgroundColor, Image image, String author) {
-		this.ID = ID;
+	public Billboard(String name, String titleText, String infoText, Color textColor, Color backgroundColor, Image image, String author) {
+		this.name = name;
 		this.titleText = titleText;
 		this.infoText = infoText;
 		this.textColor = textColor;

@@ -30,17 +30,13 @@ public class ExampleClient {
 		String serverIP = "localhost";
 		int serverPort = 9977;
 
-		Base64.Encoder base64 = Base64.getEncoder();
-		MessageDigest md = MessageDigest.getInstance("SHA-256");
-
 		// Create RequestSender
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
 		// Hash password and define payload data
 		String password = "secure_password";
-		byte[] hash = md.digest(password.getBytes());
-		String hashed_password = new String(base64.encode(hash));
-		Credentials credentials = new Credentials("admin", hashed_password, null);
+
+		Credentials credentials = new Credentials("admin", password, null);
 
 		// Login
 		System.out.println("Logging in with: " + credentials);
@@ -52,9 +48,8 @@ public class ExampleClient {
 
 		// Register new account
 		String password2 = "password";
-		byte[] hash2 = md.digest(password2.getBytes());
-		String hashed_password2 = new String(base64.encode(hash2));
-		Credentials newUser = new Credentials("user", hashed_password2, new Permissions(0));
+
+		Credentials newUser = new Credentials("user", password2, new Permissions(0));
 
 		System.out.println("Sending: " + requestSender.toString("register", newUser));
 		response = requestSender.SendData(EndpointType.register, newUser);

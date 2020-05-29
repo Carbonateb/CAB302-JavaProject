@@ -2,7 +2,7 @@ package Server;
 
 import Shared.Billboard;
 import Shared.Schedule.*;
-
+import Shared.Permissions.Permissions;
 
 import java.io.Console;
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class dbServer {
 			byte[] hash = md.digest("secure_password".getBytes());
 			String hashed_password = new String(base64.encode(hash));
 
-			if (addUser("admin", hashed_password, 16)) {
+			if (addUser("admin", hashed_password, 15)) {
 				System.out.println("Default user added, username `admin`, password `secure_password` ");
 			}
 
@@ -266,6 +266,21 @@ public class dbServer {
 		} else {
 			return false;
 		}
+	}
+
+	/***
+	 * returns permissions for a given user
+	 * @param usr the username to check
+	 * @return permissions object
+	 */
+	public Permissions getPermissions(String usr) {
+		System.out.println(usr);
+		String[] dbperms = queryDB("USERS", usr, "usr_Name");
+		int perms = -1;
+		if (dbperms[4] != null) {
+			perms = Integer.parseInt(dbperms[4]);
+		}
+		return new Permissions(perms);
 	}
 
 	/***

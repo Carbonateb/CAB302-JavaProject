@@ -34,28 +34,31 @@ public class ExampleClient {
 		// Create RequestSender
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
-		// Define payload data
+		// Hash password and define payload data
 		String password = "secure_password";
 		byte[] hash = md.digest(password.getBytes());
-
 		String hashed_password = new String(base64.encode(hash));
-
-		System.out.println(hashed_password);
-
 		Credentials credentials = new Credentials("admin", hashed_password, null);
+
 		// Login
 		System.out.println("Logging in with: " + credentials);
 		Response response = requestSender.login(credentials);
 		System.out.println("Response: " + response);
 
-		//Thread.sleep(1500);
+		System.out.println();
+		Thread.sleep(1500);
 
-		//Credentials newUser = new Credentials("colby", hashed_password, new Permissions(16));
+		// Register new account
+		String password2 = "password";
+		byte[] hash2 = md.digest(password2.getBytes());
+		String hashed_password2 = new String(base64.encode(hash2));
+		Credentials newUser = new Credentials("user", hashed_password2, new Permissions(0));
 
-		//System.out.println("Sending: " + requestSender.toString("register", newUser));
-		//response = requestSender.SendData(ActionType.register, newUser);
-		//System.out.println("Response: " + response);
+		System.out.println("Sending: " + requestSender.toString("register", newUser));
+		response = requestSender.SendData(ActionType.register, newUser);
+		System.out.println("Response: " + response);
 
+		System.out.println();
 		Thread.sleep(1500);
 
 		// Print the payload to console, send it to the server, amd print the response
@@ -63,25 +66,32 @@ public class ExampleClient {
 		response = requestSender.SendData(ActionType.echo, "hello world!");
 		System.out.println("Response: " + response);
 
+		System.out.println();
 		Thread.sleep(1500);
 
+		// Get list of events
 		System.out.println("Sending: " + requestSender.toString("GetEvents", null));
 		response = requestSender.SendData(ActionType.getEvents, null);
 		System.out.println("Response: " + response);
 
+		System.out.println();
 		Thread.sleep(1500);
 
+		// Add event
 		System.out.println("Sending: " + requestSender.toString("AddEvents", null));
 		Event eventObj = new Event(10000, 20000, 1, "hi");
 		response = requestSender.SendData(ActionType.addEvents, eventObj);
 		System.out.println("Response: " + response);
 
+		System.out.println();
 		Thread.sleep(1500);
 
+		// Get list of events again
 		System.out.println("Sending: " + requestSender.toString("GetEvents", null));
 		response = requestSender.SendData(ActionType.getEvents, null);
 		System.out.println("Response: " + response);
 
+		System.out.println();
 		Thread.sleep(1500);
 
 		// Logout

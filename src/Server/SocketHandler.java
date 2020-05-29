@@ -3,6 +3,8 @@ package Server;
 import Server.Actions.Action;
 import Server.Actions.InvalidAction;
 import Shared.Network.*;
+import Shared.Permissions.Perm;
+import Shared.Permissions.Permissions;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -77,8 +79,9 @@ public class SocketHandler {
 	 * Generate a response for a given request
 	 */
 	private Response CalculateResponse(Request request) throws IOException, ClassNotFoundException {
+		System.out.println();
 		Action invokedAction = null;
-		System.out.printf("Received request for action: %s", request.getAction().toString());
+		System.out.printf("Received request for action: %s\n", request.getAction().toString());
 
 		// Search for the requested action
 		for (Action a : actions) {
@@ -156,5 +159,11 @@ public class SocketHandler {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean hasPerm(String username, Perm perm) {
+		Permissions permissions =  db.getPermissions(username);
+		System.out.println(permissions);
+		return permissions.hasPermission(perm);
 	}
 }

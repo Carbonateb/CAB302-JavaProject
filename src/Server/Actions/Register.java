@@ -1,11 +1,14 @@
 package Server.Actions;
 
+import Server.SocketHandler;
 import Shared.Credentials;
 import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Network.Token;
+import Shared.Permissions.Perm;
 import Shared.Permissions.Permissions;
 
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 
 public class Register extends Action{
@@ -15,6 +18,12 @@ public class Register extends Action{
 	}
 
 	public Response Run(Request request) {
+
+		Token token = request.getToken();
+		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
+			return new Response("error", "Permission denied", null);
+		}
+
 		Credentials credentials = null;
 		try {
 			// Cast request data to Credentials class
@@ -28,9 +37,8 @@ public class Register extends Action{
 
 		try {
 			if (!server.db.checkUserExists(username)) {
-				server.db.addUser(username, password, permissions); // TODO: Add user to DB
-				Token token = server.socketHandler.generateToken(username);
-				return new Response("success", token, token);
+				server.db.addUser(username, password, permissions);
+				return new Response("success", username, request.getToken());
 			} else {
 				return new Response("error", "User already exists", null);
 			}

@@ -95,28 +95,10 @@ public class LoginWindow {
 				StringBuilder password = new StringBuilder();
 				password.append(pwd);
 
-				/* Not sure if we still need this code, can we delete it?
-					MessageDigest md = MessageDigest.getInstance("SHA-256");
-					byte[] encodedhash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-					encodedPassword = bytesToHex(encodedhash);
-					System.out.println(encodedPassword);
-					*/
-
-				// The result of hashing the password
-				String hashed_password = "";
-
-				try { // Encode the password with SHA-256
-					MessageDigest md = MessageDigest.getInstance("SHA-256");
-					byte[] hash = md.digest(password.toString().getBytes());
-					Base64.Encoder base64 = Base64.getEncoder();
-					hashed_password = new String(base64.encode(hash));
-				} catch (NoSuchAlgorithmException exception) {
-					System.err.println("Error: SHA-256 is not a valid message digest algorithm.");
-				}
 
 				try {
 					// Construct a credentials class with the login info, and send it off to the server
-					Credentials credentials = new Credentials(username, hashed_password, null);
+					Credentials credentials = new Credentials(username, password.toString(), null);
 					Response response = ControlPanel.get().requestSender.login(credentials);
 
 					// The request is a blocking operation, no need for delegates

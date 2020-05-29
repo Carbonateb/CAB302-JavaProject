@@ -39,7 +39,7 @@ public class Server {
 
 
 	/** Constructor. Init the server here */
-	public Server() throws IOException, ClassNotFoundException {
+	public Server() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
 		System.out.println("\nServer Starting...");
 		propsReader = new ServerPropsReader();
 
@@ -49,6 +49,8 @@ public class Server {
 		db.loadScheduleToMem();
 
 		System.out.println("\nInitializing sockets...");
+
+		System.out.println("ALL USERS : "+db.listUsers());
 		serverSocket = new ServerSocket(propsReader.GetPort());
 		socketHandler =  new SocketHandler(serverSocket, db);
 
@@ -76,7 +78,7 @@ public class Server {
 	}
 
 
-	public static void main(String args[]) throws IOException, ClassNotFoundException {
+	public static void main(String args[]) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
 		Server server = new Server();
 	}
 

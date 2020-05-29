@@ -104,6 +104,40 @@ public class dbServer {
 	}//end main
 
 	/***
+	 * lists all the users in the database
+	 * @return returns an array list of strings
+	 */
+	public ArrayList<String> listUsers()
+	{
+		ArrayList<String> users = new ArrayList<>();
+		String sql = "SELECT * FROM USERS";
+
+		ResultSet rs;
+
+		Object obj;
+
+		try
+		{
+			rs = stmt.executeQuery(sql);
+			while (rs.next())
+			{
+				obj = rs.getString("usr_Name");
+				users.add(String.valueOf(obj));
+			}
+		}
+		catch (SQLException se) {
+			//Handle errors for JDBC
+			se.printStackTrace();
+		}
+		catch (Exception e) {
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}
+		return users;
+	}
+
+
+	/***
 	 * Method that loads the saved database schedule to memory to edit later
 	 * @throws IOException
 	 * @throws ClassNotFoundException

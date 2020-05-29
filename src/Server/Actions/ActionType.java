@@ -7,10 +7,11 @@ package Server.Actions;
  * In case you're wondering, I did try to
  */
 public enum ActionType {
+	addEvents,
 	echo,
+	getCurrentEvent,
+	getEvents,
 	login,
 	logout,
 	register,
-	getEvents,
-	addEvents,
 }

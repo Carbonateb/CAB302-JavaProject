@@ -25,7 +25,7 @@ class ScheduleTest {
 				System.out.println("\n\n\n\nSCHEDULE INFO:");
 
 				System.out.println("The selected event:");
-				System.out.printf("\t%s\n", s.getEvent().author);
+				System.out.printf("\t%s\n", s.getCurrentEvent().author);
 
 				System.out.println("Upcoming Events:");
 				for (Event e : s.upcomingEvents) {

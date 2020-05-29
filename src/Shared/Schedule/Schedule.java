@@ -34,7 +34,7 @@ public class Schedule implements Serializable {
 	 * Newer events have priority over older ones.
 	 * If there are no events to display, will return a blank event. Use event.isBlank to check
 	 */
-	public Event getEvent() {
+	public Event getCurrentEvent() {
 		populateActiveEvents();
 		cleanupActiveEvents();
 

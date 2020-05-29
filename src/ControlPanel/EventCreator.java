@@ -3,8 +3,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class times {
-	private JPanel timesWindow;
+public class EventCreator extends JFrame {
+	private JPanel main_Panel;
 	private JButton cancel_Button;
 	private JButton ok_Button;
 	private JSpinner duration_Spinner;
@@ -26,9 +26,16 @@ public class times {
 	 * @author Callum McNeilage - n10482652
 	 * @contributor Lucas Maldonado - n10534342
 	 */
-	public times() {
+	public EventCreator() {
+		// Set up frame
+		setTitle("Schedule Billboard");
+		setContentPane(main_Panel);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		pack();
+		setVisible(true);
 
-
+		startTime_TextField.setText("Current time");
+		startDate_TextField.setText("Current date");
 
 		ok_Button.addActionListener(new ActionListener() {
 			@Override

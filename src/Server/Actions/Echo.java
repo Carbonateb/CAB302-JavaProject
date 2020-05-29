@@ -1,5 +1,7 @@
 package Server.Actions;
 
+import Shared.Network.Request;
+
 /**
  * The echo class is meant to be a simple demonstration of the Action system.
  * You can copy its setup to get your own Action up and running
@@ -21,7 +23,7 @@ public class Echo extends Action {
 	 * @param input the data given to the server, used to process the request. Use this however you like!
 	 * @returns the resulting data to give back to the sender. Can be null.
 	 */
-	public Object executeAction(Object input) {
+	public Object executeAction(Request input) {
 		return input;
 	}
 }

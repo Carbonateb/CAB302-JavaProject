@@ -1,6 +1,9 @@
 package Server.Actions;
 
 	import Shared.Network.Request;
+	import Shared.Network.Response;
+	import Shared.Network.Token;
+	import Shared.Permissions.Perm;
 	import Shared.Schedule.Event;
 
 	import java.io.IOException;
@@ -14,8 +17,14 @@ public class AddEvents extends Action {
 		associatedAction = ActionType.addEvents;
 	}
 
-	public Object executeAction(Object input){
-		Event event = (Event) input;
+	public Object executeAction(Request input){
+
+		Token token = input.getToken();
+		if (!server.socketHandler.hasPerm(token.getUser(), Perm.SCHEDULE_BILLBOARDS)) {
+			return new Response("error", "Permission denied", null);
+		}
+
+		Event event = (Event) input.getData();
 		try {
 			//adds an event to the schedule and database
 			server.db.addEvent(event.startTime, event.endTime, event.billboardID, event.author);

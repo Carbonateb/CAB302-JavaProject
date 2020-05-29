@@ -1,5 +1,6 @@
 package Server.Actions;
 
+import Shared.Network.Request;
 import Shared.Schedule.Event;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class GetEvents extends Action {
 		associatedAction = ActionType.getEvents;
 	}
 
-	public Object executeAction(Object input){
+	public Object executeAction(Request input){
 		ArrayList<Event> eventList = null;
 		try {
 			eventList = server.db.returnEventList();

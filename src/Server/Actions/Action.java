@@ -33,7 +33,7 @@ public class Action {
 
 		switch (tokenStatus) {
 			case valid:
-				return new Response("success", executeAction(request.getData()), request.getToken());
+				return new Response("success", executeAction(request), request.getToken());
 			case expired:
 				return new Response("error", "Expired token", null);
 			case invalid:
@@ -48,7 +48,7 @@ public class Action {
 	/**
 	 * Override this method to add functionality to your Action
 	 */
-	public Object executeAction(Object input){
+	public Object executeAction(Request input){
 		return "Action not implemented yet, but was called correctly";
 	}
 

@@ -4,7 +4,6 @@ import Shared.Billboard;
 import Shared.Schedule.*;
 import Shared.Permissions.Permissions;
 
-import java.io.Console;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -12,7 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class dbServer {
@@ -42,8 +40,7 @@ public class dbServer {
 		USER = reader.GetUsername();
 		PASS = reader.GetPassword();
 
-		try
-		{
+		try {
 			//Open a connection
 			System.out.println("Connecting to a selected database...");
 
@@ -58,8 +55,8 @@ public class dbServer {
 					"usr_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
 					"usr_Name TEXT NOT NULL UNIQUE," +
 					"pw_Hash TEXT NOT NULL," +
-					"salt TEXT NOT NULL UNIQUE,"+
-					"permissions INTEGER"+
+					"salt TEXT NOT NULL UNIQUE," +
+					"permissions INTEGER" +
 					");";
 
 			String bb_sql =
@@ -89,14 +86,10 @@ public class dbServer {
 			stmt.executeUpdate(bb_sql);
 			stmt.executeUpdate(schedule_sql);
 
-		}
-		catch (SQLException se)
-		{
+		} catch (SQLException se) {
 			//Handle errors for JDBC
 			se.printStackTrace();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			//Handle errors for Class.forName
 			e.printStackTrace();
 		}
@@ -107,8 +100,7 @@ public class dbServer {
 	 * lists all the users in the database
 	 * @return returns an array list of strings
 	 */
-	public ArrayList<String> listUsers()
-	{
+	public ArrayList<String> listUsers() {
 		ArrayList<String> users = new ArrayList<>();
 		String sql = "SELECT * FROM USERS";
 
@@ -116,20 +108,16 @@ public class dbServer {
 
 		Object obj;
 
-		try
-		{
+		try {
 			rs = stmt.executeQuery(sql);
-			while (rs.next())
-			{
+			while (rs.next()) {
 				obj = rs.getString("usr_Name");
 				users.add(String.valueOf(obj));
 			}
-		}
-		catch (SQLException se) {
+		} catch (SQLException se) {
 			//Handle errors for JDBC
 			se.printStackTrace();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			//Handle errors for Class.forName
 			e.printStackTrace();
 		}
@@ -151,8 +139,7 @@ public class dbServer {
 		System.out.println("should be empty : " + schedule.exportEvents().size());
 
 		// [0] is the name of the billboard [1] is the billboard object
-		if (query[1] != null)
-		{
+		if (query[1] != null) {
 			//converts database stored string to object
 			Object obj = ObjectSerialization.fromString((query[1]));
 
@@ -170,20 +157,14 @@ public class dbServer {
 	 * @return return true if sql ran successfully else return false
 	 */
 
-	public boolean runSql(String sql)
-	{
-		try
-		{
+	public boolean runSql(String sql) {
+		try {
 			stmt.executeUpdate(sql);
-		}
-		catch (SQLException se)
-		{
+		} catch (SQLException se) {
 			//Handle errors for JDBC
 			se.printStackTrace();
 			return false;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			//Handle errors for Class.forName
 			e.printStackTrace();
 			return false;
@@ -213,7 +194,7 @@ public class dbServer {
 	 */
 	public void addEvent(long startTime, long endTime, String bbName, String author) throws IOException, ClassNotFoundException {
 		//create a new event and add it to the memory Schedule
-		Event event = new Event(startTime,endTime, bbName, author);
+		Event event = new Event(startTime, endTime, bbName, author);
 		schedule.scheduleEvent(event);
 
 		//save memory schedule to database
@@ -226,32 +207,24 @@ public class dbServer {
 	 * @param column_size the column size of a given table
 	 * @return array of strings of the queried data
 	 */
-	public String[] querySql(String sql, int column_size)
-	{
+	public String[] querySql(String sql, int column_size) {
 		ResultSet rs;
 		String[] stringArray = new String[column_size];
 
 		Object obj;
 
-		try
-		{
+		try {
 			rs = stmt.executeQuery(sql);
-			while (rs.next())
-			{
-				for(int j=0; j< column_size; j++)
-				{
+			while (rs.next()) {
+				for (int j = 0; j < column_size; j++) {
 					obj = rs.getObject(j + 1);
 					stringArray[j] = String.valueOf(obj);
 				}
 			}
-		}
-		catch (SQLException se)
-		{
+		} catch (SQLException se) {
 			//Handle errors for JDBC
 			se.printStackTrace();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			//Handle errors for Class.forName
 			e.printStackTrace();
 		}
@@ -263,7 +236,7 @@ public class dbServer {
 	 * @param usr string containing username
 	 * @return
 	 */
-	public boolean checkUserExists(String usr)	{
+	public boolean checkUserExists(String usr) {
 		String[] dbpw = queryDB("USERS", usr, "usr_Name");
 		return dbpw[1] != null;
 	}
@@ -325,22 +298,16 @@ public class dbServer {
 	 * @param name the name of the primary key
 	 * @return returns the queried data in the form of a string array
 	 */
-	public String[] queryDB(String table_Name, String value, String name)
-	{
-		value = "'"+value+"'";
+	public String[] queryDB(String table_Name, String value, String name) {
+		value = "'" + value + "'";
 
 		int column_size = 0;
 
-		if(table_Name == "USERS")
-		{
+		if (table_Name == "USERS") {
 			column_size = 5;
-		}
-		else if (table_Name == "BILLBOARDS")
-		{
+		} else if (table_Name == "BILLBOARDS") {
 			column_size = 2;
-		}
-		else if (table_Name == "SCHEDULE")
-		{
+		} else if (table_Name == "SCHEDULE") {
 			column_size = 2;
 		}
 
@@ -357,7 +324,9 @@ public class dbServer {
 	 * @return true if sql ran successfully else false
 	 */
 	public boolean addUser(String usr_Name, String pw_Hash, int usr_Perms) throws NoSuchAlgorithmException {
-		if (checkUserExists(usr_Name)) { return false; }
+		if (checkUserExists(usr_Name)) {
+			return false;
+		}
 
 		SecureRandom secureRandom = new SecureRandom();
 		byte[] byes_salt = new byte[64];
@@ -375,7 +344,7 @@ public class dbServer {
 		final_hash = new String(base64.encode(hash));
 
 		String sql =
-				"INSERT INTO USERS (usr_Name, pw_Hash, salt, permissions)" +
+			"INSERT INTO USERS (usr_Name, pw_Hash, salt, permissions)" +
 				"VALUES ( '" + usr_Name + "' , '" + final_hash + "' , '" + encoded_salt + "' , " + usr_Perms + ")";
 		return runSql(sql);
 	}
@@ -385,10 +354,9 @@ public class dbServer {
 	 * @param usr_ID integer storing the ID of the user (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean rmUser(int usr_ID)
-	{
+	public boolean rmUser(int usr_ID) {
 		String sql =
-			"DELETE FROM USERS WHERE usr_ID = " + usr_ID ;
+			"DELETE FROM USERS WHERE usr_ID = " + usr_ID;
 		return runSql(sql);
 	}
 
@@ -401,7 +369,7 @@ public class dbServer {
 	public ArrayList<Event> requestEvents() throws IOException, ClassNotFoundException {
 		//query the database for the schedule object
 		String[] query = queryDB("SCHEDULE", "1", "id");
-		System.out.println("QUERY LENGTH "+query.length + " id = " +query[0] + " string = " + query[1]);
+		System.out.println("QUERY LENGTH " + query.length + " id = " + query[0] + " string = " + query[1]);
 		Schedule schedule = new Schedule();
 
 		//[0] is name [1] is schedule object
@@ -417,8 +385,7 @@ public class dbServer {
 	 * gets the current active event
 	 * @return returns Event
 	 */
-	public Event requestCurrentEvent()
-	{
+	public Event requestCurrentEvent() {
 		return schedule.getCurrentEvent();
 	}
 
@@ -432,7 +399,7 @@ public class dbServer {
 		//gets the database billboard object
 		String[] query = queryDB("BILLBOARDS", name, "name");
 
-		System.out.println("QUERY LENGTH "+ query.length + " name = "  +query[0] + " string = " + query[1]);
+		System.out.println("QUERY LENGTH " + query.length + " name = " + query[0] + " string = " + query[1]);
 
 		Billboard billboard = null;
 		if (query[1] != null) {
@@ -448,7 +415,7 @@ public class dbServer {
 	 * @param name string containing name
 	 * @return
 	 */
-	public boolean checkBillboardExists(String name)	{
+	public boolean checkBillboardExists(String name) {
 		String[] query = queryDB("BILLBOARDS", name, "name");
 		return query[1] != null;
 	}
@@ -458,15 +425,16 @@ public class dbServer {
 	 * @param billboard billboard object
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean addBillboard(Billboard billboard) throws IOException
-	{
-		if (checkBillboardExists(billboard.name)) { return false; }
+	public boolean addBillboard(Billboard billboard) throws IOException {
+		if (checkBillboardExists(billboard.name)) {
+			return false;
+		}
 
 		//converts the billboard object to a string to save into the database
 		String data = ObjectSerialization.toString((Serializable) billboard);
 		String sql =
 			"INSERT INTO BILLBOARDS (name, data)" +
-			"VALUES ('" + billboard.name + "', '" + data + "' )";
+				"VALUES ('" + billboard.name + "', '" + data + "' )";
 		return runSql(sql);
 	}
 
@@ -475,10 +443,9 @@ public class dbServer {
 	 * @param name unique identification for the billboard (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean rmBillboard(String name)
-	{
+	public boolean rmBillboard(String name) {
 		String sql =
-			"DELETE FROM BILLBOARDS WHERE name = " + name ;
+			"DELETE FROM BILLBOARDS WHERE name = " + name;
 		return runSql(sql);
 	}
 
@@ -487,12 +454,11 @@ public class dbServer {
 	 * @param schedule schedule object
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean saveSchedule(Schedule schedule) throws IOException
-	{
+	public boolean saveSchedule(Schedule schedule) throws IOException {
 		String data = ObjectSerialization.toString((Serializable) schedule);
 		String sql =
 			"INSERT OR REPLACE INTO SCHEDULE (id,data)" +
-				"VALUES (1, '" + data + "')" ;
+				"VALUES (1, '" + data + "')";
 		return runSql(sql);
 	}
 
@@ -501,8 +467,7 @@ public class dbServer {
 	 * @param bb_ID the id of the billboard the image will be displayed to(pk)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean rmSchedule(int bb_ID)
-	{
+	public boolean rmSchedule(int bb_ID) {
 		String sql =
 			"DELETE FROM SCHEDULE WHERE bb_ID = '" + bb_ID + "'";
 		return runSql(sql);
@@ -511,8 +476,7 @@ public class dbServer {
 	/**
 	 * close resources once finished with database
 	 */
-	public void closeResources()
-	{
+	public void closeResources() {
 		//finally block used to close resources
 		try {
 			if (stmt != null) {

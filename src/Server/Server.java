@@ -39,7 +39,9 @@ public class Server {
 	};
 
 
-	/** Constructor. Init the server here */
+	/**
+	 * Constructor. Init the server here
+	 */
 	public Server() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
 		System.out.println("\nServer Starting...");
 		propsReader = new ServerPropsReader();
@@ -51,16 +53,16 @@ public class Server {
 
 		System.out.println("\nInitializing sockets...");
 
-		System.out.println("ALL USERS : "+db.listUsers());
+		System.out.println("ALL USERS : " + db.listUsers());
 		serverSocket = new ServerSocket(propsReader.GetPort());
-		socketHandler =  new SocketHandler(serverSocket, db);
+		socketHandler = new SocketHandler(serverSocket, db);
 
 
 		// Create the Endpoints specified in allEndpoints
 		System.out.println("\nCreating Endpoints...");
-		try{
+		try {
 			for (Class c : allEndpoints) {
-				Endpoint newEndpoint = (Endpoint)c.getDeclaredConstructor().newInstance();
+				Endpoint newEndpoint = (Endpoint) c.getDeclaredConstructor().newInstance();
 				socketHandler.endpoints.add(newEndpoint);
 				newEndpoint.init(this);
 			}
@@ -86,6 +88,7 @@ public class Server {
 
 	/**
 	 * Put all of your experimental code here
+	 *
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -99,41 +102,35 @@ public class Server {
 		db.addBillboard(billboard);
 
 
-
-		db.addEvent(10000000, 300000000, "bb_ex_1","bob");
-		db.addEvent(10000010, 300000001, "bb_ex_2","jerry");
+		db.addEvent(10000000, 300000000, "bb_ex_1", "bob");
+		db.addEvent(10000010, 300000001, "bb_ex_2", "jerry");
 
 		ArrayList<Event> example = db.returnEventList();
 
-		System.out.println("THE AUTHOR IS "+example.get(0).author);
-		System.out.println("THE AUTHOR IS "+example.get(1).author);
+		System.out.println("THE AUTHOR IS " + example.get(0).author);
+		System.out.println("THE AUTHOR IS " + example.get(1).author);
 
 		//System.out.println("THE START TIME IS" + db.requestBillBoard(1));
 
 		System.out.println("Added items");
 
-		if(db.checkPassword("gggggddd", "colby"))
-		{
+		if (db.checkPassword("gggggddd", "colby")) {
 			System.out.println("password check for 'gggggddd' and usr colby present");
 		}
 
-		if(!db.checkPassword("faljnfkan", "lionblind"))
-		{
+		if (!db.checkPassword("faljnfkan", "lionblind")) {
 			System.out.println("password check for 'faljnfkan' and user lionblind NOT PRESENT");
 		}
 
-		if(!db.checkPassword("pogchamp", "pepehands"))
-		{
+		if (!db.checkPassword("pogchamp", "pepehands")) {
 			System.out.println("password check for 'pogchamp' and user pepehands NOT PRESENT");
 		}
 
-		if(db.checkUserExists("colby"))
-		{
+		if (db.checkUserExists("colby")) {
 			System.out.println("colby exists");
 		}
 
-		if(!db.checkUserExists("fred"))
-		{
+		if (!db.checkUserExists("fred")) {
 			System.out.println("fred does not exist");
 		}
 
@@ -144,18 +141,13 @@ public class Server {
 		String[] query3 = db.queryDB("SCHEDULE", "1", "id");
 
 		// Print data from DB
-		for(int i=0; i< query.length; i++)
-		{
+		for (int i = 0; i < query.length; i++) {
 			System.out.println(query[i]);
 		}
-		for(int i=0; i< query2.length; i++)
-		{
-			if (i == 0)
-			{
+		for (int i = 0; i < query2.length; i++) {
+			if (i == 0) {
 				System.out.println(query2[i]);
-			}
-			else
-			{
+			} else {
 				//System.out.println("billboard : " +ObjectSerialization.fromString(query2[i]));
 				Object obj = ObjectSerialization.fromString((query2[i]));
 				Billboard bbPrint = Billboard.class.cast(obj);
@@ -163,8 +155,7 @@ public class Server {
 				System.out.println("name : " + bbPrint.name);
 			}
 		}
-		for(int i=0; i< query3.length; i++)
-		{
+		for (int i = 0; i < query3.length; i++) {
 			System.out.println(query3[i]);
 		}
 

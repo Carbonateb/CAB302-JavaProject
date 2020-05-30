@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,55 +29,8 @@ public class MainWindow {
 
 	public MainWindow() {
 
-		/**
-		 * Queries the server for billboard information and displays in table
-		 *
-		 * @author Callum McNeilage - n10482652
-		 */
-		//Queries server to return billboard schedule
-		ArrayList<Event> list = null;
-		try {
-			Response response = ControlPanel.get().requestSender.SendData(EndpointType.getEvents, null);
-
-			// Check if the server replied with an error
-			if (response.getStatus().equals("error")) {
-				if (response.getData().equals("Invalid token")) {
-					System.out.println("Your session token is invalid (probably expired), try logging in again");
-				}
-				else {
-					System.out.println("Server replied with an error: " + response.getData().toString());
-				}
-				return;
-			}
-
-			if (response.getData() instanceof ArrayList) {
-				list = (ArrayList<Event>) response.getData();
-			} else if(response.getData().toString().equals("")){
-				System.out.println("No billboards to show");
-			}
-			else {
-				System.out.printf("Server replied with unexpected data: '%s'\n", response.getData().toString());
-				return;
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-			System.out.println("There was an issue when retrieving billboards");
-		}
-
-		//Data to be displayed in the JTable
-		DefaultTableModel model = (DefaultTableModel) schedule_Table.getModel();
-		model.addColumn("BillboardEditor");
-		model.addColumn("Start Time");
-
-		for (int i = 0; i < list.size(); i++) {
-			Object[] row = new Object[2];
-			row[0] = list.get(i).billboardName;
-			row[1] = DateFormat(list.get(i).startTime);
-
-			model.addRow(row);
-		}
-
-
+		refershBillboards();
+		refreshEvents();
 
 		/**
 		 * Opens the User form when editUsersButton is clicked
@@ -147,5 +101,90 @@ public class MainWindow {
 		Date date = new Date(unix*1000L);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 		return sdf.format(date);
+	}
+
+
+	public void refershBillboards() {
+		try {
+			Response response = ControlPanel.get().requestSender.SendData(EndpointType.listBillboards, null);
+			ArrayList<String> billboardNames = (ArrayList<String>)response.getData();
+
+			//Data to be displayed in the JTable
+			DefaultTableModel model = (DefaultTableModel) mainWindowTable.getModel();
+			model.addColumn("Billboard Name");
+			model.addColumn("Author");
+
+			String[] row = new String[2];
+
+			for (String bbName : billboardNames) {
+				row[0] = bbName;
+				row[1] = "Unknown";
+
+				model.addRow(row);
+			}
+
+
+
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	/**
+	 * Queries the server for billboard information and displays in table
+	 *
+	 * @author Callum McNeilage - n10482652
+	 */
+	public void refreshEvents() {
+
+		//Queries server to return billboard schedule
+		ArrayList<Event> list = null;
+		try {
+			Response response = ControlPanel.get().requestSender.SendData(EndpointType.getEvents, null);
+
+			// Check if the server replied with an error
+			if (response.getStatus().equals("error")) {
+				if (response.getData().equals("Invalid token")) {
+					System.out.println("Your session token is invalid (probably expired), try logging in again");
+				}
+				else {
+					System.out.println("Server replied with an error: " + response.getData().toString());
+				}
+				return;
+			}
+
+			if (response.getData() instanceof ArrayList) {
+				list = (ArrayList<Event>) response.getData();
+			} else if(response.getData().toString().equals("")){
+				System.out.println("No billboards to show");
+			}
+			else {
+				System.out.printf("Server replied with unexpected data: '%s'\n", response.getData().toString());
+				return;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("There was an issue when retrieving billboards");
+		}
+
+		//Data to be displayed in the JTable
+		DefaultTableModel model = (DefaultTableModel) schedule_Table.getModel();
+		model.addColumn("Billboard");
+		model.addColumn("Start Time");
+		model.addColumn("Duration");
+		model.addColumn("Repeats");
+		model.addColumn("Scheduler");
+
+		Object[] row = new Object[5];
+		for (Event event : list) {
+			row[0] = event.billboardName;
+			row[1] = DateFormat(event.startTime);
+			row[2] = event.getDuration();
+			row[3] = "No";
+			row[4] = event.author;
+
+			model.addRow(row);
+		}
 	}
 }

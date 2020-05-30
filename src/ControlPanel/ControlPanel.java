@@ -28,6 +28,7 @@ public class ControlPanel extends JFrame {
 	private JTable mainWindowTable;
 	private JTextPane billboardControlPanelV0TextPane;
 	private JTable table1;
+	private JButton createNewAccountButton;
 
 	// End UI Variables
 

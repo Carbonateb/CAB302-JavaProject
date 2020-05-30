@@ -71,6 +71,8 @@ public class User {
 					//Query server
 					Response response = ControlPanel.get().requestSender.SendData(EndpointType.deleteUser, selected);
 					System.out.println(response);
+					System.out.println(response.getData().toString().equals("true"));
+					populate();
 				}
 				catch (NullPointerException err) {
 					System.out.println("No user data");
@@ -78,16 +80,20 @@ public class User {
 					System.out.println(ex.getStackTrace());
 					System.out.println("Error in response");
 				}
-
-
 			}
 		});
 
-		/**
-		 * Queries server for users
-		 *
-		 * @author Callum McNeilage - n10482652
-		 */
+		populate();
+
+
+	}
+
+	/**
+	 * Queries server for users
+	 *
+	 * @author Callum McNeilage - n10482652
+	 */
+	public void populate() {
 		// Query users table
 		ArrayList<String> users = null;
 		try {
@@ -127,6 +133,7 @@ public class User {
 		//Add users to list
 		lstNames.setListData(ListData);
 	}
+
 
 	/**
 	 * Loads User list window

@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ControlPanel extends JFrame {
 	public JPanel mainPanel;
 	private JTable schedule_Table;
 	private JButton newEvent_Button;
-	private JTable mainWindowTable;
+	private JTable billboards_Table;
 	private JTextPane billboardControlPanelV0TextPane;
 	private JTable users_Table;
 	private JButton createNewAccount_Button;
@@ -199,8 +200,8 @@ public class ControlPanel extends JFrame {
 			ArrayList<String> billboardNames = (ArrayList<String>)response.getData();
 
 			//Data to be displayed in the JTable
-			mainWindowTable.setModel(new DefaultTableModel());
-			DefaultTableModel model = (DefaultTableModel) mainWindowTable.getModel();
+			billboards_Table.setModel(new DefaultTableModel());
+			DefaultTableModel model = (DefaultTableModel) billboards_Table.getModel();
 			model.addColumn("Billboard Name");
 			model.addColumn("Author");
 
@@ -350,15 +351,36 @@ public class ControlPanel extends JFrame {
 	private void createUIComponents() {
 		// TODO: place custom component creation code here
 		users_Table = new JTable(){
+			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
-				String userName = (String)users_Table.getModel().getValueAt(row, 0);
 
-				try {
-					Credentials credentials = (Credentials)requestSender.SendData(EndpointType.getUserDetails, userName).getData();
-					new newUser(userName, new Permissions(credentials.getPermissions()));
-				} catch (IOException | ClassNotFoundException ex) {
-					ex.printStackTrace();
+
+
+				// Open up editing window if user double clicks an entry
+				if (e instanceof MouseEvent) {
+					MouseEvent mouseEvent = (MouseEvent) e;
+					if (mouseEvent.getClickCount() != 2) {
+						return false;
+					}
+
+					String userName = (String) users_Table.getModel().getValueAt(row, 0);
+
+					try {
+						Credentials credentials = (Credentials) requestSender.SendData(EndpointType.getUserDetails, userName).getData();
+						new newUser(userName, new Permissions(credentials.getPermissions()));
+					} catch (IOException | ClassNotFoundException ex) {
+						ex.printStackTrace();
+					}
 				}
+				return false;
+			}
+		};
+
+
+		billboards_Table = new JTable() {
+			@Override
+			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+				System.out.println(e.toString());
 				return false;
 			}
 		};

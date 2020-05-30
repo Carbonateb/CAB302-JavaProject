@@ -38,7 +38,7 @@
                 </clientProperties>
                 <border type="none"/>
                 <children>
-                  <component id="94d77" class="javax.swing.JTable" binding="mainWindowTable">
+                  <component id="94d77" class="javax.swing.JTable" binding="billboards_Table" custom-create="true">
                     <constraints/>
                     <properties>
                       <autoCreateRowSorter value="true"/>

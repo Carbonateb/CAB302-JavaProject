@@ -21,12 +21,13 @@ import java.util.Date;
 
 public class ControlPanel extends JFrame {
 	private JButton newBillboard_Button;
-	private JButton editUsersButton;
+	private JButton changeYourPasswordButton;
 	public JPanel mainPanel;
 	private JTable schedule_Table;
 	private JButton newEvent_Button;
 	private JTable mainWindowTable;
 	private JTextPane billboardControlPanelV0TextPane;
+	private JTable table1;
 
 	// End UI Variables
 
@@ -70,7 +71,7 @@ public class ControlPanel extends JFrame {
 		 *
 		 * @author Callum McNeilage - n10482652
 		 */
-		editUsersButton.addActionListener(new ActionListener() {
+		changeYourPasswordButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				User.main(null);

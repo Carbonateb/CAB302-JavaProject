@@ -300,16 +300,17 @@ public class ControlPanel extends JFrame {
 
 		try {
 
-			ArrayList<String> users = (ArrayList<String>)requestSender.SendData(EndpointType.listUsers, null).getData();
+			ArrayList<Credentials> credentials = (ArrayList<Credentials>)requestSender.SendData(EndpointType.listUsers, null).getData();
 
 			Object[] row = new Object[5];
 
-			for (String user : users) {
-				row[0] = user;
-				row[1] = "N/A";
-				row[2] = "N/A";
-				row[3] = "N/A";
-				row[4] = "N/A";
+			for (Credentials cred : credentials) {
+				row[0] = cred.getUsername();
+				Permissions p = new Permissions(cred.getPermissions());
+				row[1] = p.hasPermission(Perm.CREATE_BILLBOARDS);
+				row[2] = p.hasPermission(Perm.SCHEDULE_BILLBOARDS);
+				row[3] = p.hasPermission(Perm.EDIT_ALL_BILLBOARDS);
+				row[4] = p.hasPermission(Perm.EDIT_USERS);
 
 				model.addRow(row);
 			}
@@ -355,6 +356,7 @@ public class ControlPanel extends JFrame {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 
+				System.out.println(e.toString());
 
 
 				// Open up editing window if user double clicks an entry

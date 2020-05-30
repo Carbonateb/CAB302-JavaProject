@@ -23,6 +23,8 @@ public class newUser {
 	private JLabel lblPassword;
 	public static JFrame newUserFrame;
 
+	boolean addUser;
+
 	/**
 	 * Saves all user variables to database and closes window when OK is pressed
 	 * @author Callum McNeilage - n10482652
@@ -31,11 +33,11 @@ public class newUser {
 	 */
 	public newUser(String user, Permissions perms) {
 		textField1.setText(user);
-		boolean newUser = (user.equals(""));
-		if (newUser) {
+		addUser = (user.equals(""));
+		if (addUser) {
 			lblPassword.setText("Password");
 		}
-		textField1.setEditable(newUser);
+		textField1.setEditable(addUser);
 
 		Response response = null;
 		try {
@@ -78,45 +80,35 @@ public class newUser {
 			public void actionPerformed(ActionEvent e) {
 				String username = textField1.getText();
 				String password = textField2.getText();
-				Boolean create = false;
-				Boolean edit = false;
-				Boolean schedule = false;
-				Boolean editUsers = false;
-
-				if (chkCreate.isSelected()) {
-					create = true;
-				}
-				else if (chkEdit.isSelected()) {
-					edit = true;
-				}
-				else if (chkSchedule.isSelected()) {
-					schedule = true;
-				}
-				else if (chkEditUsers.isSelected()) {
-					editUsers = true;
-				}
-				else {
-					// No permissions
+				if (password.equals("")) {
+					password = null;
 				}
 
 				Permissions permissions = new Permissions();
-				if (create) {
+				if (chkCreate.isSelected()) {
 					permissions.addPermission(Perm.CREATE_BILLBOARDS);
 				}
-				if (edit) {
+				if (chkEdit.isSelected()) {
 					permissions.addPermission(Perm.EDIT_ALL_BILLBOARDS);
 				}
-				if (schedule) {
+				if (chkSchedule.isSelected()) {
 					permissions.addPermission(Perm.SCHEDULE_BILLBOARDS);
 				}
-				if (editUsers) {
+				if (chkEditUsers.isSelected()) {
 					permissions.addPermission(Perm.EDIT_USERS);
 				}
 
 				Credentials credentials = new Credentials(username, password, permissions);
 
+				EndpointType endpoint = null;
+				if (addUser) {
+					endpoint = EndpointType.addUser;
+				} else {
+					endpoint = EndpointType.updateUser;
+				}
+
 				try {
-					Response response = ControlPanel.get().requestSender.SendData(EndpointType.addUser, credentials);
+					Response response = ControlPanel.get().requestSender.SendData(endpoint, credentials);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				} catch (ClassNotFoundException ex) {

@@ -385,12 +385,12 @@ public class dbServer {
 			final_hash = new String(base64.encode(hash));
 
 			sql = "UPDATE USERS SET" +
-				"pw_hash = '" + final_hash + "' , salt = '" + encoded_salt + "' , permissions = " + usr_Perms +
-				"WHERE usr_name = '" + usr_Name + "'";
+				" pw_hash = '" + final_hash + "' , salt = '" + encoded_salt + "' , permissions = " + usr_Perms +
+				" WHERE usr_name = '" + usr_Name + "'";
 		} else {
 			sql = "UPDATE USERS SET" +
-				"permissions = " + usr_Perms +
-				"WHERE usr_name = '" + usr_Name + "'";
+				" permissions = " + usr_Perms +
+				" WHERE usr_name = '" + usr_Name + "'";
 		}
 		return runSql(sql);
 	}

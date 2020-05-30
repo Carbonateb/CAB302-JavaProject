@@ -27,9 +27,8 @@ public class newUser {
 	 * @author Callum McNeilage - n10482652
 	 * @param user See main()
 	 * @param perms See main()
-	 * @param password See main()
 	 */
-	public newUser(String user, Permissions perms, Boolean password) {
+	public newUser(String user, Permissions perms) {
 		textField1.setText(user);
 		textField1.setEditable(false);
 
@@ -132,9 +131,8 @@ public class newUser {
 	 * @author Callum McNeilage - n10482652
 	 * @param user - Username of selected user - null if newUser
 	 * @param perms - Permissions from User.java - null if newUser
-	 * @param password - Boolean for if current user is selected user and can edit their password
 	 */
-	public static void main(String user, Permissions perms, Boolean password) {
+	public static void main(String user, Permissions perms) {
 		// Won't compile without the exceptions unhandled
 		try {
 			// Set System L&F
@@ -145,7 +143,7 @@ public class newUser {
 
 		// Create and setup newUsers window
 		newUserFrame = new JFrame("User");
-		newUserFrame.setContentPane(new newUser(user, perms, password).newUser);
+		newUserFrame.setContentPane(new newUser(user, perms).newUser);
 		newUserFrame.setDefaultCloseOperation(newUserFrame.HIDE_ON_CLOSE);
 		newUserFrame.pack();
 		newUserFrame.setVisible(true);

@@ -26,7 +26,7 @@ public class User {
 		btnNewUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newUser.main("", new Permissions(), true);
+				newUser.main("", new Permissions());
 			}
 		});
 		btnSelect.addActionListener(new ActionListener() {
@@ -36,12 +36,6 @@ public class User {
 				System.out.println(selected);
 
 				String username = ControlPanel.get().requestSender.getToken().getUser();
-				Boolean password = true;
-
-				if (!selected.equals(username)) {
-					//Disable password field in NewUser
-					password = false;
-				}
 				//Query server to get user data
 				Permissions perms;
 				try {
@@ -53,7 +47,7 @@ public class User {
 					perms = new Permissions(user.getPermissions());
 					System.out.println(perms);
 
-					newUser.main(selected, perms, password);
+					newUser.main(selected, perms);
 				}
 				catch (NullPointerException err) {
 					System.out.println("No user data");

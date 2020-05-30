@@ -386,12 +386,12 @@ public class dbServer {
 
 	/***
 	 * drops a user based on the users ID
-	 * @param usr_ID integer storing the ID of the user (PK)
+	 * @param usr_name integer storing the ID of the user (PK)
 	 * @return true if sql ran successfully else false
 	 */
-	public boolean rmUser(int usr_ID) {
+	public boolean rmUser(String usr_name) {
 		String sql =
-			"DELETE FROM USERS WHERE usr_ID = " + usr_ID;
+			"DELETE FROM USERS WHERE usr_name = '" + usr_name + "'";
 		return runSql(sql);
 	}
 

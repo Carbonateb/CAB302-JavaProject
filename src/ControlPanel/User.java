@@ -15,7 +15,8 @@ public class User {
 	public JPanel Users;
 	private JButton btnNewUser;
 	private JList lstNames;
-	private JButton btnSelect;
+	private JButton btnEdit;
+	private JButton btnDeleteUser;
 
 	public User() {
 		/**
@@ -29,7 +30,7 @@ public class User {
 				newUser.main("", new Permissions());
 			}
 		});
-		btnSelect.addActionListener(new ActionListener() {
+		btnEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selected = (String) lstNames.getSelectedValue();
@@ -40,9 +41,9 @@ public class User {
 				Permissions perms;
 				try {
 					//Query server
-					Response request = ControlPanel.get().requestSender.SendData(EndpointType.getUserDetails, selected);
-					System.out.println(request);
-					Credentials user = (Credentials) request.getData();
+					Response response = ControlPanel.get().requestSender.SendData(EndpointType.getUserDetails, selected);
+					System.out.println(response);
+					Credentials user = (Credentials) response.getData();
 					System.out.println(user);
 					perms = new Permissions(user.getPermissions());
 					System.out.println(perms);
@@ -52,6 +53,29 @@ public class User {
 				catch (NullPointerException err) {
 					System.out.println("No user data");
 				} catch (IOException | ClassNotFoundException ex) {
+					System.out.println("Error in response");
+				}
+
+
+			}
+		});
+		btnDeleteUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selected = (String) lstNames.getSelectedValue();
+				System.out.println(selected);
+
+				//Query server to delete user
+				Permissions perms;
+				try {
+					//Query server
+					Response response = ControlPanel.get().requestSender.SendData(EndpointType.deleteUser, selected);
+					System.out.println(response);
+				}
+				catch (NullPointerException err) {
+					System.out.println("No user data");
+				} catch (IOException | ClassNotFoundException ex) {
+					System.out.println(ex.getStackTrace());
 					System.out.println("Error in response");
 				}
 

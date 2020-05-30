@@ -30,6 +30,7 @@ public class Server {
 		// Should mirror the EndpointType enum
 		AddEvents.class,
 		AddBillboard.class,
+		DeleteUser.class,
 		Echo.class,
 		GetCurrentBillboard.class,
 		GetEvents.class,

@@ -9,6 +9,7 @@ package Server.Endpoints;
 public enum EndpointType {
 	addEvents,
 	addBillboard,
+	deleteUser,
 	echo,
 	getCurrentBillboard,
 	getEvents,

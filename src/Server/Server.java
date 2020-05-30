@@ -104,9 +104,11 @@ public class Server {
 		Billboard billboard = new Billboard("sample_billboard", "sample", "sample2", Color.red, Color.blue, null, "admin");
 		db.addBillboard(billboard);
 
+		Event event1 = new Event(10000000, 300000000, "bb_ex_1", "bob");
+		Event event2 = new Event(10000010, 300000001, "bb_ex_2", "jerry");
 
-		db.addEvent(10000000, 300000000, "bb_ex_1", "bob");
-		db.addEvent(10000010, 300000001, "bb_ex_2", "jerry");
+		db.addEvent(event1);
+		db.addEvent(event2);
 
 		ArrayList<Event> example = db.returnEventList();
 

@@ -103,7 +103,7 @@ public class Server {
 		//db.addUser("dylan", "faljnfkan", "salt1");
 		//db.addUser("colby", "gggggddd", "salt2");
 
-		Billboard billboard = new Billboard("sample_billboard", "sample", "sample2", Color.red, Color.blue, null, "admin");
+		Billboard billboard = new Billboard("sample_billboard", "sample", "sample2", Color.red, Color.blue, Color.white, null, "admin");
 		db.addBillboard(billboard);
 
 		Event event1 = new Event(10000000, 300000000, "bb_ex_1", "bob");

@@ -15,7 +15,8 @@ public class Billboard implements Serializable {
 
 	public String titleText;
 	public String infoText;
-	public Color textColor;
+	public Color titleTextColor;
+	public Color infoTextColor;
 	public Color backgroundColor;
 	public Image image;
 
@@ -23,11 +24,12 @@ public class Billboard implements Serializable {
 
 
 	/** Default constructor */
-	public Billboard(String name, String titleText, String infoText, Color textColor, Color backgroundColor, Image image, String author) {
+	public Billboard(String name, String titleText, String infoText, Color titleTextColor, Color infoTextColor, Color backgroundColor, Image image, String author) {
 		this.name = name;
 		this.titleText = titleText;
 		this.infoText = infoText;
-		this.textColor = textColor;
+		this.titleTextColor = titleTextColor;
+		this.infoTextColor = infoTextColor;
 		this.backgroundColor = backgroundColor;
 		this.image = image;
 		this.author = author;

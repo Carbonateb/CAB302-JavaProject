@@ -23,6 +23,7 @@ public class MainWindow {
 	private JTable schedule_Table;
 	private JButton newEvent_Button;
 	private JTable mainWindowTable;
+	private JTextPane billboardControlPanelV0TextPane;
 
 
 	public MainWindow() {

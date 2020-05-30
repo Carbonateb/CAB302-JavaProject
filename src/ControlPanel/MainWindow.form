@@ -11,7 +11,8 @@
       <tabbedpane id="c8cab">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="200"/>
+            <minimum-size width="400" height="400"/>
+            <preferred-size width="400" height="400"/>
           </grid>
         </constraints>
         <properties/>
@@ -110,6 +111,21 @@
               </vspacer>
             </children>
           </grid>
+          <scrollpane id="c54d">
+            <constraints>
+              <tabbedpane title="Help"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="eeb5d" class="javax.swing.JTextPane" binding="billboardControlPanelV0TextPane" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Billboard Control Panel v0.1&#10;&#10;To edit billboards and events, double click on the entry in the table that you want to edit.&#10;&#10;Billboards are referenced by name, make sure you give a descriptive one to recocnize it easily!&#10;&#10;Not able to do something? You may not have authorization to do it! Contact you administrator, they can give you more permissions if need be.&#10;&#10;&#10;This application was written by:&#10;Callum, Colby, Connor, Dylan, Lucas&#10;for CAB302: Software Development at QUT"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </tabbedpane>
     </children>

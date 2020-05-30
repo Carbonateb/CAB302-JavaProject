@@ -36,6 +36,13 @@ public class ControlPanel extends JFrame {
 	private JTable users_Table;
 	private JButton createNewAccount_Button;
 	private JPanel editUsers_Panel;
+	private JButton logOut_Button;
+	private JLabel permissionsList_Label;
+	private JLabel numPermissions_Label;
+	private JLabel yourUsername_Label;
+	private JButton refreshUsers_Button;
+	private JButton refreshBillboards_Button;
+	private JButton refreshEvents_Button;
 
 	// End UI Variables
 
@@ -95,6 +102,40 @@ public class ControlPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new newUser("", null);
+			}
+		});
+
+		refreshBillboards_Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				refreshBillboards();
+			}
+		});
+
+		refreshEvents_Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				refreshEvents();
+			}
+		});
+
+		refreshUsers_Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				refreshUsers();
+			}
+		});
+
+		logOut_Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					requestSender.logout();
+					dispose();
+					main(null);
+				} catch (IOException | ClassNotFoundException ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 
@@ -283,10 +324,20 @@ public class ControlPanel extends JFrame {
 	}
 
 	public void refreshUsers() {
-		// Don't do anything if the user can't see other users
+
+		// Update the text section describing your account
+		yourUsername_Label.setText("Logged in as: " + requestSender.getToken().getUser());
+		numPermissions_Label.setText("You have " + userPerms.numPermissions() + " permission(s):");
+		permissionsList_Label.setText(userPerms.toString());
+
+
+		// Don't continue if the user can't see other users
 		if (!userPerms.hasPermission(Perm.EDIT_USERS)) {
+			changeYourPasswordButton.setText("Change Password");
 			return;
 		}
+
+		changeYourPasswordButton.setText("Edit Your Account");
 
 		//Data to be displayed in the JTable
 		DefaultTableModel model = new DefaultTableModel();
@@ -367,8 +418,8 @@ public class ControlPanel extends JFrame {
 						// Bring up a confirmation dialogue
 						int n = JOptionPane.showConfirmDialog(
 							this,
-							"Are you sure you want to delete " + userName
-								+ "?\nThis action is irreversible!",
+							"Are you sure you want to delete '" + userName
+								+ "'?\nThis action is irreversible!",
 							"Confirm Delete User",
 							JOptionPane.YES_NO_OPTION);
 

@@ -1,9 +1,5 @@
 package Viewer;
 
-import Shared.Display.IMGHandler;
-import Shared.Display.XMLHandler;
-import org.xml.sax.SAXException;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -11,10 +7,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,6 +15,9 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import Shared.Display.IMGHandler;
+import Shared.Display.XMLHandler;
+import org.xml.sax.SAXException;
 
 /**
  * The viewer is the dummy client that displays the billboard.
@@ -30,7 +26,6 @@ import java.util.TimerTask;
  */
 public class Viewer {
 	private JPanel mainPanel;
-	private JTextPane testTextPane; // temporary
 	private JTextPane message;
 	private JTextPane information;
 	private JTextPane image;
@@ -88,11 +83,39 @@ public class Viewer {
 		});
 	}
 
+	private Font textFormatter(JTextPane textArea, String textAreaText) {
+		StyledDocument test = textArea.getStyledDocument();
+		SimpleAttributeSet test2 = new SimpleAttributeSet();
+		StyleConstants.setAlignment(test2, StyleConstants.ALIGN_CENTER);
+		test.setParagraphAttributes(0, test.getLength()-1, test2, false);
+
+		Font labelFont = textArea.getFont();
+
+		int fontSizeToUse;
+
+		if (textArea == information) {
+			fontSizeToUse = 40;
+		} else {
+			int stringWidth = textArea.getFontMetrics(labelFont).stringWidth(textAreaText);
+			int componentWidth = textArea.getWidth();
+
+			double widthRatio = (double)componentWidth / (double)stringWidth;
+
+			int newFontSize = (int)(labelFont.getSize() * widthRatio);
+			int componentHeight = textArea.getHeight();
+
+			fontSizeToUse = Math.min(newFontSize, componentHeight);
+		}
+
+		return new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse);
+	}
+
+
 
 	private void populateViewer() {
-//		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">All custom colours</message><information colour=\"#3FFFC7\">All custom colours</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
-		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">All custom colours</message><information colour=\"#3FFFC7\">All custom colours</information><picture data=\"iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAApElEQVR42u3RAQ0AAAjDMO5fNCCDkC5z0HTVrisFCBABASIgQAQEiIAAAQJEQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAQECBAgAgJEQIAIyPcGFY7HnV2aPXoAAAAASUVORK5CYII=\" />\n</billboard>\n";
-
+		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">This is a pretty cool test message!</message><information colour=\"#3FFFC7\">This is some much shorter message text</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
+//		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">This is a pretty cool test message!</message><information colour=\"#3FFFC7\">This is some much longer message text, it should be able to span over multiple lines so that we can test that functionality so that we know that it works properly</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
+//		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">This is a pretty cool test message!</message><information colour=\"#3FFFC7\">This is some much longer message text, it should be able to span over multiple lines so that we can test that functionality so that we know that it works properly</information><picture data=\"iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAApElEQVR42u3RAQ0AAAjDMO5fNCCDkC5z0HTVrisFCBABASIgQAQEiIAAAQJEQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAQECBAgAgJEQIAIyPcGFY7HnV2aPXoAAAAASUVORK5CYII=\" />\n</billboard>\n";
 
 		try {
 			// Set message text and color
@@ -106,10 +129,8 @@ public class Viewer {
 					messageColor = Color.black;
 				}
 				message.setForeground(messageColor);
-				StyledDocument test = message.getStyledDocument();
-				SimpleAttributeSet test2 = new SimpleAttributeSet();
-				StyleConstants.setAlignment(test2, StyleConstants.ALIGN_CENTER);
-				test.setParagraphAttributes(0, test.getLength()-1, test2, false);
+
+				message.setFont(textFormatter(message, messageText));
 			}
 
 			// Set information text and color
@@ -123,10 +144,8 @@ public class Viewer {
 					informationColor = Color.black;
 				}
 				information.setForeground(informationColor);
-				StyledDocument test = information.getStyledDocument();
-				SimpleAttributeSet test2 = new SimpleAttributeSet();
-				StyleConstants.setAlignment(test2, StyleConstants.ALIGN_CENTER);
-				test.setParagraphAttributes(0, test.getLength()-1, test2, false);
+
+				information.setFont(textFormatter(information, informationText));
 			}
 
 			// Set background color

@@ -26,7 +26,7 @@ public class User {
 		btnNewUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newUser.main(null, null, true);
+				newUser.main("", new Permissions(), true);
 			}
 		});
 		btnSelect.addActionListener(new ActionListener() {

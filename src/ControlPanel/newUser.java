@@ -1,11 +1,15 @@
 package ControlPanel;
 
+import Server.Endpoints.EndpointType;
+import Shared.Credentials;
+import Shared.Network.Response;
 import Shared.Permissions.Perm;
 import Shared.Permissions.Permissions;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class newUser {
 	public JPanel newUser;
@@ -28,8 +32,10 @@ public class newUser {
 	public newUser(String user, Permissions perms, Boolean password) {
 		textField1.setText(user);
 
-		if (!password | !perms.hasPermission(Perm.EDIT_USERS)) {
-			textField2.setEditable(false);
+		if (!password) {
+			if (!perms.hasPermission(Perm.EDIT_USERS)) {
+				textField2.setEditable(false);
+			}
 		}
 
 		if (perms.hasPermission(Perm.CREATE_BILLBOARDS)) {
@@ -52,24 +58,50 @@ public class newUser {
 			public void actionPerformed(ActionEvent e) {
 				String username = textField1.getText();
 				String password = textField2.getText();
+				Boolean create = false;
+				Boolean edit = false;
+				Boolean schedule = false;
+				Boolean editUsers = false;
 
 				if (chkCreate.isSelected()) {
-					Boolean create = true;
+					create = true;
 				}
 				else if (chkEdit.isSelected()) {
-					Boolean edit = true;
+					edit = true;
 				}
 				else if (chkSchedule.isSelected()) {
-					Boolean schedule = true;
+					schedule = true;
 				}
 				else if (chkEditUsers.isSelected()) {
-					Boolean editUsers = true;
+					editUsers = true;
 				}
 				else {
 					// No permissions
 				}
 
-				
+				Permissions permissions = new Permissions();
+				if (create) {
+					permissions.addPermission(Perm.CREATE_BILLBOARDS);
+				}
+				if (edit) {
+					permissions.addPermission(Perm.EDIT_ALL_BILLBOARDS);
+				}
+				if (schedule) {
+					permissions.addPermission(Perm.SCHEDULE_BILLBOARDS);
+				}
+				if (editUsers) {
+					permissions.addPermission(Perm.EDIT_USERS);
+				}
+
+				Credentials credentials = new Credentials(username, password, permissions);
+
+				try {
+					Response response = ControlPanel.get().requestSender.SendData(EndpointType.register, credentials);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				} catch (ClassNotFoundException ex) {
+					ex.printStackTrace();
+				}
 
 				newUserFrame.dispose();
 			}

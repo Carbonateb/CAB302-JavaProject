@@ -433,6 +433,30 @@ public class dbServer {
 	}
 
 	/***
+	 * updates a billboard with a new billboard
+	 * @param billboard
+	 * @return
+	 * @throws IOException
+	 */
+	public  boolean updateBillboard(Billboard billboard) throws IOException {
+		if(!checkBillboardExists(billboard.name)) {
+			return false;
+		}
+
+		//converts the billboard object to a string to save into the database
+		String data = ObjectSerialization.toString((Serializable) billboard);
+
+		String sql =
+			"UPDATE BILLBOARDS" +
+				" SET data = '" + data +"'"+
+				" WHERE name = '" + billboard.name+"'";
+
+		System.out.println("THE SQL :" + sql);
+
+		return runSql(sql);
+	}
+
+	/***
 	 * adds a billboard to the database
 	 * @param billboard billboard object
 	 * @return true if sql ran successfully else false

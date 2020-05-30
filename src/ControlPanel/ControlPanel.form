@@ -85,7 +85,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="28393" class="javax.swing.JTable" binding="schedule_Table">
+                  <component id="28393" class="javax.swing.JTable" binding="schedule_Table" custom-create="true">
                     <constraints/>
                     <properties>
                       <autoCreateRowSorter value="true"/>

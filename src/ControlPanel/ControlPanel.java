@@ -458,7 +458,45 @@ public class ControlPanel extends JFrame {
 		billboards_Table = new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
-				System.out.println(e.toString());
+				if (e instanceof KeyEvent) {
+					KeyEvent ke = (KeyEvent)e;
+					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
+						// Delete thing
+					}
+				} else if (e instanceof MouseEvent) {
+					MouseEvent mouseEvent = (MouseEvent) e;
+					if (mouseEvent.getClickCount() != 2) {
+						// Only allow double clicks
+						return false;
+					}
+
+				}
+
+
+
+				return false;
+			}
+		};
+
+		schedule_Table= new JTable() {
+			@Override
+			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+				if (e instanceof KeyEvent) {
+					KeyEvent ke = (KeyEvent)e;
+					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
+						// Delete thing
+					}
+				} else if (e instanceof MouseEvent) {
+					MouseEvent mouseEvent = (MouseEvent) e;
+					if (mouseEvent.getClickCount() != 2) {
+						// Only allow double clicks
+						return false;
+					}
+
+				}
+
+
+
 				return false;
 			}
 		};

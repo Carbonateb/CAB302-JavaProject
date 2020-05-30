@@ -32,11 +32,6 @@ public class newUser {
 		textField1.setText(user);
 		textField1.setEditable(false);
 
-//		if (!password) {
-//			if (!perms.hasPermission(Perm.EDIT_USERS)) {
-//				textField2.setEditable(false);
-//			}
-//		}
 		Response response = null;
 		try {
 			response = ControlPanel.get().requestSender.SendData(EndpointType.getUserDetails, ControlPanel.get().requestSender.getToken().getUser());

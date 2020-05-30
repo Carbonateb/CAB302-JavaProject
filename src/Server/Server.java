@@ -34,6 +34,7 @@ public class Server {
 		GetCurrentBillboard.class,
 		GetEvents.class,
 		ListUsers.class,
+		ListBillboards.class,
 		GetUserDetails.class,
 		Login.class,
 		Logout.class,

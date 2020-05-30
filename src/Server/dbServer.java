@@ -125,6 +125,33 @@ public class dbServer {
 		return users;
 	}
 
+	/***
+	 * lists all the billboards in the database
+	 * @return returns an array list of strings
+	 */
+	public ArrayList<String> listBillboards() {
+		ArrayList<String> billboards = new ArrayList<>();
+		String sql = "SELECT * FROM BILLBOARDS";
+
+		ResultSet rs;
+
+		Object obj;
+
+		try {
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				obj = rs.getString("name");
+				billboards.add(String.valueOf(obj));
+			}
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}
+		return billboards;
+	}
 
 	/***
 	 * Method that loads the saved database schedule to memory to edit later

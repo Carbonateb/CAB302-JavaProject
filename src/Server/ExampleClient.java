@@ -83,6 +83,14 @@ public class ExampleClient {
 		System.out.println();
 		Thread.sleep(1500);
 
+		System.out.println("Sending: " + requestSender.toString("listBillboards", null));
+		response = requestSender.SendData(EndpointType.listBillboards, null);
+		System.out.println("Response: " + (response));
+		System.out.println("List of billboards: " + response.getData());
+
+		System.out.println();
+		Thread.sleep(1500);
+
 		// Print the payload to console, send it to the server, amd print the response
 		System.out.println("Sending: " + requestSender.toString("echo", "hello world!"));
 		response = requestSender.SendData(EndpointType.echo, "hello world!");

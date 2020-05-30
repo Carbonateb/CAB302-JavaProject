@@ -19,7 +19,7 @@ public class GetUserDetails extends Endpoint {
 	public Object executeEndpoint(Request input){
 		Token token = input.getToken();
 		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
-			return new Response("error", "Permission denied", null);
+			return server.db.getUserDetails(token.getUser());
 		}
 
 		return server.db.getUserDetails((String) input.getData());

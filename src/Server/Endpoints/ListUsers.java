@@ -23,7 +23,9 @@ public class ListUsers extends Endpoint {
 	public Object executeEndpoint(Request input){
 		Token token = input.getToken();
 		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
-			return new Response("error", "Permission denied", null);
+			ArrayList<String> singleUser = new ArrayList<String>();
+			singleUser.add(token.getUser());
+			return singleUser;
 		}
 
 		return server.db.listUsers();

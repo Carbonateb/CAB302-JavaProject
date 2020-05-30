@@ -1,16 +1,19 @@
 package ControlPanel;
 
+import Server.Endpoints.EndpointType;
 import Shared.Schedule.Event;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -49,10 +52,21 @@ public class EventCreator extends JFrame {
 		setVisible(true);
 
 
-		// Prefill date & time boxes with current time
+		// Pre-fill date & time boxes with current time
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		startTime_TextField.setText(timeFormatter.format(new Date()));
 		startDate_TextField.setText(currentDateTime.format(dateFormatter));
+
+		// Read the list of available billboards and add them to the dropdown box
+		ArrayList<String> allBillboardNames;
+		try {
+			allBillboardNames = (ArrayList<String>)ControlPanel.get().requestSender.SendData(EndpointType.listBillboards, null).getData();
+			for (String billboard : allBillboardNames) {
+				billboardSelector_ComboBox.addItem(billboard);
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
 
 
@@ -76,7 +90,7 @@ public class EventCreator extends JFrame {
 				event.setDuration(60 * 1000 * (int)duration_Spinner.getValue());
 
 				// Get the specified billboard name from the drop down box
-				event.billboardName = billboardSelector_ComboBox.getName();
+				event.billboardName = (String)billboardSelector_ComboBox.getSelectedItem();
 
 				// Get the author from the currently logged in user
 				event.author = ControlPanel.get().requestSender.getToken().getUser();
@@ -90,5 +104,22 @@ public class EventCreator extends JFrame {
 				dispose();
 			}
 		});
+		billboardSelector_ComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ok_Button.setEnabled(billboardSelector_ComboBox.getSelectedIndex() == 0);
+			}
+		});
+	}
+
+	/**
+	 * Call to check if all of the inputs are good.
+	 * If they are, enable the ok button
+	 * If they are not, disable the ok button.
+	 */
+	private void setOkButtonEnabled() {
+		boolean validBillboardSelected = billboardSelector_ComboBox.getSelectedIndex() == 0;
+
+		ok_Button.setEnabled(validBillboardSelected);
 	}
 }

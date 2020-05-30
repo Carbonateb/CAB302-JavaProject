@@ -30,7 +30,7 @@ public class ControlPanel extends JFrame {
 	private JButton newEvent_Button;
 	private JTable mainWindowTable;
 	private JTextPane billboardControlPanelV0TextPane;
-	private JTable table1;
+	private JTable users_Table;
 	private JButton createNewAccount_Button;
 	private JPanel editUsers_Panel;
 
@@ -171,6 +171,7 @@ public class ControlPanel extends JFrame {
 
 		refreshBillboards();
 		refreshEvents();
+		refreshUsers();
 
 		editUsers_Panel.setVisible(userPerms.hasPermission(Perm.EDIT_USERS));
 	}
@@ -258,13 +259,13 @@ public class ControlPanel extends JFrame {
 		}
 
 		//Data to be displayed in the JTable
-		schedule_Table.setModel(new DefaultTableModel());
-		DefaultTableModel model = (DefaultTableModel) schedule_Table.getModel();
+		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("Billboard");
 		model.addColumn("Start Time");
 		model.addColumn("Duration");
 		model.addColumn("Repeats");
 		model.addColumn("Scheduler");
+		schedule_Table.setModel(model);
 
 		Object[] row = new Object[5];
 		for (Event event : list) {
@@ -275,6 +276,45 @@ public class ControlPanel extends JFrame {
 			row[4] = event.author;
 
 			model.addRow(row);
+		}
+	}
+
+	public void refreshUsers() {
+		// Don't do anything if the user can't see other users
+		if (!userPerms.hasPermission(Perm.EDIT_USERS)) {
+			return;
+		}
+
+		//Data to be displayed in the JTable
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("User Name");
+		model.addColumn("Create Billboards");
+		model.addColumn("Schedule Billboards");
+		model.addColumn("Edit All Billboards");
+		model.addColumn("Edit Users");
+		users_Table.setModel(model);
+
+		// Get the list of users from the server
+
+		try {
+
+			ArrayList<String> users = (ArrayList<String>)requestSender.SendData(EndpointType.listUsers, null).getData();
+
+			Object[] row = new Object[5];
+
+			for (String user : users) {
+				row[0] = user;
+				row[1] = "N/A";
+				row[2] = "N/A";
+				row[3] = "N/A";
+				row[4] = "N/A";
+
+				model.addRow(row);
+			}
+
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 

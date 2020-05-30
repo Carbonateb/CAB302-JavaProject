@@ -1,5 +1,7 @@
 package ControlPanel;
 
+import Server.Endpoints.EndpointType;
+import Shared.Billboard;
 import Shared.Display.IMGHandler;
 import Shared.Display.XMLHandler;
 import org.xml.sax.SAXException;
@@ -14,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Objects;
 
 
 /**
@@ -25,21 +27,21 @@ import java.util.*;
  */
 public class BillboardEditor {
 	public JPanel BillboardWindow;
-	private JTextField message;
-	private JButton messageColorButton;
-	private JButton localFileButton;
-	private JButton URLButton;
-	private JLabel selectedFileLabel;
-	private JTextField information;
-	private JButton informationColorButton;
-	private JButton backgroundColorButton;
-	private JButton exportXMLButton;
-	private JButton importXMLButton;
-	private JTextField messageColorPreview;
-	private JTextField informationColorPreview;
+	private JButton titleColor_Button;
+	private JButton loadImageFromFile_Button;
+	private JButton loadImageFromURL_Button;
+	private JLabel selectedFile_Label;
+	private JTextField title_TextField;
+	private JButton infoColor_Button;
+	private JButton backgroundColor_Button;
+	private JButton exportXML_Button;
+	private JButton importXML_Button;
+	private JTextField titleColorPreview;
+	private JTextField infoColorPreview;
 	private JTextField backgroundColorPreview;
-	private JButton okayButton;
-	private JButton cancelButton;
+	private JButton okay_Button;
+	private JTextField name_TextField;
+	private JTextPane info_TextPane;
 	public static JFrame billboardFrame;
 
 	private void SetValues(boolean isFile, String xmlData) {
@@ -48,26 +50,26 @@ public class BillboardEditor {
 			Color messageColor;
 			String messageText = XMLHandler.xmlReader(isFile, xmlData, "message", null);
 			if (messageText != null) {
-				message.setText(messageText);
+				title_TextField.setText(messageText);
 				try {
 					messageColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(isFile, xmlData, "message", "colour")));
 				} catch (NullPointerException r) {
 					messageColor = Color.black;
 				}
-				messageColorPreview.setBackground(messageColor);
+				titleColorPreview.setBackground(messageColor);
 			}
 
 			// Set information text and color
 			Color informationColor;
 			String informationText = XMLHandler.xmlReader(isFile, xmlData, "information", null);
 			if (informationText != null) {
-				information.setText(informationText);
+				info_TextPane.setText(informationText);
 				try {
 					informationColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(isFile, xmlData, "information", "colour")));
 				} catch (NullPointerException r) {
 					informationColor = Color.black;
 				}
-				informationColorPreview.setBackground(informationColor);
+				infoColorPreview.setBackground(informationColor);
 
 			}
 
@@ -93,7 +95,7 @@ public class BillboardEditor {
 
 			if (image != null) {
 				System.out.println(image);
-				selectedFileLabel.setText(image);
+				selectedFile_Label.setText(image);
 			}
 		} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
 			ex.printStackTrace();
@@ -106,7 +108,7 @@ public class BillboardEditor {
 			SetValues(false, xmlString);
 		}
 
-		messageColorButton.addActionListener(new ActionListener() {
+		titleColor_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Message Color' button being pressed
 			 *
@@ -116,11 +118,11 @@ public class BillboardEditor {
 			public void actionPerformed(ActionEvent e) {
 				Color initialColor = Color.black;
 				Color messageColor = JColorChooser.showDialog(null, "Choose Message Color", initialColor); // Brings up the color chooser dialogue
-				messageColorPreview.setBackground(messageColor); // Sets the inactive button that acts as as 'preview' to the color selected
+				titleColorPreview.setBackground(messageColor); // Sets the inactive button that acts as as 'preview' to the color selected
 			}
 		});
 
-		localFileButton.addActionListener(new ActionListener() {
+		loadImageFromFile_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Local File' button being pressed
 			 *
@@ -141,7 +143,7 @@ public class BillboardEditor {
 
 				if (selected == JFileChooser.APPROVE_OPTION) {
 					localImagePath = imageSelect.getSelectedFile().getAbsolutePath();
-					selectedFileLabel.setText(localImagePath);
+					selectedFile_Label.setText(localImagePath);
 				}
 
 				BufferedImage image = null;
@@ -168,7 +170,7 @@ public class BillboardEditor {
 			}
 		});
 
-		URLButton.addActionListener(new ActionListener() {
+		loadImageFromURL_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'URL' button being pressed
 			 *
@@ -187,12 +189,12 @@ public class BillboardEditor {
 
 				// As long as the user has entered a URL, update the preview label
 				if ((imageURL != null) && (imageURL.length() > 0)) {
-					selectedFileLabel.setText(imageURL);
+					selectedFile_Label.setText(imageURL);
 				}
 			}
 		});
 
-		informationColorButton.addActionListener(new ActionListener() {
+		infoColor_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Information Text Color' button being pressed
 			 *
@@ -202,11 +204,11 @@ public class BillboardEditor {
 			public void actionPerformed(ActionEvent e) {
 				Color initialColor = Color.black;
 				Color informationColor = JColorChooser.showDialog(null, "Choose Information Text Color", initialColor); // Brings up the color chooser dialogue
-				informationColorPreview.setBackground(informationColor); // Sets the inactive button that acts as as 'preview' to the color selected
+				infoColorPreview.setBackground(informationColor); // Sets the inactive button that acts as as 'preview' to the color selected
 			}
 		});
 
-		backgroundColorButton.addActionListener(new ActionListener() {
+		backgroundColor_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Background Color' button being pressed
 			 *
@@ -220,7 +222,7 @@ public class BillboardEditor {
 			}
 		});
 
-		importXMLButton.addActionListener(new ActionListener() {
+		importXML_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Import XML' button being pressed
 			 *
@@ -242,10 +244,10 @@ public class BillboardEditor {
 				if (selected == JFileChooser.APPROVE_OPTION) {
 					xmlImportPath = xmlSelect.getSelectedFile().getAbsolutePath();
 					// Clear any current values
-					message.setText(null);
-					messageColorPreview.setBackground(Color.black);
-					information.setText(null);
-					informationColorPreview.setBackground(Color.black);
+					title_TextField.setText(null);
+					titleColorPreview.setBackground(Color.black);
+					info_TextPane.setText(null);
+					infoColorPreview.setBackground(Color.black);
 					backgroundColorPreview.setBackground(Color.white);
 				}
 
@@ -253,7 +255,7 @@ public class BillboardEditor {
 			}
 		});
 
-		exportXMLButton.addActionListener(new ActionListener() {
+		exportXML_Button.addActionListener(new ActionListener() {
 			/**
 			 * Handle the 'Export XML' button being pressed
 			 *
@@ -275,12 +277,12 @@ public class BillboardEditor {
 				if (selected == JFileChooser.APPROVE_OPTION) {
 					xmlExportPath = xmlSave.getSelectedFile().getAbsolutePath();
 
-					String messageText = message.getText();
-					Color messageColor = messageColorPreview.getBackground();
-					String informationText = information.getText();
-					Color informationColor = informationColorPreview.getBackground();
+					String messageText = title_TextField.getText();
+					Color messageColor = titleColorPreview.getBackground();
+					String informationText = info_TextPane.getText();
+					Color informationColor = infoColorPreview.getBackground();
 					Color backgroundColor = backgroundColorPreview.getBackground();
-					String image = selectedFileLabel.getText();
+					String image = selectedFile_Label.getText();
 
 					try {
 						XMLHandler.xmlWriter(xmlExportPath, messageText, messageColor, informationText, informationColor, backgroundColor, image);
@@ -291,7 +293,7 @@ public class BillboardEditor {
 			}
 		});
 
-		okayButton.addActionListener(new ActionListener() {
+		okay_Button.addActionListener(new ActionListener() {
 			/**
 			 * Saves data and closes window
 			 *
@@ -300,19 +302,35 @@ public class BillboardEditor {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				billboardFrame.dispose();
-			}
-		});
+				try {
+					ControlPanel.get().requestSender.SendData(EndpointType.addBillboard, new Billboard(
+						// Name
+						name_TextField.getText(),
 
-		cancelButton.addActionListener(new ActionListener() {
-			/**
-			 * Closes window without saving data
-			 *
-			 * @author Callum McNeilage - n10482652
-			 * @param e
-			 */
-			@Override
-			public void actionPerformed(ActionEvent e) {
+						// title text
+						title_TextField.getText(),
+
+						// info text
+						info_TextPane.getText(),
+
+						// title colour
+						titleColorPreview.getBackground(),
+
+						// info colour
+						infoColorPreview.getBackground(),
+
+						// background color
+						backgroundColorPreview.getBackground(),
+
+						// background image
+						null,
+
+						// author
+						ControlPanel.get().requestSender.getToken().getUser()
+					));
+				} catch (IOException | ClassNotFoundException ex) {
+					System.out.println(ex.getMessage());
+				}
 				billboardFrame.dispose();
 			}
 		});

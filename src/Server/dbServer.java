@@ -1,6 +1,7 @@
 package Server;
 
 import Shared.Billboard;
+import Shared.Credentials;
 import Shared.Schedule.*;
 import Shared.Permissions.Permissions;
 
@@ -185,16 +186,12 @@ public class dbServer {
 
 	/***
 	 *  adds an event to the schedule, and saves the schedule to the database
-	 * @param startTime unix time for start
-	 * @param endTime unix time for end
-	 * @param bbName the name of the billboard
-	 * @param author the user who added the event
+	 * @param event the event to add
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void addEvent(long startTime, long endTime, String bbName, String author) throws IOException, ClassNotFoundException {
+	public void addEvent(Event event) throws IOException, ClassNotFoundException {
 		//create a new event and add it to the memory Schedule
-		Event event = new Event(startTime, endTime, bbName, author);
 		schedule.scheduleEvent(event);
 
 		//save memory schedule to database
@@ -274,6 +271,17 @@ public class dbServer {
 		} else {
 			return false;
 		}
+	}
+
+	/***
+	 * returns credentials for a specific user
+	 * @param usr the username to check
+	 * @return credentials object
+	 */
+	public Credentials getUserDetails(String usr) {
+		System.out.println(usr);
+		String[] dbuser = queryDB("USERS", usr, "usr_Name");
+		return new Credentials(dbuser[1],null, new Permissions(Integer.parseInt(dbuser[4])));
 	}
 
 	/***
@@ -418,6 +426,30 @@ public class dbServer {
 	public boolean checkBillboardExists(String name) {
 		String[] query = queryDB("BILLBOARDS", name, "name");
 		return query[1] != null;
+	}
+
+	/***
+	 * updates a billboard with a new billboard
+	 * @param billboard
+	 * @return
+	 * @throws IOException
+	 */
+	public  boolean updateBillboard(Billboard billboard) throws IOException {
+		if(!checkBillboardExists(billboard.name)) {
+			return false;
+		}
+
+		//converts the billboard object to a string to save into the database
+		String data = ObjectSerialization.toString((Serializable) billboard);
+
+		String sql =
+			"UPDATE BILLBOARDS" +
+				" SET data = '" + data +"'"+
+				" WHERE name = '" + billboard.name+"'";
+
+		System.out.println("THE SQL :" + sql);
+
+		return runSql(sql);
 	}
 
 	/***

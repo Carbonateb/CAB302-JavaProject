@@ -1,12 +1,14 @@
 package Server;
 
 import Server.Endpoints.EndpointType;
+import Shared.Billboard;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
 import Shared.Permissions.Permissions;
 import Shared.Schedule.Event;
 
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.MessageDigest;
@@ -46,6 +48,13 @@ public class ExampleClient {
 		System.out.println();
 		Thread.sleep(1500);
 
+		System.out.println("Sending: " + requestSender.toString("getUserDetails", "admin"));
+		response = requestSender.SendData(EndpointType.getUserDetails, "admin");
+		System.out.println("Response: " + (response));
+
+		System.out.println();
+		Thread.sleep(1500);
+
 		// Register new account
 		String password2 = "password";
 
@@ -62,6 +71,14 @@ public class ExampleClient {
 		response = requestSender.SendData(EndpointType.listUsers, null);
 		System.out.println("Response: " + (response));
 		System.out.println("List of users: " + response.getData());
+
+		System.out.println();
+		Thread.sleep(1500);
+
+		Billboard billboard = new Billboard("example_billboard", "sample", "sample2", Color.red, Color.blue, null, "admin");
+		System.out.println("Sending: " + requestSender.toString("addBillboard", billboard));
+		response = requestSender.SendData(EndpointType.addBillboard, billboard);
+		System.out.println("Response: " + response);
 
 		System.out.println();
 		Thread.sleep(1500);

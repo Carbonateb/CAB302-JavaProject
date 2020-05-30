@@ -1,8 +1,15 @@
 package ControlPanel;
 
+import Server.Endpoints.EndpointType;
+import Shared.Credentials;
+import Shared.Network.Response;
+import Shared.Permissions.Permissions;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class User {
 	public JPanel Users;
@@ -19,23 +26,82 @@ public class User {
 		btnNewUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newUser.main(null);
+				newUser.main("", new Permissions());
 			}
 		});
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newUser.main(null);
+				String selected = (String) lstNames.getSelectedValue();
+				System.out.println(selected);
 
+				String username = ControlPanel.get().requestSender.getToken().getUser();
 				//Query server to get user data
+				Permissions perms;
 				try {
 					//Query server
+					Response request = ControlPanel.get().requestSender.SendData(EndpointType.getUserDetails, selected);
+					System.out.println(request);
+					Credentials user = (Credentials) request.getData();
+					System.out.println(user);
+					perms = new Permissions(user.getPermissions());
+					System.out.println(perms);
+
+					newUser.main(selected, perms);
 				}
 				catch (NullPointerException err) {
 					System.out.println("No user data");
+				} catch (IOException | ClassNotFoundException ex) {
+					System.out.println("Error in response");
 				}
+
+
 			}
 		});
+
+		/**
+		 * Queries server for users
+		 *
+		 * @author Callum McNeilage - n10482652
+		 */
+		// Query users table
+		ArrayList<String> users = null;
+		try {
+			Response request = ControlPanel.get().requestSender.SendData(EndpointType.listUsers, null);
+			// Check if the server replied with an error
+			if (request.getStatus().equals("error")) {
+				if (request.getData().equals("Invalid token")) {
+					System.out.println("Your session token is invalid (probably expired), try logging in again");
+				}
+				else {
+					System.out.println("Server replied with an error: " + request.getData().toString());
+				}
+				return;
+			}
+
+			if (request.getData() instanceof ArrayList) {
+				users = (ArrayList<String>) request.getData();
+				System.out.println(users);
+			} else if(request.getData().toString().equals("")){
+				System.out.println("No users to show");
+			}
+			else {
+				System.out.printf("Server replied with unexpected data: '%s'\n", request.getData().toString());
+				return;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("There was an issue when retrieving users");
+		}
+
+		//User data to be displayed
+		String[] ListData = new String[users.size()];
+		for (int i = 0; i < users.size(); i++) {
+			ListData[i] = users.get(i);
+		}
+
+		//Add users to list
+		lstNames.setListData(ListData);
 	}
 
 	/**
@@ -51,14 +117,6 @@ public class User {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
 			// handle exception
-		}
-
-		// Query users table
-		try {
-			//Query server
-		}
-		catch (NullPointerException e) {
-			System.out.println("No users to display");
 		}
 
 		// Create and setup Users window

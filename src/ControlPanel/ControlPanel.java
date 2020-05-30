@@ -54,11 +54,13 @@ public class ControlPanel extends JFrame {
 			propsReader.getPort()
 		);
 
-		setVisible(true);
+
 		// Create the login window and display it
 		LoginWindow loginWindow = new LoginWindow();
 		setContentPane(loginWindow.loginWindow);
 		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
 		System.out.println("Waiting for user to log in...");
 
 
@@ -132,8 +134,11 @@ public class ControlPanel extends JFrame {
 		System.out.println("Logged in successfully. Control panel is ready!");
 
 		// Create main window
+		setVisible(false);
 		setContentPane(mainPanel);
 		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
 
 		refreshBillboards();
 		refreshEvents();

@@ -173,6 +173,7 @@ public class User {
 		usersFrame.setContentPane(new User().Users);
 		usersFrame.setDefaultCloseOperation(usersFrame.HIDE_ON_CLOSE);
 		usersFrame.pack();
+		usersFrame.setLocationRelativeTo(ControlPanel.get());
 		usersFrame.setVisible(true);
 	}
 }

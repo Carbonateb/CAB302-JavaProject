@@ -347,7 +347,9 @@ public class BillboardEditor {
 		}
 
 		billboardFrame.setDefaultCloseOperation(billboardFrame.HIDE_ON_CLOSE);
+		billboardFrame.setTitle("Billboard Editor");
 		billboardFrame.pack();
+		billboardFrame.setLocationRelativeTo(ControlPanel.get());
 		billboardFrame.setVisible(true);
 		billboardFrame.setResizable(false);
 	}

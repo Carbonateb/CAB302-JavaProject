@@ -45,10 +45,11 @@ public class EventEditor extends JFrame {
 	 */
 	public EventEditor() {
 		// Set up frame
-		setTitle("Schedule BillboardEditor");
+		setTitle("Event Editor");
 		setContentPane(main_Panel);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		pack();
+		setLocationRelativeTo(ControlPanel.get());
 		setVisible(true);
 
 

@@ -151,6 +151,7 @@ public class newUser {
 		newUserFrame.setContentPane(new newUser(user, perms).newUser);
 		newUserFrame.setDefaultCloseOperation(newUserFrame.HIDE_ON_CLOSE);
 		newUserFrame.pack();
+		newUserFrame.setLocationRelativeTo(ControlPanel.get());
 		newUserFrame.setVisible(true);
 	}
 }

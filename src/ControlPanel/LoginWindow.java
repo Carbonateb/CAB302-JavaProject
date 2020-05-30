@@ -103,7 +103,7 @@ public class LoginWindow {
 
 					// The request is a blocking operation, no need for delegates
 					if (response.getStatus().equals("success")) {
-						ControlPanel.get().loggedIn(response);
+						ControlPanel.get().loggedIn();
 					} else {
 						// If the password is incorrect, hide the placeholder label and show
 						// the label informing the user that the password is incorrect.

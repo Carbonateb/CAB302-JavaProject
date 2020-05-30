@@ -48,7 +48,7 @@ public class Schedule {
 		btnSchedule.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				times.main(null);
+				new EventCreator();
 			}
 		});
 

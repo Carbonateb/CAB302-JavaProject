@@ -149,7 +149,7 @@ public class Schedule implements Serializable {
 
 	/**
 	 * Given a repeating event, calculates when it should next be displayed and schedules it at that time.
-	 * This will not schedule the event at the times given on the variables. Use
+	 * This will not schedule the event at the EventCreator given on the variables. Use
 	 * the regular scheduleEvent function to do that. This function is intended to be used
 	 * to schedule the next event once the current event event has expired.
 	 * @param re the event to repeat. Will silently fail if not a Repeating Event

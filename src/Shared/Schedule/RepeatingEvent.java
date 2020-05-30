@@ -1,7 +1,7 @@
 package Shared.Schedule;
 
 /**
- * In a repeating event, the start and end times indicate the
+ * In a repeating event, the start and end EventCreator indicate the
  */
 
 public class RepeatingEvent extends Event {

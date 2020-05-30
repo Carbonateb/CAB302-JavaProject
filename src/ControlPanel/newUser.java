@@ -20,6 +20,7 @@ public class newUser {
 	private JCheckBox chkSchedule;
 	private JCheckBox chkEditUsers;
 	private JButton btnSet;
+	private JLabel lblPassword;
 	public static JFrame newUserFrame;
 
 	/**
@@ -31,6 +32,9 @@ public class newUser {
 	public newUser(String user, Permissions perms) {
 		textField1.setText(user);
 		boolean newUser = (user.toString().equals(""));
+		if (newUser) {
+			lblPassword.setText("Password");
+		}
 		textField1.setEditable(newUser);
 
 		Response response = null;

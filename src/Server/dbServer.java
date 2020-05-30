@@ -308,7 +308,11 @@ public class dbServer {
 	public Credentials getUserDetails(String usr) {
 		System.out.println(usr);
 		String[] dbuser = queryDB("USERS", usr, "usr_Name");
-		return new Credentials(dbuser[1],null, new Permissions(Integer.parseInt(dbuser[4])));
+		if (dbuser[4] != null) {
+			return new Credentials(dbuser[1], null, new Permissions(Integer.parseInt(dbuser[4])));
+		} else {
+			return new Credentials(null, null, null);
+		}
 	}
 
 	/***

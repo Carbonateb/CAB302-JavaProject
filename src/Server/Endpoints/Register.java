@@ -12,7 +12,7 @@ public class Register extends Endpoint {
 		associatedEndpoint = EndpointType.register;
 	}
 
-	public Response Run(Request request) {
+	public Object executeEndpoint(Request request) {
 
 		Token token = request.getToken();
 		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
@@ -33,7 +33,7 @@ public class Register extends Endpoint {
 		try {
 			if (!server.db.checkUserExists(username)) {
 				server.db.addUser(username, password, permissions);
-				return new Response("success", username, request.getToken());
+				return username;
 			} else {
 				return new Response("error", "User already exists", null);
 			}

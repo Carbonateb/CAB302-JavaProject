@@ -110,7 +110,6 @@ public class SocketHandler {
 		if (tokens.contains(token)) {
 			if (token.getExpires() >= Instant.now().getEpochSecond()) {
 				// token is valid
-				resetExpire(token);
 				return TokenStatus.valid;
 			} else {
 				// token has expired
@@ -134,8 +133,10 @@ public class SocketHandler {
 	}
 
 	public Token resetExpire(Token token) {
+		System.out.println("RESETTING TOKEN, OLD: " + token);
 		Token tempToken = removeToken(token);
 		addToken(tempToken.resetExpire());
+		System.out.println("FINISHED RESET TOKEN, NEW: " + tempToken);
 		return tempToken;
 	}
 

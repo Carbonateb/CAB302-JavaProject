@@ -47,6 +47,7 @@ public class Endpoint {
 				if (result instanceof Response) {
 					return (Response) result;
 				} else {
+					server.socketHandler.resetExpire(request.getToken());
 					return new Response("success", result, request.getToken());
 				}
 			case expired:

@@ -4,6 +4,7 @@ import Server.Server;
 import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Network.TokenStatus;
+import Shared.Permissions.Perm;
 
 /**
  * An Endpoint is something that the server can be requested to do remotely.
@@ -14,6 +15,9 @@ public class Endpoint {
 
 	/** This is the endpoint command used to access this endpoint */
 	public EndpointType associatedEndpoint;
+
+	/** What permission the caller needs to have for it to work */
+	public Perm requiredPermission;
 
 	Server server;
 
@@ -33,6 +37,12 @@ public class Endpoint {
 
 		switch (tokenStatus) {
 			case valid:
+				if (requiredPermission != null) {
+					if (!server.socketHandler.hasPerm(request.getToken().getUser(), requiredPermission)) {
+						return new Response("error", "Permission denied", null);
+					}
+				}
+
 				Object result = executeEndpoint(request);
 				if (result instanceof Response) {
 					return (Response) result;

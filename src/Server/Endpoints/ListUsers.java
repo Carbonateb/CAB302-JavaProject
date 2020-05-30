@@ -1,5 +1,6 @@
 package Server.Endpoints;
 
+import Shared.Credentials;
 import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Network.Token;
@@ -23,8 +24,8 @@ public class ListUsers extends Endpoint {
 	public Object executeEndpoint(Request input){
 		Token token = input.getToken();
 		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
-			ArrayList<String> singleUser = new ArrayList<String>();
-			singleUser.add(token.getUser());
+			ArrayList<Credentials> singleUser = new ArrayList<Credentials>();
+			singleUser.add(server.db.getUserDetails(input.getToken().getUser()));
 			return singleUser;
 		}
 

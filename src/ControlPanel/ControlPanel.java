@@ -290,6 +290,7 @@ public class ControlPanel extends JFrame {
 		//Data to be displayed in the JTable
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("User Name");
+		model.addColumn("Num Permissions");
 		model.addColumn("Create Billboards");
 		model.addColumn("Schedule Billboards");
 		model.addColumn("Edit All Billboards");
@@ -302,15 +303,16 @@ public class ControlPanel extends JFrame {
 
 			ArrayList<Credentials> credentials = (ArrayList<Credentials>)requestSender.SendData(EndpointType.listUsers, null).getData();
 
-			Object[] row = new Object[5];
+			Object[] row = new Object[6];
 
 			for (Credentials cred : credentials) {
 				row[0] = cred.getUsername();
 				Permissions p = new Permissions(cred.getPermissions());
-				row[1] = p.hasPermission(Perm.CREATE_BILLBOARDS);
-				row[2] = p.hasPermission(Perm.SCHEDULE_BILLBOARDS);
-				row[3] = p.hasPermission(Perm.EDIT_ALL_BILLBOARDS);
-				row[4] = p.hasPermission(Perm.EDIT_USERS);
+				row[1] = p.numPermissions();
+				row[2] = (p.hasPermission(Perm.CREATE_BILLBOARDS) ? "✓" : "");
+				row[3] = (p.hasPermission(Perm.SCHEDULE_BILLBOARDS) ? "✓" : "");
+				row[4] = (p.hasPermission(Perm.EDIT_ALL_BILLBOARDS) ? "✓" : "");
+				row[5] = (p.hasPermission(Perm.EDIT_USERS) ? "✓" : "");
 
 				model.addRow(row);
 			}

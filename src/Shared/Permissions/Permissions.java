@@ -32,6 +32,31 @@ public class Permissions implements Serializable {
 		}
 	}
 
+	/**
+	 * Returns the number of permissions this has
+ 	 */
+	public int numPermissions() {
+		int returnValue = 0;
+
+		if (hasPermission(Perm.CREATE_BILLBOARDS)) {
+			returnValue += 1;
+		}
+
+		if (hasPermission(Perm.SCHEDULE_BILLBOARDS)) {
+			returnValue += 1;
+		}
+
+		if (hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
+			returnValue += 1;
+		}
+
+		if (hasPermission(Perm.EDIT_USERS)) {
+			returnValue += 1;
+		}
+
+		return returnValue;
+	}
+
 	// Converts this permissions to a int for easy serialization
 	public int toInt() {
 		int returnValue = 0b0000;

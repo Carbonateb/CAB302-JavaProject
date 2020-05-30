@@ -346,4 +346,21 @@ public class ControlPanel extends JFrame {
 	public static ControlPanel get() {
 		return globalInstance;
 	}
+
+	private void createUIComponents() {
+		// TODO: place custom component creation code here
+		users_Table = new JTable(){
+			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+				String userName = (String)users_Table.getModel().getValueAt(row, 0);
+
+				try {
+					Credentials credentials = (Credentials)requestSender.SendData(EndpointType.getUserDetails, userName).getData();
+					new newUser(userName, new Permissions(credentials.getPermissions()));
+				} catch (IOException | ClassNotFoundException ex) {
+					ex.printStackTrace();
+				}
+				return false;
+			}
+		};
+	}
 }

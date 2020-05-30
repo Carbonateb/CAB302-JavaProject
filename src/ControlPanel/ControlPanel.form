@@ -144,7 +144,7 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="5319a" class="javax.swing.JTable" binding="users_Table">
+                      <component id="5319a" class="javax.swing.JTable" binding="users_Table" custom-create="true">
                         <constraints/>
                         <properties>
                           <autoCreateRowSorter value="true"/>

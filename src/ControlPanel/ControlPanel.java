@@ -90,7 +90,8 @@ public class ControlPanel extends JFrame {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BillboardEditor.main(null, "New BillboardEditor");
+				new BillboardEditor(null);
+				//BillboardEditor.main(null, "New BillboardEditor");
 			}
 		});
 

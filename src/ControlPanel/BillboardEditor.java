@@ -23,7 +23,7 @@ import java.util.*;
  * @author Connor McHugh - n10522662
  * @contributor Callum McNeilage - n10482652
  */
-public class Billboard {
+public class BillboardEditor {
 	public JPanel BillboardWindow;
 	private JTextField message;
 	private JButton messageColorButton;
@@ -100,7 +100,7 @@ public class Billboard {
 		}
 	}
 
-	public Billboard(String xmlString) {
+	public BillboardEditor(String xmlString) {
 		if (xmlString != null) {
 			System.out.println(xmlString);
 			SetValues(false, xmlString);
@@ -322,9 +322,9 @@ public class Billboard {
 
 		billboardFrame = new JFrame(title);
 		if (xmlString != null) {
-			billboardFrame.setContentPane(new Billboard(xmlString).BillboardWindow);
+			billboardFrame.setContentPane(new BillboardEditor(xmlString).BillboardWindow);
 		} else {
-			billboardFrame.setContentPane(new Billboard(null).BillboardWindow);
+			billboardFrame.setContentPane(new BillboardEditor(null).BillboardWindow);
 		}
 
 		billboardFrame.setDefaultCloseOperation(billboardFrame.HIDE_ON_CLOSE);

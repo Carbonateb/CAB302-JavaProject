@@ -438,7 +438,7 @@ public class dbServer {
 
 		Billboard billboard = null;
 		if (query[1] != null) {
-			//converts database billboard object to the Billboard class
+			//converts database billboard object to the BillboardEditor class
 			billboard = (Billboard) ObjectSerialization.fromString((query[1]));
 		}
 

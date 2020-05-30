@@ -21,7 +21,7 @@ public class ControlPanel extends JFrame {
 		System.out.println("Starting control panel...");
 
 		// Appears as the name of the application
-		this.setTitle("Billboard Control Panel");
+		this.setTitle("BillboardEditor Control Panel");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Set up important classes

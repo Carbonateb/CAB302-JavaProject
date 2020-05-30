@@ -48,7 +48,7 @@ public class Schedule {
 		btnSchedule.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new EventCreator();
+				new EventEditor();
 			}
 		});
 
@@ -89,7 +89,7 @@ public class Schedule {
 
 		//Data to be displayed in the JTable
 		DefaultTableModel model = (DefaultTableModel) table1.getModel();
-		model.addColumn("Billboard");
+		model.addColumn("BillboardEditor");
 		model.addColumn("Start Time");
 
 		for (int i = 0; i < list.size(); i++) {
@@ -122,7 +122,7 @@ public class Schedule {
 	 */
 	public static void main(String[] args) {
 		// Create and setup Schedule window
-		scheduleFrame = new JFrame("Billboard Schedule");
+		scheduleFrame = new JFrame("BillboardEditor Schedule");
 		scheduleFrame.setContentPane(new Schedule().Schedule);
 		scheduleFrame.setDefaultCloseOperation(scheduleFrame.HIDE_ON_CLOSE);
 		scheduleFrame.pack();

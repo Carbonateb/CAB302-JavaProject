@@ -44,14 +44,14 @@ public class MainWindow {
 		});
 		createButton.addActionListener(new ActionListener() {
 			/**
-			 * Opens New Billboard form when createButton is pressed
+			 * Opens New BillboardEditor form when createButton is pressed
 			 *
 			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Billboard.main(null, "New Billboard");
+				BillboardEditor.main(null, "New BillboardEditor");
 			}
 		});
 
@@ -66,7 +66,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String testXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">All custom colours</message><information colour=\"#3FFFC7\">All custom colours</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
-				Billboard.main(testXML, "Edit Billboard");
+				BillboardEditor.main(testXML, "Edit BillboardEditor");
 
 				// Query server to get billboard information
 				try {

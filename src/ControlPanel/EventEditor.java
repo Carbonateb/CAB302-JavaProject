@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class EventCreator extends JFrame {
+public class EventEditor extends JFrame {
 	private JPanel main_Panel;
 	private JButton cancel_Button;
 	private JButton ok_Button;
@@ -43,9 +43,9 @@ public class EventCreator extends JFrame {
 	 * @author Callum McNeilage - n10482652
 	 * @contributor Lucas Maldonado - n10534342
 	 */
-	public EventCreator() {
+	public EventEditor() {
 		// Set up frame
-		setTitle("Schedule Billboard");
+		setTitle("Schedule BillboardEditor");
 		setContentPane(main_Panel);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		pack();

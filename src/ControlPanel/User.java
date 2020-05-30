@@ -6,6 +6,8 @@ import Shared.Network.Response;
 import Shared.Permissions.Permissions;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -30,6 +32,7 @@ public class User {
 				newUser.main("", new Permissions());
 			}
 		});
+
 		btnEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -59,6 +62,7 @@ public class User {
 
 			}
 		});
+
 		btnDeleteUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,10 +86,24 @@ public class User {
 				}
 			}
 		});
+		lstNames.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()){
+					JList source = (JList) e.getSource();
+					String selected = source.getSelectedValue().toString();
+					btnEdit.setEnabled(true);
 
+					String currentUser = ControlPanel.get().requestSender.getToken().getUser();
+
+					btnDeleteUser.setEnabled(!selected.equals(currentUser));
+				}
+			}
+		});
+
+		btnEdit.setEnabled(false);
+		btnDeleteUser.setEnabled(false);
 		populate();
-
-
 	}
 
 	/**

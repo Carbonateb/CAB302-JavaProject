@@ -91,18 +91,22 @@ public class Viewer {
 
 		Font labelFont = textArea.getFont();
 
-		int stringWidth = textArea.getFontMetrics(labelFont).stringWidth(textAreaText);
-		int componentWidth = textArea.getWidth();
+		int fontSizeToUse;
 
-		double widthRatio = (double)componentWidth / (double)stringWidth;
-
-		int newFontSize = (int)(labelFont.getSize() * widthRatio);
-		int componentHeight = textArea.getHeight();
-
-		int fontSizeToUse = Math.min(newFontSize, componentHeight);
-		if (fontSizeToUse < 40) {
+		if (textArea == information) {
 			fontSizeToUse = 40;
+		} else {
+			int stringWidth = textArea.getFontMetrics(labelFont).stringWidth(textAreaText);
+			int componentWidth = textArea.getWidth();
+
+			double widthRatio = (double)componentWidth / (double)stringWidth;
+
+			int newFontSize = (int)(labelFont.getSize() * widthRatio);
+			int componentHeight = textArea.getHeight();
+
+			fontSizeToUse = Math.min(newFontSize, componentHeight);
 		}
+
 		return new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse);
 	}
 

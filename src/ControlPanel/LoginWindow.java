@@ -18,7 +18,6 @@ public class LoginWindow {
 	private JButton btnLogin;
 	private JPasswordField enterPasswordPasswordField;
 	private JLabel passIncorrect;
-	private JLabel placeholderLabel;
 
 	// Handle button click
 	public LoginWindow() {
@@ -104,7 +103,6 @@ public class LoginWindow {
 					} else {
 						// If the password is incorrect, hide the placeholder label and show
 						// the label informing the user that the password is incorrect.
-						placeholderLabel.setVisible(false);
 						passIncorrect.setVisible(true);
 					}
 				} catch (ClassNotFoundException ex) {

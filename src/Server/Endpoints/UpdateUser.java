@@ -5,31 +5,28 @@ import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Network.Token;
 import Shared.Permissions.Perm;
-import Shared.Schedule.Event;
 
 import java.io.IOException;
 
-public class AddBillboard extends Endpoint {
-	public AddBillboard(){
+public class UpdateBillboard extends Endpoint {
+	public UpdateBillboard(){
 		// This is the enum value bound to this endpoint
-		associatedEndpoint = EndpointType.addBillboard;
+		associatedEndpoint = EndpointType.updateBillboard;
 
-		requiredPermission = Perm.CREATE_BILLBOARDS;
+		requiredPermission = Perm.EDIT_ALL_BILLBOARDS;
 	}
 
 	/***
-	 * end point for addBillboard method which adds a billboard to the DB
+	 * end point for updateBillboard method which updates a billboard in the DB
 	 * @param input contains data sent from client
 	 * @return boolean
 	 */
 	public Object executeEndpoint(Request input){
+
 		Billboard billboard = (Billboard) input.getData();
 		try {
 			//adds an event to the schedule and database
-			if (!billboard.author.equals(input.getToken().getUser())) {
-				return new Response("error", "Illegal billboard (wrong username, provided: " + billboard.author + ", expected: " + input.getToken().getUser() +")", null);
-			}
-			server.db.addBillboard(billboard);
+			server.db.updateBillboard(billboard);
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();

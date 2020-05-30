@@ -58,7 +58,8 @@ public class ControlPanel extends JFrame {
 		// Create the login window and display it
 		LoginWindow loginWindow = new LoginWindow();
 		setContentPane(loginWindow.loginWindow);
-		pack();
+		setSize(800, 600);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		System.out.println("Waiting for user to log in...");
@@ -134,12 +135,10 @@ public class ControlPanel extends JFrame {
 	public void loggedIn() {
 		System.out.println("Logged in successfully. Control panel is ready!");
 
-		// Create main window
-		setVisible(false);
+		// Exit out of login screen
 		setContentPane(mainPanel);
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
+		setVisible(true); // Needs this to display properly
+		setResizable(true);
 
 		refreshBillboards();
 		refreshEvents();

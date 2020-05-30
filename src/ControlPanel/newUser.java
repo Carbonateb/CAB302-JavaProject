@@ -30,7 +30,8 @@ public class newUser {
 	 */
 	public newUser(String user, Permissions perms) {
 		textField1.setText(user);
-		textField1.setEditable(false);
+		boolean newUser = (user.toString().equals(""));
+		textField1.setEditable(newUser);
 
 		Response response = null;
 		try {
@@ -135,6 +136,7 @@ public class newUser {
 		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
 			// handle exception
 		}
+		boolean newUser = (user == null);
 
 		// Create and setup newUsers window
 		newUserFrame = new JFrame("User");

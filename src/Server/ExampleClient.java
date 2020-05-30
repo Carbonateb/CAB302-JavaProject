@@ -69,7 +69,7 @@ public class ExampleClient {
 		System.out.println();
 		Thread.sleep(1500);
 
-		Billboard billboard = new Billboard("example_billboard", "sample", "sample2", Color.red, Color.blue, Color.white, null, "admin");
+		Billboard billboard = new Billboard("example_billboard_illegal", "sample", "sample2", Color.red, Color.blue, Color.white, null, "illegal");
 		System.out.println("Sending: " + requestSender.toString("addBillboard", billboard));
 		response = requestSender.SendData(EndpointType.addBillboard, billboard);
 		System.out.println("Response: " + response);

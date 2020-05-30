@@ -23,10 +23,12 @@ public class AddBillboard extends Endpoint {
 	 * @return boolean
 	 */
 	public Object executeEndpoint(Request input){
-
 		Billboard billboard = (Billboard) input.getData();
 		try {
 			//adds an event to the schedule and database
+			if (!billboard.name.equals(input.getToken().getUser())) {
+				return new Response("error", "Illegal billboard (wrong username?)", null);
+			}
 			server.db.addBillboard(billboard);
 			return true;
 		} catch (IOException e) {

@@ -135,7 +135,7 @@ public class ControlPanel extends JFrame {
 		setContentPane(mainPanel);
 		pack();
 
-		refershBillboards();
+		refreshBillboards();
 		refreshEvents();
 	}
 
@@ -144,16 +144,19 @@ public class ControlPanel extends JFrame {
 	 *
 	 * @author Callum McNeilage - n10482652
 	 * @param unix date formatted as a long
-	 * @return Date formatted as yyyy-MM-dd HH:mm:ss z
+	 * @return Date formatted as h:mm a	d/M/yyyy
 	 */
 	private String DateFormat(long unix) {
-		Date date = new Date(unix*1000L);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+		Date date = new Date(unix);
+		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a \td/M/yyyy");
 		return sdf.format(date);
 	}
 
 
-	public void refershBillboards() {
+	/**
+	 * Call to request the server for the billboards list again
+	 */
+	public void refreshBillboards() {
 		try {
 			Response response = ControlPanel.get().requestSender.SendData(EndpointType.listBillboards, null);
 			ArrayList<String> billboardNames = (ArrayList<String>)response.getData();

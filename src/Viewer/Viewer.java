@@ -15,8 +15,15 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import ControlPanel.ControlPanel;
+import Server.Endpoints.EndpointType;
+import Shared.Billboard;
+import Shared.ClientPropsReader;
 import Shared.Display.IMGHandler;
 import Shared.Display.XMLHandler;
+import Shared.Network.RequestSender;
+import Shared.Network.Response;
 import org.xml.sax.SAXException;
 
 /**
@@ -29,6 +36,11 @@ public class Viewer {
 	private JTextPane message;
 	private JTextPane information;
 	private JTextPane image;
+
+	public Billboard billboardToView;
+
+	public ClientPropsReader propsReader;
+	public RequestSender requestSender;
 
 	/**
 	 * How often the Viewer should get an update from the server, in seconds.
@@ -110,79 +122,66 @@ public class Viewer {
 		return new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse);
 	}
 
+	private void clearViewer() {
+		message.setText(null);
+		information.setText(null);
+//		image
+		mainPanel.setBackground(Color.white);
+		message.setBackground(Color.white);
+		information.setBackground(Color.white);
+		image.setBackground(Color.white);
 
+	}
 
-	private void populateViewer() {
-		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">This is a pretty cool test message!</message><information colour=\"#3FFFC7\">This is some much shorter message text</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
-//		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">This is a pretty cool test message!</message><information colour=\"#3FFFC7\">This is some much longer message text, it should be able to span over multiple lines so that we can test that functionality so that we know that it works properly</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
-//		String xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">This is a pretty cool test message!</message><information colour=\"#3FFFC7\">This is some much longer message text, it should be able to span over multiple lines so that we can test that functionality so that we know that it works properly</information><picture data=\"iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAApElEQVR42u3RAQ0AAAjDMO5fNCCDkC5z0HTVrisFCBABASIgQAQEiIAAAQJEQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAREQIAICBABASIgQAQECBAgAgJEQIAIyPcGFY7HnV2aPXoAAAAASUVORK5CYII=\" />\n</billboard>\n";
+	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
 
 		try {
-			// Set message text and color
-			Color messageColor;
-			String messageText = XMLHandler.xmlReader(false, xmlData, "message", null);
 			if (messageText != null) {
 				message.setText(messageText);
-				try {
-					messageColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(false, xmlData, "message", "colour")));
-				} catch (NullPointerException r) {
-					messageColor = Color.black;
-				}
 				message.setForeground(messageColor);
-
 				message.setFont(textFormatter(message, messageText));
 			}
 
 			// Set information text and color
-			Color informationColor;
-			String informationText = XMLHandler.xmlReader(false, xmlData, "information", null);
 			if (informationText != null) {
 				information.setText(informationText);
-				try {
-					informationColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(false, xmlData, "information", "colour")));
-				} catch (NullPointerException r) {
-					informationColor = Color.black;
-				}
 				information.setForeground(informationColor);
-
 				information.setFont(textFormatter(information, informationText));
 			}
 
 			// Set background color
-			Color backgroundColor;
-			try {
-				backgroundColor = Color.decode(Objects.requireNonNull(XMLHandler.xmlReader(false, xmlData, "billboard", "background")));
-			} catch (NullPointerException r) {
-				backgroundColor = Color.white;
-			}
 			mainPanel.setBackground(backgroundColor);
 			message.setBackground(backgroundColor);
 			information.setBackground(backgroundColor);
 			image.setBackground(backgroundColor);
 
 			// Set image
-			String imageString;
+//			String imageString;
 			BufferedImage billboardImage = null;
 			try {
-				imageString = XMLHandler.xmlReader(false, xmlData, "picture", "data");
+//				imageString = XMLHandler.xmlReader(false, xmlData, "picture", "data");
 				billboardImage = IMGHandler.imageDecoder(imageString);
-			} catch (NullPointerException ignored) { }
+			} catch (NullPointerException | IllegalArgumentException ignored) { }
 
 			try {
-				imageString = XMLHandler.xmlReader(false, xmlData, "picture", "url");
-				assert imageString != null;
+//				imageString = XMLHandler.xmlReader(false, xmlData, "picture", "url");
+//				assert imageString != null;
 				billboardImage = ImageIO.read(new URL(imageString));
-			} catch (NullPointerException | MalformedURLException ignored) { }
+			} catch (NullPointerException | IOException ignored) { }
 
+
+
+//			System.out.println(billboardImage);
+//			assert billboardImage != null;
 			assert billboardImage != null;
 			ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
 			image.insertIcon(displayedBillboardImage);
-			StyledDocument test = image.getStyledDocument();
-			SimpleAttributeSet test2 = new SimpleAttributeSet();
-			StyleConstants.setAlignment(test2, StyleConstants.ALIGN_CENTER);
-			test.setParagraphAttributes(0, test.getLength()-1, test2, false);
+			StyledDocument sd = image.getStyledDocument();
+			SimpleAttributeSet sas = new SimpleAttributeSet();
+			StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
+			sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
 
-		} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
+		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -207,6 +206,14 @@ public class Viewer {
 			}
 		};
 
+		// Set up important classes
+		propsReader = new ClientPropsReader();
+		requestSender = new RequestSender(
+			// Give the requestSender connection info from the .props file
+			propsReader.getIPAddress(),
+			propsReader.getPort()
+		);
+
 		// Setup input binds, ESC and clicking should quit program
 		mainPanel.grabFocus();
 		mainPanel.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "exitProgram");
@@ -229,7 +236,7 @@ public class Viewer {
 		});
 		mainPanel.getActionMap().put("exitProgram", exitProgram);
 
-		populateViewer();
+//		populateViewer(billboardToView.titleText, billboardToView.titleTextColor);
 	}
 
 
@@ -244,7 +251,43 @@ public class Viewer {
 			@Override
 			public void run() {
 				System.out.println("Requesting info from server...");
-				// TODO make viewer request info from server
+
+				Response response;
+				try {
+					response = requestSender.SendData(EndpointType.getCurrentBillboard, null);
+
+				} catch (IOException | ClassNotFoundException e) {
+					response = null;
+					e.printStackTrace();
+				}
+
+				assert response != null;
+//				System.out.println(response.getData());
+				billboardToView = (Billboard) response.getData();
+
+//				clearViewer();
+
+//				String oldTitleText = null, oldInfoText = null, oldImage = null;
+
+				String titleText = billboardToView.titleText;
+				Color titleTextColor = billboardToView.titleTextColor;
+				String infoText = billboardToView.infoText;
+				Color infoTextColor = billboardToView.infoTextColor;
+				Color backgroundColor = billboardToView.backgroundColor;
+				String image = billboardToView.image;
+
+//				if (!titleText.equals(oldTitleText) && !infoText.equals(oldInfoText) && !image.equals(oldImage)) {
+//					populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
+//					oldTitleText = titleText;
+//					oldInfoText = infoText;
+//					oldImage = image;
+//				}
+
+				populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
+
+//				populateViewer(billboardToView.titleText, billboardToView.titleTextColor, billboardToView.infoText, billboardToView.infoTextColor, billboardToView.backgroundColor, billboardToView.image);
+
+
 			}
 
 		}, 0, updateFrequency * 1000);
@@ -255,7 +298,7 @@ public class Viewer {
 	 * Entry point of the viewer, just creates an instance of itself.
 	 * @param args Unused
 	 */
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		new Viewer();
 	}
 }

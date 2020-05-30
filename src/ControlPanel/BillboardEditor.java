@@ -47,7 +47,7 @@ public class BillboardEditor extends JFrame {
 
 	/**
 	 * Constructor
-	 * @param xmlString optional. If supplied, will pre-fill the values with this
+	 * @param xmlString optional. If supplied, will pre-fill the values
 	 */
 	public BillboardEditor(String xmlString) {
 		if (xmlString != null) {
@@ -278,7 +278,7 @@ public class BillboardEditor extends JFrame {
 						backgroundColorPreview.getBackground(),
 
 						// background image
-						null,
+						selectedFile_Label.getText(),
 
 						// author
 						ControlPanel.get().requestSender.getToken().getUser()

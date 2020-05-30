@@ -31,11 +31,28 @@ public class newUser {
 	 */
 	public newUser(String user, Permissions perms, Boolean password) {
 		textField1.setText(user);
+		textField1.setEditable(false);
 
-		if (!password) {
-			if (!perms.hasPermission(Perm.EDIT_USERS)) {
-				textField2.setEditable(false);
-			}
+//		if (!password) {
+//			if (!perms.hasPermission(Perm.EDIT_USERS)) {
+//				textField2.setEditable(false);
+//			}
+//		}
+		Response response = null;
+		try {
+			response = ControlPanel.get().requestSender.SendData(EndpointType.getUserDetails, ControlPanel.get().requestSender.getToken().getUser());
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		Credentials currentUser = (Credentials) response.getData();
+		Permissions currentUserPerms = new Permissions(currentUser.getPermissions());
+		if (!currentUserPerms.hasPermission(Perm.EDIT_USERS)) {
+			chkCreate.setEnabled(false);
+			chkEdit.setEnabled(false);
+			chkSchedule.setEnabled(false);
+			chkEditUsers.setEnabled(false);
 		}
 
 		if (perms.hasPermission(Perm.CREATE_BILLBOARDS)) {

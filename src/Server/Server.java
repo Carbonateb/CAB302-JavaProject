@@ -29,6 +29,7 @@ public class Server {
 		// List all of the Endpoints you want to make available here
 		// Should mirror the EndpointType enum
 		AddEvents.class,
+		AddBillboard.class,
 		Echo.class,
 		GetCurrentBillboard.class,
 		GetEvents.class,
@@ -37,6 +38,7 @@ public class Server {
 		Login.class,
 		Logout.class,
 		Register.class,
+		UpdateBillboard.class,
 	};
 
 
@@ -55,6 +57,7 @@ public class Server {
 		System.out.println("\nInitializing sockets...");
 
 		System.out.println("ALL USERS : " + db.listUsers());
+
 		serverSocket = new ServerSocket(propsReader.GetPort());
 		socketHandler = new SocketHandler(serverSocket, db);
 
@@ -102,9 +105,11 @@ public class Server {
 		Billboard billboard = new Billboard("sample_billboard", "sample", "sample2", Color.red, Color.blue, null, "admin");
 		db.addBillboard(billboard);
 
+		Event event1 = new Event(10000000, 300000000, "bb_ex_1", "bob");
+		Event event2 = new Event(10000010, 300000001, "bb_ex_2", "jerry");
 
-		db.addEvent(10000000, 300000000, "bb_ex_1", "bob");
-		db.addEvent(10000010, 300000001, "bb_ex_2", "jerry");
+		db.addEvent(event1);
+		db.addEvent(event2);
 
 		ArrayList<Event> example = db.returnEventList();
 

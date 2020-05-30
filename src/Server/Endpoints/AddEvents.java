@@ -30,7 +30,7 @@ public class AddEvents extends Endpoint {
 		Event event = (Event) input.getData();
 		try {
 			//adds an event to the schedule and database
-			server.db.addEvent(event.startTime, event.endTime, event.billboardName, event.author);
+			server.db.addEvent(event);
 			return true;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

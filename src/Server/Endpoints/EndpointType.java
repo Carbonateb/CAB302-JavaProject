@@ -8,6 +8,7 @@ package Server.Endpoints;
  */
 public enum EndpointType {
 	addEvents,
+	addBillboard,
 	echo,
 	getCurrentBillboard,
 	getEvents,
@@ -16,4 +17,5 @@ public enum EndpointType {
 	login,
 	logout,
 	register,
+	updateBillboard,
 }

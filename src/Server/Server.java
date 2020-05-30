@@ -38,6 +38,7 @@ public class Server {
 		Login.class,
 		Logout.class,
 		Register.class,
+		UpdateBillboard.class,
 	};
 
 

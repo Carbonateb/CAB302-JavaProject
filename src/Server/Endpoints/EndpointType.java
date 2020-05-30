@@ -17,4 +17,5 @@ public enum EndpointType {
 	login,
 	logout,
 	register,
+	updateBillboard,
 }

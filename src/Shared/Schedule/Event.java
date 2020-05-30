@@ -1,6 +1,8 @@
 package Shared.Schedule;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -27,6 +29,14 @@ public class Event implements Serializable {
 		endTime = inEndTime;
 		billboardName = inBillboardName;
 		author = inAuthor;
+	}
+
+	/** Constructor that inits everything to zero */
+	public Event() {
+		startTime = 0;
+		endTime = 0;
+		billboardName = "";
+		author = "";
 	}
 
 	/** Constructor for quickly creating an event for debugging */
@@ -61,5 +71,15 @@ public class Event implements Serializable {
 			&& endTime == 0
 			&& billboardName == ""
 			&& author == "";
+	}
+
+	public String toString() {
+		return String.format("Event for billboard '%s':\n" +
+			"\tStarts at %s\n" +
+			"\tLasts for %d minutes\n" +
+			"\tCreated by '%s'\n",
+			billboardName,
+			new SimpleDateFormat("h:mm aa dd-MM-yyyy").format(new Date(startTime)),
+			getDuration() / (60 * 1000), author);
 	}
 }

@@ -55,7 +55,7 @@ public class ExampleClient {
 		Credentials newUser = new Credentials("user", password2, new Permissions(0));
 
 		System.out.println("Sending: " + requestSender.toString("register", newUser));
-		response = requestSender.SendData(EndpointType.updateCreateUser, newUser);
+		response = requestSender.SendData(EndpointType.addUser, newUser);
 		System.out.println("Response: " + response);
 
 		System.out.println();

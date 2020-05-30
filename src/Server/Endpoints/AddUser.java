@@ -5,10 +5,10 @@ import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Permissions.Perm;
 
-public class UpdateCreateUser extends Endpoint {
-	public UpdateCreateUser(){
+public class AddUser extends Endpoint {
+	public AddUser(){
 		// This is the enum value bound to this endpoint
-		associatedEndpoint = EndpointType.updateCreateUser;
+		associatedEndpoint = EndpointType.addUser;
 
 		requiredPermission = Perm.EDIT_USERS;
 	}

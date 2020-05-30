@@ -116,7 +116,7 @@ public class newUser {
 				Credentials credentials = new Credentials(username, password, permissions);
 
 				try {
-					Response response = ControlPanel.get().requestSender.SendData(EndpointType.updateCreateUser, credentials);
+					Response response = ControlPanel.get().requestSender.SendData(EndpointType.addUser, credentials);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				} catch (ClassNotFoundException ex) {

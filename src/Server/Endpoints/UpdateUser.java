@@ -1,19 +1,19 @@
 package Server.Endpoints;
 
-import Shared.Billboard;
+import Shared.Credentials;
 import Shared.Network.Request;
 import Shared.Network.Response;
-import Shared.Network.Token;
 import Shared.Permissions.Perm;
+import Shared.Permissions.Permissions;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Permission;
 
-public class UpdateBillboard extends Endpoint {
-	public UpdateBillboard(){
+public class UpdateUser extends Endpoint {
+	public UpdateUser(){
 		// This is the enum value bound to this endpoint
-		associatedEndpoint = EndpointType.updateBillboard;
-
-		requiredPermission = Perm.EDIT_ALL_BILLBOARDS;
+		associatedEndpoint = EndpointType.updateUser;
 	}
 
 	/***
@@ -23,12 +23,26 @@ public class UpdateBillboard extends Endpoint {
 	 */
 	public Object executeEndpoint(Request input){
 
-		Billboard billboard = (Billboard) input.getData();
+		Credentials credentials = (Credentials) input.getData();
+		String username = credentials.getUsername();
+		String password = credentials.getPassword();
+		int permissions = credentials.getPermissions();
+
+		Permissions current_permissions = server.db.getPermissions(username);
+
+		if (!(username.equals(input.getToken().getUser()) || current_permissions.hasPermission(Perm.EDIT_USERS))) {
+			return new Response("error", "Permission denied", null);
+		}
+
+		if (!current_permissions.hasPermission(Perm.EDIT_USERS)) {
+			// User must be editing themselves
+			permissions = current_permissions.toInt();
+		}
+
 		try {
-			//adds an event to the schedule and database
-			server.db.updateBillboard(billboard);
-			return true;
-		} catch (IOException e) {
+			//update them
+			return server.db.updateUser(username, password, permissions);
+		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return false;
 		}

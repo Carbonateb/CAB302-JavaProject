@@ -356,6 +356,46 @@ public class dbServer {
 	}
 
 	/***
+	 * update a user in the database
+	 * @param usr_Name string storing the username of the user
+	 * @param pw_Hash string storing the hashed password of the user
+	 * @param usr_Perms int storing permissions for the new user
+	 * @return true if sql ran successfully else false
+	 */
+	public boolean updateUser(String usr_Name, String pw_Hash, int usr_Perms) throws NoSuchAlgorithmException {
+		if (!checkUserExists(usr_Name)) {
+			return false;
+		}
+
+		String sql = null;
+		if (pw_Hash != null) {
+			SecureRandom secureRandom = new SecureRandom();
+			byte[] byes_salt = new byte[64];
+			secureRandom.nextBytes(byes_salt);
+			Base64.Encoder base64 = Base64.getEncoder();
+			String encoded_salt = new String(base64.encode(byes_salt));
+
+			String combined = pw_Hash + encoded_salt;
+
+			String final_hash = null;
+
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] hash = md.digest(combined.getBytes());
+
+			final_hash = new String(base64.encode(hash));
+
+			sql = "UPDATE USERS SET" +
+				"pw_hash = '" + final_hash + "' , salt = '" + encoded_salt + "' , permissions = " + usr_Perms +
+				"WHERE usr_name = '" + usr_Name + "'";
+		} else {
+			sql = "UPDATE USERS SET" +
+				"permissions = " + usr_Perms +
+				"WHERE usr_name = '" + usr_Name + "'";
+		}
+		return runSql(sql);
+	}
+
+	/***
 	 * adds a user to the database
 	 * @param usr_Name string storing the username of the user
 	 * @param pw_Hash string storing the hashed password of the user

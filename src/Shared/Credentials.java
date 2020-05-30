@@ -32,6 +32,9 @@ public class Credentials implements Serializable {
 	}
 
 	public String getPassword() {
+		if (_password == null) {
+			return null;
+		}
 		Base64.Encoder base64 = Base64.getEncoder();
 		MessageDigest md = null;
 		try {

@@ -39,8 +39,9 @@ public class Server {
 		GetUserDetails.class,
 		Login.class,
 		Logout.class,
-		UpdateCreateUser.class,
+		AddUser.class,
 		UpdateBillboard.class,
+		UpdateUser.class,
 	};
 
 

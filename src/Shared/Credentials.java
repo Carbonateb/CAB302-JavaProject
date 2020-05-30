@@ -50,6 +50,14 @@ public class Credentials implements Serializable {
 	public int getPermissions() { return _permissions.toInt(); }
 
 	public String toString() {
-		return String.format("{username: \"%s\", password: \"%s\"}", _username, getPassword().substring(0,9) + "...");
+		String passwordText = "N/A";
+		if (_password != null) {
+			passwordText = getPassword().substring(0, 9) + "...";
+		}
+		String permsText = "N/A";
+		if (_permissions != null) {
+			permsText = _permissions.toString();
+		}
+		return String.format("{username: \"%s\", password: \"%s\", permissions: %s}", _username, passwordText, permsText);
 	}
 }

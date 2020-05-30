@@ -33,6 +33,7 @@ public class Server {
 		GetCurrentBillboard.class,
 		GetEvents.class,
 		ListUsers.class,
+		GetUserDetails.class,
 		Login.class,
 		Logout.class,
 		Register.class,

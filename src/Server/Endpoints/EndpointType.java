@@ -12,6 +12,7 @@ public enum EndpointType {
 	getCurrentBillboard,
 	getEvents,
 	listUsers,
+	getUserDetails,
 	login,
 	logout,
 	register,

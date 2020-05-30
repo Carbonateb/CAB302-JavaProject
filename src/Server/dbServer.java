@@ -1,6 +1,7 @@
 package Server;
 
 import Shared.Billboard;
+import Shared.Credentials;
 import Shared.Schedule.*;
 import Shared.Permissions.Permissions;
 
@@ -274,6 +275,17 @@ public class dbServer {
 		} else {
 			return false;
 		}
+	}
+
+	/***
+	 * returns credentials for a specific user
+	 * @param usr the username to check
+	 * @return credentials object
+	 */
+	public Credentials getUserDetails(String usr) {
+		System.out.println(usr);
+		String[] dbuser = queryDB("USERS", usr, "usr_Name");
+		return new Credentials(dbuser[1],null, new Permissions(Integer.parseInt(dbuser[4])));
 	}
 
 	/***

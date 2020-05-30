@@ -46,6 +46,13 @@ public class ExampleClient {
 		System.out.println();
 		Thread.sleep(1500);
 
+		System.out.println("Sending: " + requestSender.toString("getUserDetails", "admin"));
+		response = requestSender.SendData(EndpointType.getUserDetails, "admin");
+		System.out.println("Response: " + (response));
+
+		System.out.println();
+		Thread.sleep(1500);
+
 		// Register new account
 		String password2 = "password";
 

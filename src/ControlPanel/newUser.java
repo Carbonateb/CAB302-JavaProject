@@ -31,7 +31,7 @@ public class newUser {
 	 */
 	public newUser(String user, Permissions perms) {
 		textField1.setText(user);
-		boolean newUser = (user.toString().equals(""));
+		boolean newUser = (user.equals(""));
 		if (newUser) {
 			lblPassword.setText("Password");
 		}
@@ -51,6 +51,10 @@ public class newUser {
 			chkCreate.setEnabled(false);
 			chkEdit.setEnabled(false);
 			chkSchedule.setEnabled(false);
+			chkEditUsers.setEnabled(false);
+		}
+
+		if (ControlPanel.get().requestSender.getToken().getUser().equals(textField1.getText())) {
 			chkEditUsers.setEnabled(false);
 		}
 

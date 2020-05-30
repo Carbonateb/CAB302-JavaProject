@@ -1,5 +1,7 @@
 package ControlPanel;
 
+import Shared.Schedule.Event;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,20 +59,29 @@ public class EventCreator extends JFrame {
 		ok_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// The user specified start time, in unix epoch milliseconds
-				long startTime = 0;
-				try {
+				Event event = new Event();
+
+				try { // Parse the start date and time
 					// 86400000 is number of seconds in day (86400) * milliseconds in second (1000)
 					// This converts epoch days to epoch milliseconds
-					startTime += 86400000 * LocalDate.parse(startDate_TextField.getText(), dateFormatter).toEpochDay();
+					event.startTime += 86400000 * LocalDate.parse(startDate_TextField.getText(), dateFormatter).toEpochDay();
 					// Add on the hours and minutes, and we're good to go
-					startTime += timeFormatter.parse(startTime_TextField.getText()).getTime();
+					event.startTime += timeFormatter.parse(startTime_TextField.getText()).getTime();
 				} catch (DateTimeException | ParseException ex) {
 					System.out.println(ex.getMessage());
+					return;
 				}
 
+				// 60 converts minutes to seconds, 1000 converts seconds to milliseconds
+				event.setDuration(60 * 1000 * (int)duration_Spinner.getValue());
 
+				// Get the specified billboard name from the drop down box
+				event.billboardName = billboardSelector_ComboBox.getName();
 
+				// Get the author from the currently logged in user
+				event.author = ControlPanel.get().requestSender.getToken().getUser();
+
+				System.out.println(event.toString());
 			}
 		});
 		cancel_Button.addActionListener(new ActionListener() {

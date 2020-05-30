@@ -474,7 +474,7 @@ public class dbServer {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Billboard requestBillbaord(String name) throws IOException, ClassNotFoundException {
+	public Billboard requestBillboard(String name) throws IOException, ClassNotFoundException {
 		//gets the database billboard object
 		String[] query = queryDB("BILLBOARDS", name, "name");
 

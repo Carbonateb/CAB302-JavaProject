@@ -1,6 +1,7 @@
 package Server.Endpoints;
 
 import Shared.Network.Request;
+import Shared.Network.Response;
 
 public class GetCurrentBillboard extends Endpoint {
 	public GetCurrentBillboard(){
@@ -13,11 +14,11 @@ public class GetCurrentBillboard extends Endpoint {
 	 * @param input
 	 * @return null
 	 */
-	public Object executeEndpoint(Request input) {
+	public Response Run(Request input) {
 		try{
-			return server.db.requestBillbaord(server.db.requestCurrentEvent().billboardName);
+			return new Response("success", server.db.requestBillboard(server.db.requestCurrentEvent().billboardName), null);
 		} catch (Exception ex) {
-			return null;
+			return new Response("error", null, null);
 		}
 	}
 }

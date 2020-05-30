@@ -28,7 +28,7 @@ public class UpdateUser extends Endpoint {
 		String password = credentials.getPassword();
 		int permissions = credentials.getPermissions();
 
-		Permissions current_permissions = server.db.getPermissions(username);
+		Permissions current_permissions = server.db.getPermissions(input.getToken().getUser());
 
 		if (!(username.equals(input.getToken().getUser()) || current_permissions.hasPermission(Perm.EDIT_USERS))) {
 			return new Response("error", "Permission denied", null);

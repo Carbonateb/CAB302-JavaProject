@@ -101,7 +101,11 @@ public class EventEditor extends JFrame {
 					ControlPanel.get().requestSender.SendData(EndpointType.addEvents, event);
 				} catch (IOException | ClassNotFoundException ex) {
 					ex.printStackTrace();
+					return;
 				}
+
+				ControlPanel.get().refreshEvents();
+				dispose();
 			}
 		});
 		cancel_Button.addActionListener(new ActionListener() {

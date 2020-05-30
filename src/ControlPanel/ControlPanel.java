@@ -20,7 +20,6 @@ import java.util.Date;
  */
 
 public class ControlPanel extends JFrame {
-	// UI Variables
 	private JButton newBillboard_Button;
 	private JButton editUsersButton;
 	public JPanel mainPanel;
@@ -162,6 +161,7 @@ public class ControlPanel extends JFrame {
 			ArrayList<String> billboardNames = (ArrayList<String>)response.getData();
 
 			//Data to be displayed in the JTable
+			mainWindowTable.setModel(new DefaultTableModel());
 			DefaultTableModel model = (DefaultTableModel) mainWindowTable.getModel();
 			model.addColumn("Billboard Name");
 			model.addColumn("Author");
@@ -221,6 +221,7 @@ public class ControlPanel extends JFrame {
 		}
 
 		//Data to be displayed in the JTable
+		schedule_Table.setModel(new DefaultTableModel());
 		DefaultTableModel model = (DefaultTableModel) schedule_Table.getModel();
 		model.addColumn("Billboard");
 		model.addColumn("Start Time");
@@ -232,7 +233,7 @@ public class ControlPanel extends JFrame {
 		for (Event event : list) {
 			row[0] = event.billboardName;
 			row[1] = DateFormat(event.startTime);
-			row[2] = event.getDuration();
+			row[2] = event.getDuration() / (60 * 1000);
 			row[3] = "No";
 			row[4] = event.author;
 

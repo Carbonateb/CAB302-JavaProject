@@ -331,6 +331,7 @@ public class BillboardEditor {
 				} catch (IOException | ClassNotFoundException ex) {
 					System.out.println(ex.getMessage());
 				}
+				ControlPanel.get().refreshBillboards();
 				billboardFrame.dispose();
 			}
 		});

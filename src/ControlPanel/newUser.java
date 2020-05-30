@@ -120,6 +120,7 @@ public class newUser extends JFrame {
 					ex.printStackTrace();
 				}
 
+				ControlPanel.get().refreshUsers();
 				dispose();
 			}
 		});

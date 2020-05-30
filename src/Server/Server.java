@@ -39,7 +39,7 @@ public class Server {
 		GetUserDetails.class,
 		Login.class,
 		Logout.class,
-		Register.class,
+		UpdateCreateUser.class,
 		UpdateBillboard.class,
 	};
 

@@ -121,10 +121,6 @@ public class Schedule {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Set look and feel of frame
-		// try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		// } catch (Exception e) { e.printStackTrace(); }
-
 		// Create and setup Schedule window
 		scheduleFrame = new JFrame("Billboard Schedule");
 		scheduleFrame.setContentPane(new Schedule().Schedule);

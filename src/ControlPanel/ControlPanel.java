@@ -33,22 +33,11 @@ public class ControlPanel extends JFrame {
 		);
 
 		this.setVisible(true);
-		/* TODO DISABLED FOR TESTING! RE-ENABLE BEFORE SUBMITTING
 		// Create the login window and display it
 		LoginWindow loginWindow = new LoginWindow();
 		this.setContentPane(loginWindow.loginWindow);
 		this.pack();
 		System.out.println("Waiting for user to log in...");
-		 */
-
-		try {
-			requestSender.login(new Credentials("admin", "secure_password", null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		loggedIn();
-
 	}
 
 

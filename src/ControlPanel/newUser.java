@@ -11,19 +11,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class newUser {
+public class newUser extends JFrame {
 	public JPanel newUser;
-	private JTextField textField1;
-	private JTextField textField2;
+	private JTextField username_TextField;
+	private JTextField password_TextField;
 	private JCheckBox chkCreate;
 	private JCheckBox chkEdit;
 	private JCheckBox chkSchedule;
 	private JCheckBox chkEditUsers;
-	private JButton btnSet;
+	private JButton okay_Button;
 	private JLabel lblPassword;
-	public static JFrame newUserFrame;
+	private JPanel permissions_Panel;
 
-	boolean addUser;
+	boolean addUser; // True if this window is being used to create a new user
 
 	/**
 	 * Saves all user variables to database and closes window when OK is pressed
@@ -32,54 +32,59 @@ public class newUser {
 	 * @param perms See main()
 	 */
 	public newUser(String user, Permissions perms) {
-		textField1.setText(user);
+		setTitle("User Editor");
+		setContentPane(newUser);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+
+
+		username_TextField.setText(user);
 		addUser = (user.equals(""));
 		if (addUser) {
-			lblPassword.setText("Password");
-		}
-		textField1.setEditable(addUser);
-
-		Response response = null;
-		try {
-			response = ControlPanel.get().requestSender.SendData(EndpointType.getUserDetails, ControlPanel.get().requestSender.getToken().getUser());
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		Credentials currentUser = (Credentials) response.getData();
-		Permissions currentUserPerms = new Permissions(currentUser.getPermissions());
-		if (!currentUserPerms.hasPermission(Perm.EDIT_USERS)) {
-			chkCreate.setEnabled(false);
-			chkEdit.setEnabled(false);
-			chkSchedule.setEnabled(false);
-			chkEditUsers.setEnabled(false);
-		}
-
-		if (ControlPanel.get().requestSender.getToken().getUser().equals(textField1.getText())) {
-			chkEditUsers.setEnabled(false);
-		}
-
-		if (perms.hasPermission(Perm.CREATE_BILLBOARDS)) {
-			chkCreate.setSelected(true);
-		}
-		if (perms.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
-			chkEdit.setSelected(true);
-		}
-		if (perms.hasPermission(Perm.SCHEDULE_BILLBOARDS)) {
-			chkSchedule.setSelected(true);
-		}
-		if (perms.hasPermission(Perm.EDIT_USERS)) {
-			chkEditUsers.setSelected(true);
+			lblPassword.setText("Password:");
+		} else {
+			// Disable the permission control panel if the user does not have EDIT_USERS perm
+			if (!ControlPanel.get().userPerms.hasPermission(Perm.EDIT_USERS)) {
+				chkCreate.setEnabled(false);
+				chkEdit.setEnabled(false);
+				chkSchedule.setEnabled(false);
+				chkEditUsers.setEnabled(false);
+				permissions_Panel.setVisible(false);
+				pack();
+			} else { // Set the checkboxes so they align with the user's perms
+				if (perms.hasPermission(Perm.CREATE_BILLBOARDS)) {
+					chkCreate.setSelected(true);
+				}
+				if (perms.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
+					chkEdit.setSelected(true);
+				}
+				if (perms.hasPermission(Perm.SCHEDULE_BILLBOARDS)) {
+					chkSchedule.setSelected(true);
+				}
+				if (perms.hasPermission(Perm.EDIT_USERS)) {
+					chkEditUsers.setSelected(true);
+				}
+				// Prevent users with EDIT_USERS from removing their own EDIT_USERS permission
+				if (ControlPanel.get().requestSender.getToken().getUser().equals(username_TextField.getText())) {
+					chkEditUsers.setEnabled(false);
+				}
+			}
 		}
 
+		username_TextField.setEditable(addUser);
 
 
-		btnSet.addActionListener(new ActionListener() {
+		// Finish setting up window
+		pack();
+		setLocationRelativeTo(ControlPanel.get());
+		setResizable(false);
+		setVisible(true);
+
+
+		okay_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String username = textField1.getText();
-				String password = textField2.getText();
+				String username = username_TextField.getText();
+				String password = password_TextField.getText();
 				if (password.equals("")) {
 					password = null;
 				}
@@ -115,35 +120,8 @@ public class newUser {
 					ex.printStackTrace();
 				}
 
-				newUserFrame.dispose();
+				dispose();
 			}
 		});
-	}
-
-	/**
-	 * Loads New User/Edit User window
-	 * - The new User window will load blank while edit user window will load with user credentials filled out
-	 *
-	 * @author Callum McNeilage - n10482652
-	 * @param user - Username of selected user - null if newUser
-	 * @param perms - Permissions from User.java - null if newUser
-	 */
-	public static void main(String user, Permissions perms) {
-		// Won't compile without the exceptions unhandled
-		try {
-			// Set System L&F
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
-			// handle exception
-		}
-		boolean newUser = (user == null);
-
-		// Create and setup newUsers window
-		newUserFrame = new JFrame("User");
-		newUserFrame.setContentPane(new newUser(user, perms).newUser);
-		newUserFrame.setDefaultCloseOperation(newUserFrame.HIDE_ON_CLOSE);
-		newUserFrame.pack();
-		newUserFrame.setLocationRelativeTo(ControlPanel.get());
-		newUserFrame.setVisible(true);
 	}
 }

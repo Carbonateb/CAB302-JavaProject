@@ -29,7 +29,7 @@ public class User {
 		btnNewUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newUser.main("", new Permissions());
+				new newUser("", new Permissions());
 			}
 		});
 
@@ -51,7 +51,7 @@ public class User {
 					perms = new Permissions(user.getPermissions());
 					System.out.println(perms);
 
-					newUser.main(selected, perms);
+					new newUser(selected, perms);
 				}
 				catch (NullPointerException err) {
 					System.out.println("No user data");

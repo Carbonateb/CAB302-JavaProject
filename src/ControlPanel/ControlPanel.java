@@ -2,8 +2,11 @@ package ControlPanel;
 
 import Server.Endpoints.EndpointType;
 import Shared.ClientPropsReader;
+import Shared.Credentials;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
+import Shared.Permissions.Perm;
+import Shared.Permissions.Permissions;
 import Shared.Schedule.Event;
 
 import javax.swing.*;
@@ -28,12 +31,14 @@ public class ControlPanel extends JFrame {
 	private JTable mainWindowTable;
 	private JTextPane billboardControlPanelV0TextPane;
 	private JTable table1;
-	private JButton createNewAccountButton;
+	private JButton createNewAccount_Button;
+	private JPanel editUsers_Panel;
 
 	// End UI Variables
 
 	public ClientPropsReader propsReader;
 	public RequestSender requestSender;
+	public Permissions userPerms;
 
 
 	/**
@@ -78,7 +83,15 @@ public class ControlPanel extends JFrame {
 		changeYourPasswordButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				User.main(null);
+				new newUser(requestSender.getToken().getUser(), userPerms);
+			}
+		});
+
+
+		createNewAccount_Button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new newUser("", null);
 			}
 		});
 
@@ -136,6 +149,21 @@ public class ControlPanel extends JFrame {
 	public void loggedIn() {
 		System.out.println("Logged in successfully. Control panel is ready!");
 
+		// Get the user's permissions
+		try {
+			//Query server
+			Response response = requestSender.SendData(EndpointType.getUserDetails, requestSender.getToken().getUser());
+			System.out.println(response);
+			Credentials user = (Credentials) response.getData();
+			System.out.println(user);
+			userPerms = new Permissions(user.getPermissions());
+		}
+		catch (NullPointerException err) {
+			System.out.println("No user data");
+		} catch (IOException | ClassNotFoundException ex) {
+			System.out.println("Error in response");
+		}
+
 		// Exit out of login screen
 		setContentPane(mainPanel);
 		setVisible(true); // Needs this to display properly
@@ -143,6 +171,8 @@ public class ControlPanel extends JFrame {
 
 		refreshBillboards();
 		refreshEvents();
+
+		editUsers_Panel.setVisible(userPerms.hasPermission(Perm.EDIT_USERS));
 	}
 
 	/**

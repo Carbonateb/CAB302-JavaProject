@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -358,11 +359,32 @@ public class ControlPanel extends JFrame {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 
-				System.out.println(e.toString());
+				if (e instanceof KeyEvent) {
+					KeyEvent ke = (KeyEvent)e;
+					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
+						String userName = (String) users_Table.getModel().getValueAt(row, 0);
+
+						// Bring up a confirmation dialogue
+						int n = JOptionPane.showConfirmDialog(
+							this,
+							"Are you sure you want to delete " + userName
+								+ "?\nThis action is irreversible!",
+							"Confirm Delete User",
+							JOptionPane.YES_NO_OPTION);
+
+						if (n == 0) { // If the user presses yes
+							try {
+								System.out.println("Delete user: " + userName);
+								requestSender.SendData(EndpointType.deleteUser, userName);
+								refreshUsers();
+							} catch (IOException | ClassNotFoundException ex) {
+								System.out.println(ex.getMessage());
+							}
+						}
 
 
-				// Open up editing window if user double clicks an entry
-				if (e instanceof MouseEvent) {
+					}
+				} else if (e instanceof MouseEvent) { 	// Open up editing window if user double clicks an entry
 					MouseEvent mouseEvent = (MouseEvent) e;
 					if (mouseEvent.getClickCount() != 2) {
 						return false;

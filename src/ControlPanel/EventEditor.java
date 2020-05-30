@@ -96,6 +96,12 @@ public class EventEditor extends JFrame {
 				event.author = ControlPanel.get().requestSender.getToken().getUser();
 
 				System.out.println(event.toString());
+
+				try {
+					ControlPanel.get().requestSender.SendData(EndpointType.addEvents, event);
+				} catch (IOException | ClassNotFoundException ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 		cancel_Button.addActionListener(new ActionListener() {
@@ -107,7 +113,7 @@ public class EventEditor extends JFrame {
 		billboardSelector_ComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ok_Button.setEnabled(billboardSelector_ComboBox.getSelectedIndex() == 0);
+				setOkButtonEnabled();
 			}
 		});
 	}
@@ -118,7 +124,7 @@ public class EventEditor extends JFrame {
 	 * If they are not, disable the ok button.
 	 */
 	private void setOkButtonEnabled() {
-		boolean validBillboardSelected = billboardSelector_ComboBox.getSelectedIndex() == 0;
+		boolean validBillboardSelected = billboardSelector_ComboBox.getSelectedIndex() != 0;
 
 		ok_Button.setEnabled(validBillboardSelected);
 	}

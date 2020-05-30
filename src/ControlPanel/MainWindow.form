@@ -86,7 +86,7 @@
           <grid id="5869d" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Users"/>
+              <tabbedpane title="Account"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -121,7 +121,7 @@
               <component id="eeb5d" class="javax.swing.JTextPane" binding="billboardControlPanelV0TextPane" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Billboard Control Panel v0.1&#10;&#10;To edit billboards and events, double click on the entry in the table that you want to edit.&#10;&#10;Billboards are referenced by name, make sure you give a descriptive one to recocnize it easily!&#10;&#10;Not able to do something? You may not have authorization to do it! Contact you administrator, they can give you more permissions if need be.&#10;&#10;&#10;This application was written by:&#10;Callum, Colby, Connor, Dylan, Lucas&#10;for CAB302: Software Development at QUT"/>
+                  <text value="Billboard Control Panel v0.1&#10;&#10;To edit billboards and events, double click on the entry in the table that you want to edit.&#10;&#10;Billboards are referenced by name, make sure you give a descriptive one to recocnize it easily!&#10;&#10;Not able to do something? You may not have authorization to do it! Contact you administrator, they can give you more permissions if need be.&#10;&#10;&#10;This application was created by:&#10;Callum, Colby, Connor, Dylan, Lucas&#10;for CAB302: Software Development at QUT"/>
                 </properties>
               </component>
             </children>

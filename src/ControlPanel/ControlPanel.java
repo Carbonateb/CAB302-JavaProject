@@ -1,6 +1,7 @@
 package ControlPanel;
 
 import Server.Endpoints.EndpointType;
+import Shared.Billboard;
 import Shared.ClientPropsReader;
 import Shared.Credentials;
 import Shared.Network.RequestSender;
@@ -197,7 +198,7 @@ public class ControlPanel extends JFrame {
 	public void refreshBillboards() {
 		try {
 			Response response = ControlPanel.get().requestSender.SendData(EndpointType.listBillboards, null);
-			ArrayList<String> billboardNames = (ArrayList<String>)response.getData();
+			ArrayList<Billboard> billboardNames = (ArrayList<Billboard>)response.getData();
 
 			//Data to be displayed in the JTable
 			billboards_Table.setModel(new DefaultTableModel());
@@ -207,9 +208,9 @@ public class ControlPanel extends JFrame {
 
 			String[] row = new String[2];
 
-			for (String bbName : billboardNames) {
-				row[0] = bbName;
-				row[1] = "Unknown";
+			for (Billboard billboard : billboardNames) {
+				row[0] = billboard.name;
+				row[1] = billboard.author;
 
 				model.addRow(row);
 			}

@@ -126,19 +126,18 @@ public class dbServer {
 	 * lists all the billboards in the database
 	 * @return returns an array list of strings
 	 */
-	public ArrayList<String> listBillboards() {
-		ArrayList<String> billboards = new ArrayList<>();
+	public ArrayList<Billboard> listBillboards() {
+		ArrayList<Billboard> billboards = new ArrayList<>();
 		String sql = "SELECT * FROM BILLBOARDS";
 
 		ResultSet rs;
 
-		Object obj;
-
 		try {
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				obj = rs.getString("name");
-				billboards.add(String.valueOf(obj));
+				String name = rs.getString("name");
+				Billboard billboard = (Billboard) ObjectSerialization.fromString(rs.getString("data"));
+				billboards.add(new Billboard(name, null, null, null, null, null, null, billboard.author));
 			}
 		} catch (SQLException se) {
 			//Handle errors for JDBC

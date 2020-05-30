@@ -1,6 +1,7 @@
 package ControlPanel;
 
 import Server.Endpoints.EndpointType;
+import Shared.Billboard;
 import Shared.Schedule.Event;
 
 import javax.swing.*;
@@ -59,11 +60,11 @@ public class EventEditor extends JFrame {
 		startDate_TextField.setText(currentDateTime.format(dateFormatter));
 
 		// Read the list of available billboards and add them to the dropdown box
-		ArrayList<String> allBillboardNames;
+		ArrayList<Billboard> allBillboardNames;
 		try {
-			allBillboardNames = (ArrayList<String>)ControlPanel.get().requestSender.SendData(EndpointType.listBillboards, null).getData();
-			for (String billboard : allBillboardNames) {
-				billboardSelector_ComboBox.addItem(billboard);
+			allBillboardNames = (ArrayList<Billboard>)ControlPanel.get().requestSender.SendData(EndpointType.listBillboards, null).getData();
+			for (Billboard billboard : allBillboardNames) {
+				billboardSelector_ComboBox.addItem(billboard.name);
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

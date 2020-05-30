@@ -3,13 +3,12 @@ package Server.Endpoints;
 import Shared.Credentials;
 import Shared.Network.Request;
 import Shared.Network.Response;
-import Shared.Network.Token;
 import Shared.Permissions.Perm;
 
-public class Register extends Endpoint {
-	public Register(){
+public class UpdateCreateUser extends Endpoint {
+	public UpdateCreateUser(){
 		// This is the enum value bound to this endpoint
-		associatedEndpoint = EndpointType.register;
+		associatedEndpoint = EndpointType.updateCreateUser;
 
 		requiredPermission = Perm.EDIT_USERS;
 	}

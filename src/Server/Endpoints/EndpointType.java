@@ -18,6 +18,6 @@ public enum EndpointType {
 	getUserDetails,
 	login,
 	logout,
-	register,
+	updateCreateUser,
 	updateBillboard,
 }

@@ -29,6 +29,7 @@ public class Server {
 		// List all of the Endpoints you want to make available here
 		// Should mirror the EndpointType enum
 		AddEvents.class,
+		AddBillboard.class,
 		Echo.class,
 		GetCurrentBillboard.class,
 		GetEvents.class,
@@ -56,24 +57,6 @@ public class Server {
 
 		System.out.println("ALL USERS : " + db.listUsers());
 
-		//TESTING CODE
-		Image img = null;
-		Billboard bb1 = new Billboard("1","aff", "af",Color.black, Color.green,img, "dylan");
-		Billboard bb2 = new Billboard("2","aff", "af",Color.black, Color.green,img, "BOB");
-		Billboard bb3 = new Billboard("1","f", "a",Color.black, Color.green,img, "James");
-
-		//db.addBillboard(bb1);
-		//db.addBillboard(bb2);
-
-		System.out.println(db.requestBillbaord(bb1.name).author);
-
-		//db.updateBillboard(bb3);
-
-		System.out.println(db.requestBillbaord(bb1.name).author);
-
-		//END TESTING CODE
-
-		
 		serverSocket = new ServerSocket(propsReader.GetPort());
 		socketHandler = new SocketHandler(serverSocket, db);
 

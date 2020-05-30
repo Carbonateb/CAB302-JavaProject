@@ -12,19 +12,16 @@ public class UpdateBillboard extends Endpoint {
 	public UpdateBillboard(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.updateBillboard;
+
+		requiredPermission = Perm.EDIT_ALL_BILLBOARDS;
 	}
 
 	/***
-	 * end point for addBillboard method which adds a billboard to the DB
+	 * end point for updateBillboard method which updates a billboard in the DB
 	 * @param input contains data sent from client
 	 * @return boolean
 	 */
 	public Object executeEndpoint(Request input){
-
-		Token token = input.getToken();
-		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_ALL_BILLBOARDS)) {
-			return new Response("error", "Permission denied", null);
-		}
 
 		Billboard billboard = (Billboard) input.getData();
 		try {

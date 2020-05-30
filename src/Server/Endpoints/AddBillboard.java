@@ -13,6 +13,8 @@ public class AddBillboard extends Endpoint {
 	public AddBillboard(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.addBillboard;
+
+		requiredPermission = Perm.CREATE_BILLBOARDS;
 	}
 
 	/***
@@ -21,11 +23,6 @@ public class AddBillboard extends Endpoint {
 	 * @return boolean
 	 */
 	public Object executeEndpoint(Request input){
-
-		Token token = input.getToken();
-		if (!server.socketHandler.hasPerm(token.getUser(), Perm.CREATE_BILLBOARDS)) {
-			return new Response("error", "Permission denied", null);
-		}
 
 		Billboard billboard = (Billboard) input.getData();
 		try {

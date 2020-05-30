@@ -12,6 +12,8 @@ public class AddEvents extends Endpoint {
 	public AddEvents(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.addEvents;
+
+		requiredPermission = Perm.SCHEDULE_BILLBOARDS;
 	}
 
 	/***
@@ -21,11 +23,6 @@ public class AddEvents extends Endpoint {
 	 * @return boolean
 	 */
 	public Object executeEndpoint(Request input){
-
-		Token token = input.getToken();
-		if (!server.socketHandler.hasPerm(token.getUser(), Perm.SCHEDULE_BILLBOARDS)) {
-			return new Response("error", "Permission denied", null);
-		}
 
 		Event event = (Event) input.getData();
 		try {

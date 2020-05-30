@@ -29,14 +29,14 @@ public class ExampleClient {
 		// Create RequestSender
 		RequestSender requestSender = new RequestSender(serverIP, serverPort);
 
-		// Hash password and define payload data
-		String password = "secure_password";
+		Credentials admin_creds = new Credentials("admin", "secure_password", null);
+		Credentials user_creds = new Credentials("user", "password", null);
 
-		Credentials credentials = new Credentials("admin", password, null);
+		Credentials selected = admin_creds;
 
 		// Login
-		System.out.println("Logging in with: " + credentials);
-		Response response = requestSender.login(credentials);
+		System.out.println("Logging in with: " + selected);
+		Response response = requestSender.login(selected);
 		System.out.println("Response: " + response);
 
 		System.out.println();

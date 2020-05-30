@@ -10,14 +10,11 @@ public class Register extends Endpoint {
 	public Register(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.register;
+
+		requiredPermission = Perm.EDIT_USERS;
 	}
 
 	public Object executeEndpoint(Request request) {
-
-		Token token = request.getToken();
-		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
-			return new Response("error", "Permission denied", null);
-		}
 
 		Credentials credentials = null;
 		try {

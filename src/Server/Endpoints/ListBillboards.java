@@ -11,6 +11,8 @@ public class ListBillboards extends Endpoint {
 	public ListBillboards(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.listBillboards;
+
+		requiredPermission = Perm.CREATE_BILLBOARDS;
 	}
 
 	/***
@@ -19,11 +21,6 @@ public class ListBillboards extends Endpoint {
 	 * @return ArrayList of billboards (String)
 	 */
 	public Object executeEndpoint(Request input){
-		Token token = input.getToken();
-		if (!server.socketHandler.hasPerm(token.getUser(), Perm.CREATE_BILLBOARDS)) {
-			return new Response("error", "Permission denied", null);
-		}
-
 		return server.db.listBillboards();
 	}
 

@@ -9,6 +9,8 @@ public class GetUserDetails extends Endpoint {
 	public GetUserDetails(){
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.getUserDetails;
+
+		requiredPermission = Perm.EDIT_USERS;
 	}
 
 	/***
@@ -17,11 +19,6 @@ public class GetUserDetails extends Endpoint {
 	 * @return Credentials class for the user (nulled password field)
 	 */
 	public Object executeEndpoint(Request input){
-		Token token = input.getToken();
-		if (!server.socketHandler.hasPerm(token.getUser(), Perm.EDIT_USERS)) {
-			return server.db.getUserDetails(token.getUser());
-		}
-
 		return server.db.getUserDetails((String) input.getData());
 	}
 

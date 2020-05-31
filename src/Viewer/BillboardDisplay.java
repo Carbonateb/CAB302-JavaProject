@@ -177,6 +177,9 @@ public class BillboardDisplay extends JFrame {
 		} else {
 			displayNoBillboard();
 		}
+
+		information.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
+		message.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
 	}
 
 

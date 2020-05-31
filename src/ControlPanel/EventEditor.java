@@ -36,13 +36,13 @@ public class EventEditor extends JFrame {
 	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH);
 
 	/**
-	 * Allows the user to schedule a billboard. Has controls for setting a start date & time, duration, and looping
+	 * Allows the user to schedule a billboard. Has controls for setting a start date and time, duration, and looping
 	 * behaviours. All user input is sanitized. The inputs are converted to unix time for convenience.
 	 *
 	 * When the user presses OK, a new Event is created, which is sent to server
 	 *
 	 * @author Callum McNeilage - n10482652
-	 * @contributor Lucas Maldonado - n10534342
+	 * @author Lucas Maldonado - n10534342
 	 */
 	public EventEditor() {
 		// Set up frame

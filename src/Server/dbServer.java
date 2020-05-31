@@ -50,7 +50,7 @@ public class dbServer {
 		try {
 			//Open a connection
 			System.out.println("Connecting to a selected database...");
-			//"jdbc:sqlite:main.db"
+//			"jdbc:sqlite:main.db"
 			ServerPropsReader props = new ServerPropsReader();
 			cn = DriverManager.getConnection(props.GetURL()+":"+props.GetSchema());
 			stmt = cn.createStatement();
@@ -210,6 +210,7 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public ArrayList<Event> returnEventList() throws IOException, ClassNotFoundException {
+		schedule.getCurrentEvent();
 		ArrayList<Event> test = requestEvents();
 		return test;
 	}
@@ -234,12 +235,14 @@ public class dbServer {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void rmEvent(Event event, boolean future) throws IOException, ClassNotFoundException {
+	public boolean rmEvent(Event event, boolean future) throws IOException, ClassNotFoundException {
 		//create a new event and add it to the memory Schedule
-		schedule.removeEvent(event, true, future);
+		boolean returnValue = schedule.removeEvent(event, true, future);
 
 		//save memory schedule to database
 		saveSchedule(schedule);
+
+		return returnValue;
 	}
 
 	/***

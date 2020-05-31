@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +26,7 @@ import Shared.Network.Response;
  * The viewer is the dummy client that displays the billboard.
  *
  * @author Lucas Maldonado N10534342
+ * @author Connor McHugh n10522662
  * @author Callum McNeilage n10482652
  */
 public class Viewer {
@@ -34,9 +36,13 @@ public class Viewer {
 	private JTextPane image;
 
 	public Billboard billboardToView;
+	public String lastTitleText;
+	public String lastInfoText;
+	public String lastImage;
 
 	public ClientPropsReader propsReader;
 	public RequestSender requestSender;
+
 
 	/**
 	 * How often the Viewer should get an update from the server, in seconds.
@@ -127,6 +133,16 @@ public class Viewer {
 	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
 
 		clearViewer();
+
+		System.out.println("Preferred Size: " + message.getPreferredSize());
+		System.out.println("Actual Size: " + message.getSize());
+
+		message.setMaximumSize(message.getPreferredSize());
+		information.setMaximumSize(information.getPreferredSize());
+		
+		image.setSize(image.getPreferredSize());
+
+
 		try {
 			if (messageText != null) {
 				message.setText(messageText);
@@ -163,9 +179,7 @@ public class Viewer {
 				StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
 				sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
 			}
-			catch (NullPointerException e) {
-
-			}
+			catch (NullPointerException ignored) {}
 
 
 		} catch (NullPointerException ex) {
@@ -266,7 +280,7 @@ public class Viewer {
 					infoTextColor = Color.red;
 					backgroundColor = Color.black;
 					image = null;
-					e.printStackTrace();
+//					e.printStackTrace();
 				} catch (NullPointerException err) {
 					titleText = "No Billboards Scheduled";
 					titleTextColor = Color.red;
@@ -276,7 +290,21 @@ public class Viewer {
 					image = null;
 				}
 
-				populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
+				try {
+					if ((!titleText.equals(lastTitleText) && !infoText.equals(lastInfoText)) ||
+						(!infoText.equals(lastInfoText) && !image.equals(lastImage)) ||
+						(!titleText.equals(lastTitleText) && !image.equals(lastImage))) {
+						populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
+						lastTitleText = titleText;
+						lastInfoText = infoText;
+						lastImage = image;
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+
+
+
 
 			}
 

@@ -41,7 +41,7 @@ public class Schedule {
 		btnSchedule.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new EventEditor();
+				new EventEditor(null);
 			}
 		});
 

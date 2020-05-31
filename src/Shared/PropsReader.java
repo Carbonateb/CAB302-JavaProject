@@ -135,7 +135,7 @@ public class PropsReader {
 	private void createPropsFile(String filePath, String fileName) throws IOException {
 		StringBuilder fileContents = new StringBuilder();
 		for (Map.Entry<String, String> entry : defaultKeysValues.entrySet()) {
-			fileContents.append(String.format("%s: %s\n", entry.getKey(), entry.getValue()));
+			fileContents.append(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
 		}
 
 		File file = new File(filePath);

@@ -28,8 +28,7 @@ public class DeleteEvent extends Endpoint {
 		boolean future = (boolean) data[1];
 
 		try {
-			server.db.rmEvent(event, future);
-			return true;
+			return server.db.rmEvent(event, future);
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 			return false;

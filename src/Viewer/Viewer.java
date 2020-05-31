@@ -134,23 +134,23 @@ public class Viewer {
 
 		clearViewer();
 
-		System.out.println("Preferred Size: " + message.getPreferredSize());
-		System.out.println("Actual Size: " + message.getSize());
-
-		message.setMaximumSize(message.getPreferredSize());
-		information.setMaximumSize(information.getPreferredSize());
-		
-		image.setSize(image.getPreferredSize());
-
+		// Check which components need to be enabled
+		if (!messageText.equals("")) {
+			message.setVisible(true);
+		} if (!informationText.equals("")) {
+			information.setVisible(true);
+		} if (!imageString.equals("")) {
+			image.setVisible(true);
+		}
 
 		try {
-			if (messageText != null) {
+			if (!messageText.equals("")) {
 				message.setText(messageText);
 				message.setForeground(messageColor);
 			}
 
 			// Set information text and color
-			if (informationText != null) {
+			if (!informationText.equals("")) {
 				information.setText(informationText);
 				information.setForeground(informationColor);
 			}
@@ -200,6 +200,10 @@ public class Viewer {
 		mainFrame.pack();
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setVisible(true);
+
+		message.setVisible(false);
+		information.setVisible(false);
+		image.setVisible(false);
 
 		Action exitProgram = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {

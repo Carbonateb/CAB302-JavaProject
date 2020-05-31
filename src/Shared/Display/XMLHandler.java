@@ -65,11 +65,11 @@ public class XMLHandler {
 						}
 					}
 				} else {
-//					System.out.println("Tag doesn't exist in the provided XML file!");
+					System.out.println("Tag doesn't exist in the provided XML file!");
 					return null;
 				}
 		} else {
-//			System.out.println("This is not a valid billboard XML file!");
+			System.out.println("This is not a valid billboard XML file!");
 			return null;
 		}
 	}

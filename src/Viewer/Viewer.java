@@ -83,7 +83,7 @@ public class Viewer {
 
 		information.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
 		message.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
-		
+
 		StyledDocument doc = message.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
@@ -162,6 +162,8 @@ public class Viewer {
 		} if (imageString == null) {
 			imageString = "";
 		}
+
+//		System.out.println("IMAGE STRING:::" + imageString);
 
 		// Check which components need to be enabled
 		if (!messageText.equals("")) {
@@ -337,6 +339,8 @@ public class Viewer {
 					backgroundColor = Color.black;
 					image = "";
 				}
+
+				System.out.println("IMAGE STRING:::" + image);
 
 				try {
 					if ((!titleText.equals(lastTitleText) && !infoText.equals(lastInfoText)) ||

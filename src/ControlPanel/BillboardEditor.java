@@ -47,6 +47,9 @@ public class BillboardEditor extends JFrame {
 	private String author;
 	private boolean creatingNewBillboard;
 
+	private boolean imageIsURL;
+	private String imageBase64String;
+
 
 
 	/**
@@ -141,8 +144,9 @@ public class BillboardEditor extends JFrame {
 					fileExtension = localImagePath.substring(i+1);
 				}
 
-				String imageBase64String = IMGHandler.imageEncoder(image, fileExtension);
+				imageBase64String = IMGHandler.imageEncoder(image, fileExtension);
 				System.out.println(imageBase64String);
+				imageIsURL = false;
 			}
 		});
 
@@ -168,6 +172,7 @@ public class BillboardEditor extends JFrame {
 				if ((imageURL != null) && (imageURL.length() > 0)) {
 					selectedFile_Label.setText(imageURL);
 				}
+				imageIsURL = true;
 			}
 		});
 
@@ -316,16 +321,30 @@ public class BillboardEditor extends JFrame {
 	 * @returns a new billboard object with the data filled in
 	 */
 	private Billboard exportBillboard() {
-		return new Billboard(
-			name_TextField.getText(),
-			title_TextField.getText(),
-			info_TextPane.getText(),
-			titleColorPreview.getBackground(),
-			infoColorPreview.getBackground(),
-			backgroundColorPreview.getBackground(),
-			selectedFile_Label.getText(),
-			author
-		);
+		if (imageIsURL) {
+			return new Billboard(
+				name_TextField.getText(),
+				title_TextField.getText(),
+				info_TextPane.getText(),
+				titleColorPreview.getBackground(),
+				infoColorPreview.getBackground(),
+				backgroundColorPreview.getBackground(),
+				selectedFile_Label.getText(),
+				author
+			);
+		} else {
+			return new Billboard(
+				name_TextField.getText(),
+				title_TextField.getText(),
+				info_TextPane.getText(),
+				titleColorPreview.getBackground(),
+				infoColorPreview.getBackground(),
+				backgroundColorPreview.getBackground(),
+				imageBase64String,
+				author
+			);
+		}
+
 	}
 
 

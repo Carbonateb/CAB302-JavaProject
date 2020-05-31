@@ -182,11 +182,15 @@ public class Viewer {
 			information.setBackground(backgroundColor);
 			image.setBackground(backgroundColor);
 
+			System.out.println(imageString);
+
 			// Set image
 			BufferedImage billboardImage = null;
 			try {
 				billboardImage = IMGHandler.imageDecoder(imageString);
-			} catch (NullPointerException | IllegalArgumentException ignored) { }
+			} catch (NullPointerException | IllegalArgumentException e) {
+				e.printStackTrace();
+			}
 
 			try {
 				billboardImage = ImageIO.read(new URL(imageString));

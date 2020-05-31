@@ -7,6 +7,9 @@ import Shared.Permissions.Perm;
 
 import java.util.ArrayList;
 
+/***
+ * end point for retrieving user details from the database
+ */
 public class GetUserDetails extends Endpoint {
 	public GetUserDetails(){
 		// This is the enum value bound to this endpoint

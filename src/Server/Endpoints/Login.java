@@ -5,6 +5,9 @@ import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Network.Token;
 
+/***
+ * end point allowing login functionality
+ */
 public class Login extends Endpoint {
 	public Login(){
 		// This is the enum value bound to this endpoint

@@ -3,6 +3,9 @@ package Server.Endpoints;
 import Shared.Network.Request;
 import Shared.Network.Response;
 
+/***
+ * end point for getting a billboard from the database
+ */
 public class GetBillboard extends Endpoint {
 	public GetBillboard(){
 		// This is the enum value bound to this endpoint

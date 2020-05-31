@@ -64,7 +64,7 @@ public class Event implements Serializable {
 	/**
 	 * Used to check if this event has no info in it, like when the scheduler has no billboard to display.
 	 * An event is blank when all values are 0 or equivalent.
-	 * @returns true if this Event is blank, false otherwise.
+	 * @return true if this Event is blank, false otherwise.
 	 */
 	public boolean isBlank() {
 		return startTime == 0

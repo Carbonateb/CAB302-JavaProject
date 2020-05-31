@@ -8,6 +8,9 @@ package Server.Endpoints;
 
 	import java.io.IOException;
 
+/***
+ * end point for adding an event to the database
+ */
 public class AddEvents extends Endpoint {
 	public AddEvents(){
 		// This is the enum value bound to this endpoint

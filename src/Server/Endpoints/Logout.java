@@ -3,6 +3,9 @@ package Server.Endpoints;
 import Shared.Network.Request;
 import Shared.Network.Response;
 
+/***
+ * end point allowing log out functionality
+ */
 public class Logout extends Endpoint {
 	public Logout(){
 		// This is the enum value bound to this endpoint

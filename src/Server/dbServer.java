@@ -236,7 +236,7 @@ public class dbServer {
 	 */
 	public void rmEvent(Event event) throws IOException, ClassNotFoundException {
 		//create a new event and add it to the memory Schedule
-		schedule.removeEvent(event, true, true);
+		schedule.removeEvent(event, true, false);
 
 		//save memory schedule to database
 		saveSchedule(schedule);

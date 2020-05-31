@@ -32,6 +32,7 @@ public class Server {
 		AddBillboard.class,
 		DeleteUser.class,
 		Echo.class,
+		GetBillboard.class,
 		GetCurrentBillboard.class,
 		GetEvents.class,
 		ListUsers.class,

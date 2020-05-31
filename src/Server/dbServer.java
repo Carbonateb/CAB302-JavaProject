@@ -50,7 +50,7 @@ public class dbServer {
 		try {
 			//Open a connection
 			System.out.println("Connecting to a selected database...");
-			//"jdbc:sqlite:main.db"
+//			"jdbc:sqlite:main.db"
 			ServerPropsReader props = new ServerPropsReader();
 			cn = DriverManager.getConnection(props.GetURL()+":"+props.GetSchema());
 			stmt = cn.createStatement();

@@ -25,6 +25,7 @@ import Shared.Network.Response;
  * The viewer is the dummy client that displays the billboard.
  *
  * @author Lucas Maldonado N10534342
+ * @author Connor McHugh n10522662
  * @author Callum McNeilage n10482652
  */
 public class Viewer {
@@ -34,9 +35,14 @@ public class Viewer {
 	private JTextPane image;
 
 	public Billboard billboardToView;
+//	public Billboard lastBillboard = null;
+	public String lastTitleText;
+	public String lastInfoText;
+	public String lastImage;
 
 	public ClientPropsReader propsReader;
 	public RequestSender requestSender;
+
 
 	/**
 	 * How often the Viewer should get an update from the server, in seconds.
@@ -163,9 +169,7 @@ public class Viewer {
 				StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
 				sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
 			}
-			catch (NullPointerException e) {
-
-			}
+			catch (NullPointerException ignored) {}
 
 
 		} catch (NullPointerException ex) {
@@ -238,6 +242,7 @@ public class Viewer {
 			public void run() {
 				System.out.println("Requesting info from server...");
 
+
 				//Create variables
 				String titleText;
 				Color titleTextColor;
@@ -251,6 +256,10 @@ public class Viewer {
 					response = requestSender.SendData(EndpointType.getCurrentBillboard, null);
 
 					billboardToView = (Billboard) response.getData();
+
+//					System.out.println(billboardToView);
+//					System.out.println(lastBillboard);
+
 
 					titleText = billboardToView.titleText;
 					titleTextColor = billboardToView.titleTextColor;
@@ -276,7 +285,16 @@ public class Viewer {
 					image = null;
 				}
 
-				populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
+				try {
+					if (!titleText.equals(lastTitleText) && !infoText.equals(lastInfoText) && !image.equals(lastImage)) {
+						populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
+						lastTitleText = titleText;
+						lastInfoText = infoText;
+						lastImage = image;
+					}
+				} catch (NullPointerException ignored) {}
+
+
 
 			}
 

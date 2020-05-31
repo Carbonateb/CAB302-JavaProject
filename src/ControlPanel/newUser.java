@@ -80,6 +80,11 @@ public class newUser extends JFrame {
 		setVisible(true);
 
 
+		/**
+		 * Retrieves data from input fields and creates a new user in server
+		 *
+		 * @author Callum McNeilage
+		 */
 		okay_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

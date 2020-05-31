@@ -14,6 +14,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Base64;
 
+/***
+ * handles the server side and database
+ * @author Colby Derix n10475991
+ * @author Dylan Robertson n10487310
+ *
+ */
 public class dbServer {
 
 

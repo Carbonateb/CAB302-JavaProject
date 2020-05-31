@@ -5,26 +5,20 @@ import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ControlPanel.ControlPanel;
 import Server.Endpoints.EndpointType;
 import Shared.Billboard;
 import Shared.ClientPropsReader;
 import Shared.Display.IMGHandler;
-import Shared.Display.XMLHandler;
 import Shared.Network.RequestSender;
 import Shared.Network.Response;
-import org.xml.sax.SAXException;
 
 /**
  * The viewer is the dummy client that displays the billboard.
@@ -156,23 +150,17 @@ public class Viewer {
 			image.setBackground(backgroundColor);
 
 			// Set image
-//			String imageString;
 			BufferedImage billboardImage = null;
 			try {
-//				imageString = XMLHandler.xmlReader(false, xmlData, "picture", "data");
 				billboardImage = IMGHandler.imageDecoder(imageString);
 			} catch (NullPointerException | IllegalArgumentException ignored) { }
 
 			try {
-//				imageString = XMLHandler.xmlReader(false, xmlData, "picture", "url");
-//				assert imageString != null;
 				billboardImage = ImageIO.read(new URL(imageString));
 			} catch (NullPointerException | IOException ignored) { }
 
 
 
-//			System.out.println(billboardImage);
-//			assert billboardImage != null;
 			assert billboardImage != null;
 			ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
 			image.insertIcon(displayedBillboardImage);
@@ -236,7 +224,6 @@ public class Viewer {
 		});
 		mainPanel.getActionMap().put("exitProgram", exitProgram);
 
-//		populateViewer(billboardToView.titleText, billboardToView.titleTextColor);
 	}
 
 
@@ -252,23 +239,6 @@ public class Viewer {
 			public void run() {
 				System.out.println("Requesting info from server...");
 
-				Response response;
-				try {
-					response = requestSender.SendData(EndpointType.getCurrentBillboard, null);
-
-				} catch (IOException | ClassNotFoundException e) {
-					response = null;
-					e.printStackTrace();
-				}
-
-				assert response != null;
-//				System.out.println(response.getData());
-				billboardToView = (Billboard) response.getData();
-
-//				clearViewer();
-
-//				String oldTitleText = null, oldInfoText = null, oldImage = null;
-
 				//Create variables
 				String titleText;
 				Color titleTextColor;
@@ -277,15 +247,28 @@ public class Viewer {
 				Color backgroundColor;
 				String image;
 
+				Response response;
 				try {
+					response = requestSender.SendData(EndpointType.getCurrentBillboard, null);
+
+					billboardToView = (Billboard) response.getData();
+
 					titleText = billboardToView.titleText;
 					titleTextColor = billboardToView.titleTextColor;
 					infoText = billboardToView.infoText;
 					infoTextColor = billboardToView.infoTextColor;
 					backgroundColor = billboardToView.backgroundColor;
 					image = billboardToView.image;
-				}
-				catch (java.lang.NullPointerException e) {
+
+				} catch (IOException | ClassNotFoundException e) {
+					titleText = "Cannot connect to Server!";
+					titleTextColor = Color.red;
+					infoText = "Please confirm server is running on network";
+					infoTextColor = Color.red;
+					backgroundColor = Color.black;
+					image = null;
+					e.printStackTrace();
+				} catch (NullPointerException err) {
 					titleText = "No Billboards Scheduled";
 					titleTextColor = Color.red;
 					infoText = "Please add billboards to the schedule in the Billboard Controller";
@@ -294,17 +277,7 @@ public class Viewer {
 					image = null;
 				}
 
-//				if (!titleText.equals(oldTitleText) && !infoText.equals(oldInfoText) && !image.equals(oldImage)) {
-//					populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
-//					oldTitleText = titleText;
-//					oldInfoText = infoText;
-//					oldImage = image;
-//				}
-
 				populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
-
-//				populateViewer(billboardToView.titleText, billboardToView.titleTextColor, billboardToView.infoText, billboardToView.infoTextColor, billboardToView.backgroundColor, billboardToView.image);
-
 
 			}
 

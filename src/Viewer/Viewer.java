@@ -25,6 +25,7 @@ import Shared.Network.Response;
  * The viewer is the dummy client that displays the billboard.
  *
  * @author Lucas Maldonado N10534342
+ * @author Callum McNeilage n10482652
  */
 public class Viewer {
 	private JPanel mainPanel;
@@ -110,7 +111,7 @@ public class Viewer {
 					System.exit(0);
 			}
 		});
-		
+
 	}
 
 	private void clearViewer() {

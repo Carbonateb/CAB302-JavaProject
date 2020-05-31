@@ -66,10 +66,11 @@ public class BillboardEditor extends JFrame {
 			try {
 				Billboard billboard = (Billboard)ControlPanel.get().requestSender.SendData(EndpointType.getBillboard, billboardName).getData();
 				importBillboard(billboard);
-				//importFromXML(false, billboardName);
+				name_TextField.setEnabled(false);
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("Failed to import billboard!");
 				System.out.println(e.getMessage());
+				return;
 			}
 		}
 

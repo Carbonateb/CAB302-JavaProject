@@ -15,6 +15,7 @@ public enum EndpointType {
 	getEvents,
 	listUsers,
 	listBillboards,
+	getBillboard,
 	getUserDetails,
 	login,
 	logout,

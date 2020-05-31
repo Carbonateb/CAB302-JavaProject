@@ -47,6 +47,128 @@ public class Viewer extends JFrame {
 
 		CreateUI();
 		CreateUpdateTimer();
+		System.out.println("Viewer started successfully");
+
+		information.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
+		message.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
+
+		StyledDocument doc = message.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+		doc = information.getStyledDocument();
+		center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+		message.addMouseListener(new MouseAdapter() {
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @param e
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 1)
+					System.exit(0);
+			}
+		});
+		image.addMouseListener(new MouseAdapter() {
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @param e
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 1)
+					System.exit(0);
+			}
+		});
+		information.addMouseListener(new MouseAdapter() {
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @param e
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 1)
+					System.exit(0);
+			}
+		});
+
+	}
+
+	private void clearViewer() {
+		message.setText(null);
+		information.setText(null);
+		mainPanel.setBackground(null);
+		message.setBackground(null);
+		information.setBackground(null);
+		image.setText(null);
+
+	}
+
+	private ImageIcon imageScaler(Image billboardImage, int imageWidth, int imageHeight, int desiredHeight) {
+		double scaleFactor = (double) (imageHeight / desiredHeight);
+		int newWidth = (int) Math.round(imageWidth / scaleFactor);
+
+		return new ImageIcon(new ImageIcon(billboardImage).getImage().getScaledInstance(newWidth, desiredHeight, Image.SCALE_DEFAULT));
+	}
+
+
+	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
+
+		clearViewer();
+
+		if (messageText == null) {
+			messageText = "";
+		} if (informationText == null) {
+			informationText = "";
+		} if (imageString == null) {
+			imageString = "";
+		}
+
+//		System.out.println("IMAGE STRING:::" + imageString);
+
+		// Check which components need to be enabled
+		if (!messageText.equals("")) {
+			message.setVisible(true);
+		} if (!informationText.equals("")) {
+			information.setVisible(true);
+		} if (!imageString.equals("")) {
+			image.setVisible(true);
+		}
+
+		try {
+			if (!messageText.equals("")) {
+				message.setText(messageText);
+				message.setForeground(messageColor);
+			}
+
+			// Set information text and color
+			if (!informationText.equals("")) {
+				information.setText(informationText);
+				information.setForeground(informationColor);
+			}
+
+			// Set background color
+			mainPanel.setBackground(backgroundColor);
+			message.setBackground(backgroundColor);
+			information.setBackground(backgroundColor);
+			image.setBackground(backgroundColor);
+
+			System.out.println(imageString);
+
+			// Set image
+			BufferedImage billboardImage = null;
+			try {
+				billboardImage = IMGHandler.imageDecoder(imageString);
+			} catch (NullPointerException | IllegalArgumentException e) {
+				e.printStackTrace();
+			}
 
 		System.out.println("Viewer started successfully");
 	}

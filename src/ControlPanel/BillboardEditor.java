@@ -120,10 +120,13 @@ public class BillboardEditor extends JFrame {
 
 				int selected = imageSelect.showOpenDialog(null);
 
+
 				if (selected == JFileChooser.APPROVE_OPTION) {
 					localImagePath = imageSelect.getSelectedFile().getAbsolutePath();
+					System.out.println("LOCAL IMAGE PATH:::" + localImagePath);
 					selectedFile_Label.setText(localImagePath);
 				}
+
 
 				BufferedImage image = null;
 
@@ -321,7 +324,9 @@ public class BillboardEditor extends JFrame {
 	 * @returns a new billboard object with the data filled in
 	 */
 	private Billboard exportBillboard() {
+//		System.out.println(imageIsURL);
 		if (imageIsURL) {
+			System.out.println(selectedFile_Label.getText());
 			return new Billboard(
 				name_TextField.getText(),
 				title_TextField.getText(),
@@ -393,17 +398,24 @@ public class BillboardEditor extends JFrame {
 			String image = null;
 			try {
 				image = XMLHandler.xmlReader(isFile, xmlData, "picture", "data");
+				selectedFile_Label.setText(image);
+				imageIsURL = false;
+				imageBase64String = image;
 			} catch (NullPointerException ignored) {
 			}
 			try {
 				image = XMLHandler.xmlReader(isFile, xmlData, "picture", "url");
+				imageIsURL = true;
+				selectedFile_Label.setText(image);
 			} catch (NullPointerException ignored) {
 			}
 
-			if (image != null) {
-				System.out.println(image);
-				selectedFile_Label.setText(image);
-			}
+			System.out.println("IMAGE TEST:::" + image);
+
+//			if (image != null) {
+//				System.out.println(image);
+//				selectedFile_Label.setText(image);
+//			}
 		} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
 			ex.printStackTrace();
 		}

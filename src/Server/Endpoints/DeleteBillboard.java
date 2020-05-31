@@ -5,8 +5,10 @@ import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Permissions.Perm;
 import Shared.Permissions.Permissions;
+import Shared.Schedule.Event;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /***
  * end point for deleting a user from the database
@@ -38,9 +40,20 @@ public class DeleteBillboard extends Endpoint {
 		if (billboard.author.equals(input.getToken().getUser())) {
 			// Deleting their own billboard
 			try {
-				// TODO: check if billboard is scheduled (and deny removal)
-				server.db.rmBillboard((String) input.getData());
-				return true;
+				ArrayList<Event> events = server.db.requestEvents();
+				boolean used = false;
+				for (Event event : events) {
+					if (event.billboardName.equals(billboard.name)) {
+						used = true;
+						break;
+					}
+				}
+				if (used) {
+					return new Response("error", "Permission denied (billboard is scheduled)", null);
+				} else {
+					server.db.rmBillboard(billboard.name);
+					return true;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
@@ -50,8 +63,13 @@ public class DeleteBillboard extends Endpoint {
 			// Editing another billboard
 			if (permissions.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
 				try {
-					// TODO: remove all scheduled events using this billboard
-					server.db.rmBillboard((String) input.getData());
+					ArrayList<Event> events = server.db.requestEvents();
+					for (Event event : events) {
+						if (event.billboardName.equals(billboard.name)) {
+							server.db.rmEvent(event);
+						}
+					}
+					server.db.rmBillboard(billboard.name);
 					return true;
 				} catch (Exception e) {
 					e.printStackTrace();

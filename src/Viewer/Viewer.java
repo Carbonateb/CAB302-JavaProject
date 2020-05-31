@@ -36,7 +36,6 @@ public class Viewer {
 	private JTextPane image;
 
 	public Billboard billboardToView;
-//	public Billboard lastBillboard = null;
 	public String lastTitleText;
 	public String lastInfoText;
 	public String lastImage;
@@ -134,6 +133,16 @@ public class Viewer {
 	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
 
 		clearViewer();
+
+		System.out.println("Preferred Size: " + message.getPreferredSize());
+		System.out.println("Actual Size: " + message.getSize());
+
+		message.setMaximumSize(message.getPreferredSize());
+		information.setMaximumSize(information.getPreferredSize());
+		
+		image.setSize(image.getPreferredSize());
+
+
 		try {
 			if (messageText != null) {
 				message.setText(messageText);

@@ -176,7 +176,7 @@ public class dbServer {
 	}
 
 	/***
-	 *
+	 *runs the sql given in string
 	 * @param sql a string containing sql
 	 * @return return true if sql ran successfully else return false
 	 */

@@ -1,5 +1,6 @@
 package ControlPanel;
 
+import Server.Endpoints.Endpoint;
 import Server.Endpoints.EndpointType;
 import Shared.Billboard;
 import Shared.ClientPropsReader;
@@ -474,11 +475,42 @@ public class ControlPanel extends JFrame {
 		billboards_Table = new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+				String billboardName = (String) billboards_Table.getModel().getValueAt(row, 0);
+
+				if (!userPerms.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
+					// check if they created this billboard
+					try {
+						Billboard b = (Billboard)requestSender.SendData(EndpointType.getBillboard, billboardName).getData();
+						if (!b.author.equals(requestSender.getToken().getUser())) {
+							// The user is trying to edit someone else's board! Stop them!
+							return false;
+						}
+					} catch (IOException | ClassNotFoundException ioException) {
+						ioException.printStackTrace();
+					}
+				}
+
 				if (e instanceof KeyEvent) {
 					KeyEvent ke = (KeyEvent)e;
 					// Keycode 8 is backspace, 127 is delete
 					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
 						// Delete thing
+
+						// Bring up a confirmation dialogue
+						int n = JOptionPane.showConfirmDialog(
+							this,
+							"Are you sure you want to delete '" + billboardName
+								+ "'?\nThis action is irreversible!",
+							"Confirm Delete User",
+							JOptionPane.YES_NO_OPTION);
+
+						if (n != 0) {
+							try {
+								requestSender.SendData(EndpointType.deleteBillboard, billboardName);
+							} catch (IOException | ClassNotFoundException ioException) {
+								ioException.printStackTrace();
+							}
+						}
 					}
 				} else if (e instanceof MouseEvent) {
 					MouseEvent mouseEvent = (MouseEvent) e;
@@ -487,7 +519,6 @@ public class ControlPanel extends JFrame {
 						return false;
 					}
 
-					String billboardName = (String) billboards_Table.getModel().getValueAt(row, 0);
 
 					new BillboardEditor(billboardName);
 
@@ -506,6 +537,15 @@ public class ControlPanel extends JFrame {
 					KeyEvent ke = (KeyEvent)e;
 					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
 						// Delete thing
+						String eventName = (String) schedule_Table.getModel().getValueAt(row, 0);
+						Object[] data = new Object[2];
+						data[0] = eventName;
+						data[1] = false; // TODO let user decide how they want to handle repeating event
+						try {
+							requestSender.SendData(EndpointType.deleteEvent, eventName);
+						} catch (IOException | ClassNotFoundException ioException) {
+							ioException.printStackTrace();
+						}
 					}
 				} else if (e instanceof MouseEvent) {
 					MouseEvent mouseEvent = (MouseEvent) e;

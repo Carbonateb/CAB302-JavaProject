@@ -58,11 +58,11 @@ public class XMLHandler {
 					if (attribute == null) {
 						return document.getElementsByTagName(tag).item(0).getTextContent();
 					} else {
-						try {
+//						try {
 							return document.getElementsByTagName(tag).item(0).getAttributes().getNamedItem(attribute).getNodeValue();
-						} catch (NullPointerException e) {
-							return null;
-						}
+//						} catch (NullPointerException e) {
+//							return null;
+//						}
 					}
 				} else {
 					System.out.println("Tag doesn't exist in the provided XML file!");

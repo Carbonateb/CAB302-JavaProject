@@ -23,6 +23,8 @@ import java.util.Date;
 
 /**
  * Graphical User Interface for main window form
+ *
+ * @author 
  */
 
 public class ControlPanel extends JFrame {

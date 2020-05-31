@@ -24,6 +24,7 @@ import java.util.Objects;
  *
  * @author Connor McHugh - n10522662
  * @contributor Callum McNeilage - n10482652
+ * @contributor Lucas Maldonado - n10534342
  */
 public class BillboardEditor extends JFrame {
 	public JPanel BillboardWindow;
@@ -46,7 +47,9 @@ public class BillboardEditor extends JFrame {
 
 
 	/**
-	 * Constructor
+	 * Billboard Constructor
+	 *
+	 * @author Connor McHugh - n10522662
 	 * @param xmlString optional. If supplied, will pre-fill the values
 	 */
 	public BillboardEditor(String xmlString) {
@@ -67,6 +70,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'Message Color' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -81,6 +85,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'Local File' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -129,6 +134,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'URL' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -153,6 +159,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'Information Text Color' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -167,6 +174,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'Background Color' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -181,6 +189,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'Import XML' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -214,6 +223,7 @@ public class BillboardEditor extends JFrame {
 			/**
 			 * Handle the 'Export XML' button being pressed
 			 *
+			 * @author Connor McHugh - n10522662
 			 * @param e the event to be processed
 			 */
 			@Override
@@ -253,6 +263,7 @@ public class BillboardEditor extends JFrame {
 			 * Saves data and closes window
 			 *
 			 * @author Callum McNeilage - n10482652
+			 * @contributor Lucas Maldonado - n10534342
 			 * @param e
 			 */
 			@Override
@@ -292,6 +303,14 @@ public class BillboardEditor extends JFrame {
 		});
 	}
 
+	/**
+	 * Populates billboard editor window with data from server
+	 *
+	 * @author Connor McHugh - n10522662
+	 * @contributor Lucas Maldonado - n10534342
+	 * @param isFile
+	 * @param xmlData
+	 */
 	private void importFromXML(boolean isFile, String xmlData) {
 		try {
 			// Set message text and color

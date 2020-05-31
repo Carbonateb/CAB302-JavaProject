@@ -3,7 +3,7 @@ package Server;
 import Shared.PropsReader;
 
 /***
- * used to read
+ * used to read props file
  */
 public final class ServerPropsReader extends PropsReader {
 

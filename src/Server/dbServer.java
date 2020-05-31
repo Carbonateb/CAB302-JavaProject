@@ -229,6 +229,20 @@ public class dbServer {
 	}
 
 	/***
+	 * removes an event from schedule and saves schedule to the database
+	 * @param event the event to add
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public void rmEvent(Event event) throws IOException, ClassNotFoundException {
+		//create a new event and add it to the memory Schedule
+		schedule.removeEvent(event, true, true);
+
+		//save memory schedule to database
+		saveSchedule(schedule);
+	}
+
+	/***
 	 *
 	 * @param sql the sql for the query in the form of a string
 	 * @param column_size the column size of a given table

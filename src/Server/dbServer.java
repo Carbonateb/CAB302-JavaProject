@@ -568,7 +568,7 @@ public class dbServer {
 	 */
 	public boolean rmBillboard(String name) {
 		String sql =
-			"DELETE FROM BILLBOARDS WHERE name = " + name;
+			"DELETE FROM BILLBOARDS WHERE name = '" + name + "'";
 		return runSql(sql);
 	}
 

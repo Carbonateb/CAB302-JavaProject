@@ -81,8 +81,9 @@ public class Viewer {
 		CreateUpdateTimer();
 		System.out.println("Viewer started successfully");
 
-		mainPanel.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
-
+		information.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
+		message.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, -1));
+		
 		StyledDocument doc = message.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);

@@ -533,18 +533,40 @@ public class ControlPanel extends JFrame {
 		schedule_Table= new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+				String eventName = (String) schedule_Table.getModel().getValueAt(row, 0);
 				if (e instanceof KeyEvent) {
 					KeyEvent ke = (KeyEvent)e;
 					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
-						// Delete thing
-						String eventName = (String) schedule_Table.getModel().getValueAt(row, 0);
-						Object[] data = new Object[2];
-						data[0] = eventName;
-						data[1] = false; // TODO let user decide how they want to handle repeating event
-						try {
-							requestSender.SendData(EndpointType.deleteEvent, eventName);
-						} catch (IOException | ClassNotFoundException ioException) {
-							ioException.printStackTrace();
+						// Bring up a confirmation dialogue
+						int n = JOptionPane.showConfirmDialog(
+							this,
+							"Are you sure you want to delete '" + eventName
+								+ "'?\nThis action is irreversible!",
+							"Confirm Delete User",
+							JOptionPane.YES_NO_OPTION);
+
+						if (n != 1) {
+							// Bring up a confirmation dialogue
+							int option = JOptionPane.showConfirmDialog(
+								this,
+								"This is a looping billboard. Do you want to delete the entire loop?\n" +
+									"Press yes to delete the whole loop.\n" +
+									"Press no to only delete the upcoming event (loop is preserver)",
+								"Confirm Delete User",
+								JOptionPane.YES_NO_OPTION);
+
+							// Don't proceed if the user presses escape
+							if (option != -1) {
+								// Delete thing
+								Object[] data = new Object[2];
+								data[0] = eventName;
+								data[1] = option == 1;
+								try {
+									requestSender.SendData(EndpointType.deleteEvent, eventName);
+								} catch (IOException | ClassNotFoundException ioException) {
+									ioException.printStackTrace();
+								}
+							}
 						}
 					}
 				} else if (e instanceof MouseEvent) {
@@ -553,6 +575,8 @@ public class ControlPanel extends JFrame {
 						// Only allow double clicks
 						return false;
 					}
+
+					
 
 				}
 

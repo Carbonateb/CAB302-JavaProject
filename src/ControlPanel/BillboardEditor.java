@@ -4,6 +4,7 @@ import Server.Endpoints.EndpointType;
 import Shared.Billboard;
 import Shared.Display.IMGHandler;
 import Shared.Display.XMLHandler;
+import Viewer.BillboardDisplay;
 import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;
@@ -43,6 +44,7 @@ public class BillboardEditor extends JFrame {
 	private JButton okay_Button;
 	private JTextField name_TextField;
 	private JTextPane info_TextPane;
+	private JButton updatePreviewButton;
 
 	private String author;
 	private boolean creatingNewBillboard;
@@ -50,6 +52,8 @@ public class BillboardEditor extends JFrame {
 	private boolean imageIsURL;
 	private String imageBase64String;
 
+	private JFrame previewFrame;
+	private BillboardDisplay previewWindow;
 
 
 	/**
@@ -84,6 +88,23 @@ public class BillboardEditor extends JFrame {
 		setLocationRelativeTo(ControlPanel.get());
 		setVisible(true);
 		setResizable(false);
+
+
+		// Create the preview window
+		previewWindow = new BillboardDisplay();
+		previewFrame = new JFrame("Preview Changes");
+		previewFrame.setContentPane(previewWindow);
+		previewFrame.setSize(800, 600);
+		previewFrame.setVisible(true);
+
+		updatePreviewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				previewWindow.setBillboard(exportBillboard());
+			}
+		});
+
+
 
 		titleColor_Button.addActionListener(new ActionListener() {
 			/**
@@ -293,6 +314,7 @@ public class BillboardEditor extends JFrame {
 					ControlPanel.get().requestSender.SendData(type, exportBillboard());
 					ControlPanel.get().refreshBillboards();
 					dispose();
+					previewFrame.dispose();
 				} catch (IOException | ClassNotFoundException ex) {
 					System.out.println(ex.getMessage());
 				}

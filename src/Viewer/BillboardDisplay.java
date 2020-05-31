@@ -103,6 +103,27 @@ public class BillboardDisplay extends JFrame {
 
 	}
 
+	private Font textFormatter(JTextPane textArea, String textAreaText) {
+		StyledDocument sd = textArea.getStyledDocument();
+		SimpleAttributeSet sas = new SimpleAttributeSet();
+		StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
+		sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
+
+		Font labelFont = textArea.getFont();
+
+		int stringWidth = textArea.getFontMetrics(labelFont).stringWidth(textAreaText);
+		int componentWidth = textArea.getWidth();
+
+		double widthRatio = (double)componentWidth / (double)stringWidth;
+
+		int newFontSize = (int)(labelFont.getSize() * widthRatio);
+		int componentHeight = textArea.getHeight();
+
+		int fontSizeToUse = Math.min(newFontSize - 5, componentHeight - 5);
+		return new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse);
+	}
+
+
 
 	/**
 	 * Call this to give the billboard viewer a new billboard to display.
@@ -112,7 +133,7 @@ public class BillboardDisplay extends JFrame {
 	public void setBillboard(Billboard billboard) {
 		if (billboard != null) {
 
-			// clearViewer(); // shouldn't need this
+//			 clearViewer(); // shouldn't need this
 
 			// Check which components need to be enabled
 			message.setVisible(!billboard.titleText.equals(""));
@@ -125,6 +146,7 @@ public class BillboardDisplay extends JFrame {
 			// Set the variables
 
 			message.setText(billboard.titleText);
+			message.setFont(textFormatter(message, billboard.titleText));
 			message.setForeground(billboard.titleTextColor);
 
 			information.setText(billboard.infoText);
@@ -143,7 +165,7 @@ public class BillboardDisplay extends JFrame {
 				try {
 					billboardImage = IMGHandler.imageDecoder(billboard.image);
 				} catch (NullPointerException | IllegalArgumentException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 
 				try {

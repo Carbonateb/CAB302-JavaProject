@@ -52,7 +52,7 @@ public class IMGHandler {
 
 			bis.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return null;
 		}
 		return image;

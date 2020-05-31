@@ -51,8 +51,9 @@ public class IMGHandler {
 			image = ImageIO.read(bis);
 
 			bis.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 		return image;
 	}

@@ -73,4 +73,20 @@ public class Billboard implements Serializable {
 	public void importFromXML(String xmlData) {
 
 	}
+
+	public boolean equals(Object otherObject) {
+		if (otherObject instanceof Billboard) {
+			Billboard b = (Billboard) otherObject;
+			return b.author.equals(author)
+				&& b.image.equals(image)
+				&& b.infoText.equals(infoText)
+				&& b.titleText.equals(titleText)
+				&& b.name.equals(name)
+				&& b.backgroundColor == backgroundColor
+				&& b.infoTextColor == infoTextColor
+				&& b.titleTextColor == titleTextColor;
+		} else {
+			return false;
+		}
+	}
 }

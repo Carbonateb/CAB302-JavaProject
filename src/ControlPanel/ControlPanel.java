@@ -504,7 +504,7 @@ public class ControlPanel extends JFrame {
 							"Confirm Delete User",
 							JOptionPane.YES_NO_OPTION);
 
-						if (n != 0) {
+						if (n == 0) {
 							try {
 								requestSender.SendData(EndpointType.deleteBillboard, billboardName);
 							} catch (IOException | ClassNotFoundException ioException) {
@@ -545,7 +545,7 @@ public class ControlPanel extends JFrame {
 							"Confirm Delete User",
 							JOptionPane.YES_NO_OPTION);
 
-						if (n != 1) {
+						if (n == 0) {
 							// Bring up a confirmation dialogue
 							int option = JOptionPane.showConfirmDialog(
 								this,
@@ -576,7 +576,7 @@ public class ControlPanel extends JFrame {
 						return false;
 					}
 
-					
+
 
 				}
 

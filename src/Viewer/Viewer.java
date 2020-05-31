@@ -81,16 +81,6 @@ public class Viewer {
 		CreateUpdateTimer();
 		System.out.println("Viewer started successfully");
 
-		StyledDocument doc = message.getStyledDocument();
-		SimpleAttributeSet center = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, doc.getLength(), center, false);
-
-		doc = information.getStyledDocument();
-		center = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, doc.getLength(), center, false);
-
 		message.addMouseListener(new MouseAdapter() {
 			/**
 			 * {@inheritDoc}
@@ -140,27 +130,35 @@ public class Viewer {
 
 	}
 
+	private ImageIcon imageScaler(Image billboardImage, int imageWidth, int imageHeight, int desiredHeight) {
+		double scaleFactor = (double) (imageHeight / desiredHeight);
+		int newWidth = (int) Math.round(imageWidth / scaleFactor);
+
+		return new ImageIcon(new ImageIcon(billboardImage).getImage().getScaledInstance(newWidth, desiredHeight, Image.SCALE_DEFAULT));
+	}
+
+
 	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
 
 		clearViewer();
 
-		System.out.println("Preferred Size: " + message.getPreferredSize());
-		System.out.println("Actual Size: " + message.getSize());
-
-		message.setMaximumSize(message.getPreferredSize());
-		information.setMaximumSize(information.getPreferredSize());
-
-		image.setSize(image.getPreferredSize());
-
+		// Check which components need to be enabled
+		if (!messageText.equals("")) {
+			message.setVisible(true);
+		} if (!informationText.equals("")) {
+			information.setVisible(true);
+		} if (!imageString.equals("")) {
+			image.setVisible(true);
+		}
 
 		try {
-			if (messageText != null) {
+			if (!messageText.equals("")) {
 				message.setText(messageText);
 				message.setForeground(messageColor);
 			}
 
 			// Set information text and color
-			if (informationText != null) {
+			if (!informationText.equals("")) {
 				information.setText(informationText);
 				information.setForeground(informationColor);
 			}
@@ -182,7 +180,18 @@ public class Viewer {
 			} catch (NullPointerException | IOException ignored) { }
 
 			try {
-				ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
+				assert billboardImage != null;
+
+				int imageHeight = billboardImage.getHeight();
+				int imageWidth = billboardImage.getWidth();
+
+				System.out.println("Height: " + imageHeight + " | Width: " + imageWidth);
+
+//				ImageIcon initialImage = new ImageIcon(billboardImage);
+
+//				ImageIcon displayedBillboardImage = new ImageIcon(new ImageIcon(billboardImage).getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
+				ImageIcon displayedBillboardImage = imageScaler(billboardImage, imageWidth, imageHeight, 200);
+
 				image.insertIcon(displayedBillboardImage);
 				StyledDocument sd = image.getStyledDocument();
 				SimpleAttributeSet sas = new SimpleAttributeSet();
@@ -210,6 +219,10 @@ public class Viewer {
 		mainFrame.pack();
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setVisible(true);
+
+		message.setVisible(false);
+		information.setVisible(false);
+		image.setVisible(false);
 
 		Action exitProgram = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
@@ -289,7 +302,7 @@ public class Viewer {
 					infoText = "Please confirm server is running on network";
 					infoTextColor = Color.red;
 					backgroundColor = Color.black;
-					image = null;
+					image = "";
 //					e.printStackTrace();
 				} catch (NullPointerException err) {
 					titleText = "No Billboards Scheduled";
@@ -297,7 +310,7 @@ public class Viewer {
 					infoText = "Please add billboards to the schedule in the Billboard Controller";
 					infoTextColor = Color.red;
 					backgroundColor = Color.black;
-					image = null;
+					image = "";
 				}
 
 				try {

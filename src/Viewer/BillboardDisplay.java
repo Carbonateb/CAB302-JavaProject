@@ -165,7 +165,7 @@ public class BillboardDisplay extends JFrame {
 				try {
 					billboardImage = IMGHandler.imageDecoder(billboard.image);
 				} catch (NullPointerException | IllegalArgumentException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 
 				try {

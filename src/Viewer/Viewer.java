@@ -136,6 +136,8 @@ public class Viewer extends JFrame {
 						"",
 						"No Author"
 					));
+				} catch (NullPointerException ignored) {
+
 				}
 			}
 		}, 0, updateFrequency * 1000);

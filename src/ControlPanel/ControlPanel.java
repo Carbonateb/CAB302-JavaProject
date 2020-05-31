@@ -484,14 +484,12 @@ public class ControlPanel extends JFrame {
 					MouseEvent mouseEvent = (MouseEvent) e;
 					// Only allow double clicks
 					if (mouseEvent.getClickCount() != 2) {
-
-						String billboardName = (String) billboards_Table.getModel().getValueAt(row, 0);
-
-						new BillboardEditor(billboardName);
-
-
 						return false;
 					}
+
+					String billboardName = (String) billboards_Table.getModel().getValueAt(row, 0);
+
+					new BillboardEditor(billboardName);
 
 				}
 

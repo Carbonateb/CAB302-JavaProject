@@ -154,6 +154,14 @@ public class Viewer {
 
 		clearViewer();
 
+		if (messageText == null) {
+			messageText = "";
+		} if (informationText == null) {
+			informationText = "";
+		} if (imageString == null) {
+			imageString = "";
+		}
+
 		// Check which components need to be enabled
 		if (!messageText.equals("")) {
 			message.setVisible(true);

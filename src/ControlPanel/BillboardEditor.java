@@ -120,10 +120,13 @@ public class BillboardEditor extends JFrame {
 
 				int selected = imageSelect.showOpenDialog(null);
 
-				if (selected == JFileChooser.APPROVE_OPTION) {
-					localImagePath = imageSelect.getSelectedFile().getAbsolutePath();
-					selectedFile_Label.setText(localImagePath);
-				}
+				try {
+					if (selected == JFileChooser.APPROVE_OPTION) {
+						localImagePath = imageSelect.getSelectedFile().getAbsolutePath();
+						selectedFile_Label.setText(localImagePath);
+					}
+				} catch (NullPointerException ignored) {}
+
 
 				BufferedImage image = null;
 

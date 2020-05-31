@@ -46,8 +46,11 @@ public class Server {
 	};
 
 
-	/**
+	/***
 	 * Constructor. Init the server here
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchAlgorithmException
 	 */
 	public Server() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
 		System.out.println("\nServer Starting...");

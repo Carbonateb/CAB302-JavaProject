@@ -29,6 +29,7 @@ public class PropsReader {
 	 * Try to get a property from the file.
 	 * @param propName Name of the property you want
 	 * @param defaultValue What to return if we can't find the property
+	 * @return returns prop string
 	 */
 	public String GetStringProperty(String propName, String defaultValue)
 	{
@@ -43,6 +44,7 @@ public class PropsReader {
 	 * Try to get a property from the file.
 	 * @param propName Name of the property you want
 	 * @param defaultValue What to return if we can't find the property
+	 * @return int, the default value
 	 */
 	public int GetIntProperty(String propName, int defaultValue)
 	{
@@ -61,6 +63,7 @@ public class PropsReader {
 	 * Try to get a property from the file.
 	 * @param propName Name of the property you want
 	 * @param defaultValue What to return if we can't find the property
+	 * @return boolean, the default value
 	 */
 	public boolean GetBoolProperty(String propName, boolean defaultValue)
 	{
@@ -89,7 +92,8 @@ public class PropsReader {
 	 * 	or: this
 	 * That will then get placed into a HashMap for easy access.
 	 * Note that the key (left side) will always be converted to lowercase.
-	 *
+	 * @param fileName string containing the file name
+	 * @param filePath string containing the file path
 	 * @author Lucas Maldonado N10534342
 	 */
 	public void ReadPropFile(String filePath, String fileName) {
@@ -142,12 +146,14 @@ public class PropsReader {
 		System.out.println("Default props file created successfully.");
 	}
 
-	/**
+	/***
+	 *
 	 * Gets the Current Working Directory of the server. This is the absolute path to where the application was started.
 	 * When debugging, it will return the folder in which the entire project is in, something like:
 	 * C:\Users\maldo\Projects\CAB302-JavaProject
 	 * Note that the final slash is absent, remember to add it in yourself.
 	 * Also, Java uses backslashes internally (/), but will display forward slashes on Windows (like in example above).
+	 * @return string containing property
 	 */
 	public static String GetCWD(){
 		return System.getProperty("user.dir");

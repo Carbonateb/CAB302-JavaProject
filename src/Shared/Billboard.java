@@ -23,7 +23,17 @@ public class Billboard implements Serializable {
 	public String author;
 
 
-	/** Default constructor */
+	/***
+	 * Default constructor
+	 * @param name
+	 * @param titleText
+	 * @param infoText
+	 * @param titleTextColor
+	 * @param infoTextColor
+	 * @param backgroundColor
+	 * @param image
+	 * @param author
+	 */
 	public Billboard(String name, String titleText, String infoText, Color titleTextColor, Color infoTextColor, Color backgroundColor, String image, String author) {
 		this.name = name;
 		this.titleText = titleText;

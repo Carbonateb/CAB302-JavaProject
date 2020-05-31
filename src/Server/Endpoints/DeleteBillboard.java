@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * end point for deleting a user from the database
  */
 public class DeleteBillboard extends Endpoint {
-	public DeleteBillboard(){
+	public DeleteBillboard() {
 		// This is the enum value bound to this endpoint
 		associatedEndpoint = EndpointType.deleteBillboard;
 	}
@@ -35,6 +35,23 @@ public class DeleteBillboard extends Endpoint {
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 			return false;
+		}
+
+		Permissions permissions = new Permissions(server.db.getUserDetails(input.getToken().getUser()).getPermissions());
+		if (permissions.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
+			try {
+				ArrayList<Event> events = server.db.requestEvents();
+				for (Event event : events) {
+					if (event.billboardName.equals(billboard.name)) {
+						server.db.rmEvent(event, true);
+					}
+				}
+				server.db.rmBillboard(billboard.name);
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 
 		if (billboard.author.equals(input.getToken().getUser())) {
@@ -58,27 +75,9 @@ public class DeleteBillboard extends Endpoint {
 				e.printStackTrace();
 				return false;
 			}
-		} else {
-			Permissions permissions = new Permissions(server.db.getUserDetails(input.getToken().getUser()).getPermissions());
-			// Editing another billboard
-			if (permissions.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
-				try {
-					ArrayList<Event> events = server.db.requestEvents();
-					for (Event event : events) {
-						if (event.billboardName.equals(billboard.name)) {
-							server.db.rmEvent(event);
-						}
-					}
-					server.db.rmBillboard(billboard.name);
-					return true;
-				} catch (Exception e) {
-					e.printStackTrace();
-					return false;
-				}
-			} else {
-				return new Response("error", "Permission denied", null);
-			}
 		}
+
+		return new Response("error", "Permission denied", null);
 	}
 
 }

@@ -23,9 +23,12 @@ public class DeleteEvent extends Endpoint {
 	 * @return request status
 	 */
 	public Object executeEndpoint(Request input) {
+		Object[] data = (Object[]) input.getData();
+		Event event = (Event) data[0];
+		boolean future = (boolean) data[1];
 
 		try {
-			server.db.rmEvent((Event) input.getData());
+			server.db.rmEvent(event, future);
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());

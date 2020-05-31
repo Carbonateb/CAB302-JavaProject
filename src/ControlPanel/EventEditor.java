@@ -69,7 +69,7 @@ public class EventEditor extends JFrame {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		ok_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

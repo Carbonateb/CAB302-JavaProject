@@ -48,6 +48,12 @@ public class Token implements Serializable {
 	}
 
 	public boolean equals(Object compareTo) {
+		if (compareTo instanceof Token) {
+			Token otherToken = (Token)compareTo;
+			return _user.equals(otherToken.getUser())
+				&& _expires == otherToken.getExpires()
+				&& _data.equals(otherToken.getData());
+		}
 		return this.toString().equals(compareTo.toString());
 	}
 }

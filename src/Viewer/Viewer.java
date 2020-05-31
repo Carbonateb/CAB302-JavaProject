@@ -269,12 +269,30 @@ public class Viewer {
 
 //				String oldTitleText = null, oldInfoText = null, oldImage = null;
 
-				String titleText = billboardToView.titleText;
-				Color titleTextColor = billboardToView.titleTextColor;
-				String infoText = billboardToView.infoText;
-				Color infoTextColor = billboardToView.infoTextColor;
-				Color backgroundColor = billboardToView.backgroundColor;
-				String image = billboardToView.image;
+				//Create variables
+				String titleText;
+				Color titleTextColor;
+				String infoText;
+				Color infoTextColor;
+				Color backgroundColor;
+				String image;
+
+				try {
+					titleText = billboardToView.titleText;
+					titleTextColor = billboardToView.titleTextColor;
+					infoText = billboardToView.infoText;
+					infoTextColor = billboardToView.infoTextColor;
+					backgroundColor = billboardToView.backgroundColor;
+					image = billboardToView.image;
+				}
+				catch (java.lang.NullPointerException e) {
+					titleText = "No Billboards Scheduled";
+					titleTextColor = Color.red;
+					infoText = "Please add billboards to the schedule in the Billboard Controller";
+					infoTextColor = Color.red;
+					backgroundColor = Color.black;
+					image = null;
+				}
 
 //				if (!titleText.equals(oldTitleText) && !infoText.equals(oldInfoText) && !image.equals(oldImage)) {
 //					populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);

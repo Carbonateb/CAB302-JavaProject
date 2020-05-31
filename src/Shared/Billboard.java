@@ -45,6 +45,10 @@ public class Billboard implements Serializable {
 		this.author = author;
 	}
 
+	public byte[] imageToByte(String imgString)
+	{
+		return imgString.getBytes();
+	}
 
 	/**
 	 * Constructor that imports the values from a given xml string.

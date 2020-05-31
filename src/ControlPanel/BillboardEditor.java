@@ -7,7 +7,6 @@ import Shared.Display.XMLHandler;
 import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
@@ -45,6 +44,9 @@ public class BillboardEditor extends JFrame {
 	private JTextField name_TextField;
 	private JTextPane info_TextPane;
 
+	private String author;
+	private boolean creatingNewBillboard;
+
 
 
 	/**
@@ -53,20 +55,22 @@ public class BillboardEditor extends JFrame {
 	 * @author Connor McHugh - n10522662
 	 */
 	public BillboardEditor(String billboardName) {
-		if (billboardName != null) {
-			System.out.println(billboardName);
-
+		creatingNewBillboard = billboardName == null;
+		if (creatingNewBillboard) {
+			// If we're creating a new billboard
+			author = ControlPanel.get().requestSender.getToken().getUser();
+		} else {
+			// If we're editing an existing billboard, load in the values
+			System.out.println("BillboardEditor: loading values from billboard: " + billboardName);
 
 			try {
 				Billboard billboard = (Billboard)ControlPanel.get().requestSender.SendData(EndpointType.getBillboard, billboardName).getData();
-
-				importFromXML(false, billboardName);
+				importBillboard(billboard);
+				//importFromXML(false, billboardName);
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("Failed to import billboard!");
 				System.out.println(e.getMessage());
 			}
-
-
 		}
 
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -261,7 +265,7 @@ public class BillboardEditor extends JFrame {
 					String image = selectedFile_Label.getText();
 
 					try {
-						XMLHandler.xmlWriter(xmlExportPath, getBillboardFromFields());
+						XMLHandler.xmlWriter(xmlExportPath, exportBillboard());
 					} catch (ParserConfigurationException parserConfigurationException) {
 						parserConfigurationException.printStackTrace();
 					}
@@ -272,53 +276,45 @@ public class BillboardEditor extends JFrame {
 		okay_Button.addActionListener(new ActionListener() {
 			/**
 			 * Saves data and closes window
-			 *
-			 * @author Callum McNeilage - n10482652
-			 * @contributor Lucas Maldonado - n10534342
-			 * @param e
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				EndpointType type = creatingNewBillboard ? EndpointType.addBillboard : EndpointType.updateBillboard;
 				try {
-					ControlPanel.get().requestSender.SendData(EndpointType.addBillboard, new Billboard(
-						// Name
-						name_TextField.getText(),
-
-						// title text
-						title_TextField.getText(),
-
-						// info text
-						info_TextPane.getText(),
-
-						// title colour
-						titleColorPreview.getBackground(),
-
-						// info colour
-						infoColorPreview.getBackground(),
-
-						// background color
-						backgroundColorPreview.getBackground(),
-
-						// background image
-						selectedFile_Label.getText(),
-
-						// author
-						ControlPanel.get().requestSender.getToken().getUser()
-					));
+					ControlPanel.get().requestSender.SendData(type, exportBillboard());
+					ControlPanel.get().refreshBillboards();
+					dispose();
 				} catch (IOException | ClassNotFoundException ex) {
 					System.out.println(ex.getMessage());
 				}
-				ControlPanel.get().refreshBillboards();
-				dispose();
+
 			}
 		});
 	}
 
+
 	/**
-	 * Reads all of the UI properties that the user set, and turns it into a billboard for easy access
+	 * Sets the UI element's values to that of a given billboard.
+	 * Used when loading in an existing billboard to edit
+	 * @param b the billboard to load in
+	 */
+	private void importBillboard(Billboard b) {
+		name_TextField.setText(b.name);
+		title_TextField.setText(b.titleText);
+		info_TextPane.setText(b.infoText);
+		titleColorPreview.setBackground(b.titleTextColor);
+		infoColorPreview.setBackground(b.infoTextColor);
+		backgroundColorPreview.setBackground(b.backgroundColor);
+		selectedFile_Label.setText(b.image);
+		author = b.author;
+	}
+
+
+	/**
+	 * Reads all of the UI properties that the user set, and turns it into a billboard for easy access.
 	 * @returns a new billboard object with the data filled in
 	 */
-	private Billboard getBillboardFromFields() {
+	private Billboard exportBillboard() {
 		return new Billboard(
 			name_TextField.getText(),
 			title_TextField.getText(),
@@ -327,17 +323,13 @@ public class BillboardEditor extends JFrame {
 			infoColorPreview.getBackground(),
 			backgroundColorPreview.getBackground(),
 			selectedFile_Label.getText(),
-			ControlPanel.get().requestSender.getToken().getUser()
+			author
 		);
 	}
 
+
 	/**
 	 * Populates billboard editor window with data from server
-	 *
-	 * @author Connor McHugh - n10522662
-	 * @contributor Lucas Maldonado - n10534342
-	 * @param isFile
-	 * @param xmlData
 	 */
 	private void importFromXML(boolean isFile, String xmlData) {
 		try {
@@ -396,9 +388,4 @@ public class BillboardEditor extends JFrame {
 			ex.printStackTrace();
 		}
 	}
-
-	private void loadValuesFromBillboard(Billboard billboard) {
-
-	}
-
 }

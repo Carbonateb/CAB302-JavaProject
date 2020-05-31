@@ -210,6 +210,7 @@ public class dbServer {
 	 * @throws ClassNotFoundException
 	 */
 	public ArrayList<Event> returnEventList() throws IOException, ClassNotFoundException {
+		schedule.getCurrentEvent();
 		ArrayList<Event> test = requestEvents();
 		return test;
 	}
@@ -234,12 +235,14 @@ public class dbServer {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void rmEvent(Event event, boolean future) throws IOException, ClassNotFoundException {
+	public boolean rmEvent(Event event, boolean future) throws IOException, ClassNotFoundException {
 		//create a new event and add it to the memory Schedule
-		schedule.removeEvent(event, true, future);
+		boolean returnValue = schedule.removeEvent(event, true, future);
 
 		//save memory schedule to database
 		saveSchedule(schedule);
+
+		return returnValue;
 	}
 
 	/***

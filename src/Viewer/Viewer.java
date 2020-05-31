@@ -81,6 +81,16 @@ public class Viewer {
 		CreateUpdateTimer();
 		System.out.println("Viewer started successfully");
 
+		StyledDocument doc = message.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+		doc = information.getStyledDocument();
+		center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
 		message.addMouseListener(new MouseAdapter() {
 			/**
 			 * {@inheritDoc}
@@ -138,7 +148,10 @@ public class Viewer {
 	}
 
 
-	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
+		message.setMaximumSize(message.getPreferredSize());
+		information.setMaximumSize(information.getPreferredSize());
+
+		image.setSize(image.getPreferredSize());
 
 		clearViewer();
 

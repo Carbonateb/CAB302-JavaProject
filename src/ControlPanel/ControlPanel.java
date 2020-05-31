@@ -187,7 +187,7 @@ public class ControlPanel extends JFrame {
 		newEvent_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new EventEditor();
+				new EventEditor(null);
 			}
 		});
 	}
@@ -323,7 +323,7 @@ public class ControlPanel extends JFrame {
 
 		Object[] row = new Object[5];
 		for (Event event : list) {
-			row[0] = event.billboardName;
+			row[0] = event;
 			row[1] = DateFormat(event.startTime);
 			row[2] = event.getDuration() / (60 * 1000);
 			row[3] = "No";
@@ -477,6 +477,8 @@ public class ControlPanel extends JFrame {
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 				String billboardName = (String) billboards_Table.getModel().getValueAt(row, 0);
 
+				System.out.println("Clicked on row " + row);
+
 				if (!userPerms.hasPermission(Perm.EDIT_ALL_BILLBOARDS)) {
 					// check if they created this billboard
 					try {
@@ -533,14 +535,14 @@ public class ControlPanel extends JFrame {
 		schedule_Table= new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
-				String eventName = (String) schedule_Table.getModel().getValueAt(row, 0);
+				Event event = (Event) schedule_Table.getModel().getValueAt(row, 0);
 				if (e instanceof KeyEvent) {
 					KeyEvent ke = (KeyEvent)e;
 					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
 						// Bring up a confirmation dialogue
 						int n = JOptionPane.showConfirmDialog(
 							this,
-							"Are you sure you want to delete '" + eventName
+							"Are you sure you want to delete '" + event.billboardName
 								+ "'?\nThis action is irreversible!",
 							"Confirm Delete User",
 							JOptionPane.YES_NO_OPTION);
@@ -557,12 +559,14 @@ public class ControlPanel extends JFrame {
 
 							// Don't proceed if the user presses escape
 							if (option != -1) {
+								System.out.println("Delete event");
 								// Delete thing
 								Object[] data = new Object[2];
-								data[0] = eventName;
+								data[0] = event;
 								data[1] = option == 1;
+								System.out.println(event.toString());
 								try {
-									requestSender.SendData(EndpointType.deleteEvent, eventName);
+									requestSender.SendData(EndpointType.deleteEvent, data);
 								} catch (IOException | ClassNotFoundException ioException) {
 									ioException.printStackTrace();
 								}
@@ -576,11 +580,8 @@ public class ControlPanel extends JFrame {
 						return false;
 					}
 
-
-
+					new EventEditor(event);
 				}
-
-
 
 				return false;
 			}

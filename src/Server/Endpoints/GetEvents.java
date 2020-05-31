@@ -27,6 +27,7 @@ public class GetEvents extends Endpoint {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+
 		return eventList;
 	}
 

@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +36,9 @@ public class EventEditor extends JFrame {
 	private SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
 	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH);
 
+	private boolean creatingNewEvent;
+	private Event oldEvent;
+
 	/**
 	 * Allows the user to schedule a billboard. Has controls for setting a start date and time, duration, and looping
 	 * behaviours. All user input is sanitized. The inputs are converted to unix time for convenience.
@@ -44,7 +48,7 @@ public class EventEditor extends JFrame {
 	 * @author Callum McNeilage - n10482652
 	 * @author Lucas Maldonado - n10534342
 	 */
-	public EventEditor() {
+	public EventEditor(Event event) {
 		// Set up frame
 		setTitle("Event Editor");
 		setContentPane(main_Panel);
@@ -53,11 +57,34 @@ public class EventEditor extends JFrame {
 		setLocationRelativeTo(ControlPanel.get());
 		setVisible(true);
 
+		creatingNewEvent = event == null;
 
-		// Pre-fill date & time boxes with current time
-		LocalDateTime currentDateTime = LocalDateTime.now();
-		startTime_TextField.setText(timeFormatter.format(new Date()));
-		startDate_TextField.setText(currentDateTime.format(dateFormatter));
+		LocalDateTime currentDateTime;
+		if (creatingNewEvent) {
+			// Pre-fill date & time boxes with current time
+			currentDateTime = LocalDateTime.now();
+			startTime_TextField.setText(timeFormatter.format(new Date()));
+			startDate_TextField.setText(currentDateTime.format(dateFormatter));
+		} else {
+			// Load in the values from the provided event
+			Date date = new Date(event.startTime);
+			SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+			startDate_TextField.setText(sdf.format(date));
+			startTime_TextField.setText(timeFormatter.format(date));
+
+			billboardSelector_ComboBox.removeAllItems();
+			billboardSelector_ComboBox.addItem(event.billboardName);
+			billboardSelector_ComboBox.setEnabled(false);
+			ok_Button.setEnabled(true);
+
+			duration_Spinner.setValue(event.getDuration() / (60 * 1000));
+
+			oldEvent = event;
+
+
+		}
+
+
 
 		// Read the list of available billboards and add them to the dropdown box
 		ArrayList<Billboard> allBillboardNames;
@@ -87,7 +114,7 @@ public class EventEditor extends JFrame {
 				}
 
 				// 60 converts minutes to seconds, 1000 converts seconds to milliseconds
-				event.setDuration(60 * 1000 * (int)duration_Spinner.getValue());
+				event.setDuration(60L * 1000L * Long.parseLong(duration_Spinner.getValue().toString()));
 
 				// Get the specified billboard name from the drop down box
 				event.billboardName = (String)billboardSelector_ComboBox.getSelectedItem();
@@ -97,7 +124,18 @@ public class EventEditor extends JFrame {
 
 				System.out.println(event.toString());
 
+
+
 				try {
+
+					if (!creatingNewEvent) {
+						// Delete the existing event
+						Object[] data = new Object[2];
+						data[0] = oldEvent;
+						data[1] = false;
+						ControlPanel.get().requestSender.SendData(EndpointType.deleteEvent, data);
+					}
+
 					ControlPanel.get().requestSender.SendData(EndpointType.addEvents, event);
 				} catch (IOException | ClassNotFoundException ex) {
 					ex.printStackTrace();

@@ -3,7 +3,11 @@ package Server;
 import java.io.*;
 import java.util.Base64;
 
-
+/***
+ * used to convert objects to and from strings
+ * so that objects may be saved and retrieved
+ * from the database
+ */
 public class ObjectSerialization {
 	/***
 	 * converts a string to a java object

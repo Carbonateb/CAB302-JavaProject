@@ -51,7 +51,7 @@ public class Billboard implements Serializable {
 	 * @param xmlData
 	 */
 	public Billboard(String xmlData) {
-		importfromXML(xmlData);
+		importFromXML(xmlData);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Billboard implements Serializable {
 	/**
 	 * Init this billboard from a xml string
 	 */
-	public void importfromXML(String xmlData) {
+	public void importFromXML(String xmlData) {
 
 	}
 }

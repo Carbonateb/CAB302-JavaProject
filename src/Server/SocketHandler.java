@@ -109,6 +109,9 @@ public class SocketHandler {
 	 * @return valid if usable, invalid or expired otherwise
 	 */
 	public TokenStatus validateToken(Token token) {
+		if (!db.checkUserExists(token.getUser())) {
+			return TokenStatus.expired;
+		}
 		if (tokens.contains(token)) {
 			if (token.getExpires() >= Instant.now().getEpochSecond()) {
 				// token is valid

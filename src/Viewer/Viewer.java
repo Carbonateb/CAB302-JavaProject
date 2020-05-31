@@ -25,6 +25,7 @@ import Shared.Network.Response;
  * The viewer is the dummy client that displays the billboard.
  *
  * @author Lucas Maldonado N10534342
+ * @author Callum McNeilage n10482652
  */
 public class Viewer {
 	private JPanel mainPanel;
@@ -111,65 +112,31 @@ public class Viewer {
 			}
 		});
 
-		setImage("\"iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAALHRFWHRDcmVhdGlvbiBUa\\n\" +\n" +
-			"\t\t\t\"W1lAE1vbiAxNiBNYXIgMjAyMCAxMDowNTo0NyArMTAwMNQXthkAAAAHdElNRQfkAxAABh+N6nQI\\n\" +\n" +
-			"\t\t\t\"AAAACXBIWXMAAAsSAAALEgHS3X78AAAABGdBTUEAALGPC/xhBQAAADVJREFUeNp1jkEKADAIwxr\\n\" +\n" +
-			"\t\t\t\"//+duIIhumJMUNUWSbU2AyPROFeVqaIH/T7JeRBd0DY+8SrLVPbTmFQ1iRvw3AAAAAElFTkSuQm\\n\" +\n" +
-			"\t\t\t\"CC\"");
-	}
-
-	private Font textFormatter(JTextPane textArea, String textAreaText) {
-		StyledDocument test = textArea.getStyledDocument();
-		SimpleAttributeSet test2 = new SimpleAttributeSet();
-		StyleConstants.setAlignment(test2, StyleConstants.ALIGN_CENTER);
-		test.setParagraphAttributes(0, test.getLength()-1, test2, false);
-
-		Font labelFont = textArea.getFont();
-
-		int fontSizeToUse;
-
-		if (textArea == information) {
-			fontSizeToUse = 40;
-		} else {
-			int stringWidth = textArea.getFontMetrics(labelFont).stringWidth(textAreaText);
-			int componentWidth = textArea.getWidth();
-
-			double widthRatio = (double)componentWidth / (double)stringWidth;
-
-			int newFontSize = (int)(labelFont.getSize() * widthRatio);
-			int componentHeight = textArea.getHeight();
-
-			fontSizeToUse = Math.min(newFontSize, componentHeight);
-		}
-
-		return new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse);
 	}
 
 	private void clearViewer() {
 		message.setText(null);
 		information.setText(null);
-//		image
-		mainPanel.setBackground(Color.white);
-		message.setBackground(Color.white);
-		information.setBackground(Color.white);
-		image.setBackground(Color.white);
+		mainPanel.setBackground(null);
+		message.setBackground(null);
+		information.setBackground(null);
+		image.setText(null);
 
 	}
 
 	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
 
+		clearViewer();
 		try {
 			if (messageText != null) {
 				message.setText(messageText);
 				message.setForeground(messageColor);
-				message.setFont(textFormatter(message, messageText));
 			}
 
 			// Set information text and color
 			if (informationText != null) {
 				information.setText(informationText);
 				information.setForeground(informationColor);
-				information.setFont(textFormatter(information, informationText));
 			}
 
 			// Set background color
@@ -188,15 +155,18 @@ public class Viewer {
 				billboardImage = ImageIO.read(new URL(imageString));
 			} catch (NullPointerException | IOException ignored) { }
 
+			try {
+				ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
+				image.insertIcon(displayedBillboardImage);
+				StyledDocument sd = image.getStyledDocument();
+				SimpleAttributeSet sas = new SimpleAttributeSet();
+				StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
+				sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
+			}
+			catch (NullPointerException e) {
 
+			}
 
-			assert billboardImage != null;
-			ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
-			image.insertIcon(displayedBillboardImage);
-			StyledDocument sd = image.getStyledDocument();
-			SimpleAttributeSet sas = new SimpleAttributeSet();
-			StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
-			sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
 
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();

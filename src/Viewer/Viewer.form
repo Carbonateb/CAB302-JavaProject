@@ -16,6 +16,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
+          <font size="96"/>
           <text value=""/>
         </properties>
       </component>
@@ -27,6 +28,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
+          <font size="36"/>
         </properties>
       </component>
       <component id="89aa1" class="javax.swing.JTextPane" binding="image">

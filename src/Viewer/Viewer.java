@@ -120,10 +120,10 @@ public class Viewer {
 		message.setText(null);
 		information.setText(null);
 //		image
-		mainPanel.setBackground(Color.white);
-		message.setBackground(Color.white);
-		information.setBackground(Color.white);
-		image.setBackground(Color.white);
+		mainPanel.setBackground(null);
+		message.setBackground(null);
+		information.setBackground(null);
+		image.setText(null);
 
 	}
 
@@ -159,15 +159,18 @@ public class Viewer {
 				billboardImage = ImageIO.read(new URL(imageString));
 			} catch (NullPointerException | IOException ignored) { }
 
+			try {
+				ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
+				image.insertIcon(displayedBillboardImage);
+				StyledDocument sd = image.getStyledDocument();
+				SimpleAttributeSet sas = new SimpleAttributeSet();
+				StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
+				sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
+			}
+			catch (NullPointerException e) {
 
+			}
 
-			assert billboardImage != null;
-			ImageIcon displayedBillboardImage = new ImageIcon(billboardImage);
-			image.insertIcon(displayedBillboardImage);
-			StyledDocument sd = image.getStyledDocument();
-			SimpleAttributeSet sas = new SimpleAttributeSet();
-			StyleConstants.setAlignment(sas, StyleConstants.ALIGN_CENTER);
-			sd.setParagraphAttributes(0, sd.getLength()-1, sas, false);
 
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
@@ -237,6 +240,7 @@ public class Viewer {
 			/** Contact the server for info here */
 			@Override
 			public void run() {
+				clearViewer();
 				System.out.println("Requesting info from server...");
 
 				//Create variables

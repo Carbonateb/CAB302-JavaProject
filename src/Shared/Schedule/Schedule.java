@@ -68,7 +68,7 @@ public class Schedule implements Serializable {
 	 * @param e the event to remove
 	 * @param removeActive if false, will not affect currently active events.
 	 * @param removeThisOnly only applies for looping events. If true, the next event will still be scheduled
-	 * @returns true if the event was found and deleted
+	 * @return true if the event was found and deleted
 	 */
 	public boolean removeEvent(Event e, boolean removeActive, boolean removeThisOnly) {
 		boolean foundInUpcomingE = upcomingEvents.remove(e);
@@ -93,7 +93,7 @@ public class Schedule implements Serializable {
 
 	/***
 	 * Bulk add a list of events. This will schedule everything in the list
-	 * @param events ArrayList<Event> contains a list of events to import
+	 * @param events ArrayList contains a list of events to import
 	 */
 	public void importEvents(ArrayList<Event> events) {
 		for (Event e : events) {

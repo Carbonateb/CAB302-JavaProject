@@ -7,6 +7,7 @@ import Shared.Display.XMLHandler;
 import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;
+import javax.naming.ldap.Control;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
@@ -47,12 +48,23 @@ public class BillboardEditor extends JFrame {
 
 	/**
 	 * Constructor
-	 * @param xmlString optional. If supplied, will pre-fill the values
+	 * @param billboardName optional. If supplied, will pre-fill the values with this billboard's properties
 	 */
-	public BillboardEditor(String xmlString) {
-		if (xmlString != null) {
-			System.out.println(xmlString);
-			importFromXML(false, xmlString);
+	public BillboardEditor(String billboardName) {
+		if (billboardName != null) {
+			System.out.println(billboardName);
+
+
+			try {
+				Billboard billboard = (Billboard)ControlPanel.get().requestSender.SendData(EndpointType.getBillboard, billboardName).getData();
+
+				importFromXML(false, billboardName);
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Failed to import billboard!");
+				System.out.println(e.getMessage());
+			}
+
+
 		}
 
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -240,7 +252,7 @@ public class BillboardEditor extends JFrame {
 					String image = selectedFile_Label.getText();
 
 					try {
-						XMLHandler.xmlWriter(xmlExportPath, messageText, messageColor, informationText, informationColor, backgroundColor, image);
+						XMLHandler.xmlWriter(xmlExportPath, getBillboardFromFields());
 					} catch (ParserConfigurationException parserConfigurationException) {
 						parserConfigurationException.printStackTrace();
 					}
@@ -290,6 +302,23 @@ public class BillboardEditor extends JFrame {
 				dispose();
 			}
 		});
+	}
+
+	/**
+	 * Reads all of the UI properties that the user set, and turns it into a billboard for easy access
+	 * @return
+	 */
+	private Billboard getBillboardFromFields() {
+		return new Billboard(
+			name_TextField.getText(),
+			title_TextField.getText(),
+			info_TextPane.getText(),
+			titleColorPreview.getBackground(),
+			infoColorPreview.getBackground(),
+			backgroundColorPreview.getBackground(),
+			selectedFile_Label.getText(),
+			ControlPanel.get().requestSender.getToken().getUser()
+		);
 	}
 
 	private void importFromXML(boolean isFile, String xmlData) {
@@ -348,6 +377,10 @@ public class BillboardEditor extends JFrame {
 		} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	private void loadValuesFromBillboard(Billboard billboard) {
+
 	}
 
 }

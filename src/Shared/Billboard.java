@@ -34,4 +34,29 @@ public class Billboard implements Serializable {
 		this.image = image;
 		this.author = author;
 	}
+
+
+	/**
+	 * Constructor that imports the values from a given xml string.
+	 * @param xmlData
+	 */
+	public Billboard(String xmlData) {
+		importfromXML(xmlData);
+	}
+
+	/**
+	 * Converts this billboard to an xml string
+	 * @return
+	 */
+	public String toXML() {
+		return null;
+	}
+
+
+	/**
+	 * Init this billboard from a xml string
+	 */
+	public void importfromXML(String xmlData) {
+
+	}
 }

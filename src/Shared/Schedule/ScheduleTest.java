@@ -7,6 +7,9 @@ import java.util.TimerTask;
 
 // import static org.junit.jupiter.api.Assertions.*;
 
+/***
+ * used for test scheduling events
+ */
 class ScheduleTest {
 
 	/** Launches a console that debugs Schedule */

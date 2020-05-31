@@ -6,6 +6,9 @@ import Shared.Schedule.Event;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/***
+ * end point for fetching the event list from the database
+ */
 public class GetEvents extends Endpoint {
 	public GetEvents(){
 		// This is the enum value bound to this endpoint

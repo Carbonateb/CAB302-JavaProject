@@ -21,7 +21,7 @@ public class Echo extends Endpoint {
 	 * This demo just echoes the input.
 	 *
 	 * @param input the data given to the server, used to process the request. Use this however you like!
-	 * @returns the resulting data to give back to the sender. Can be null.
+	 * @return the resulting data to give back to the sender. Can be null.
 	 */
 	public Object executeEndpoint(Request input) {
 		return input;

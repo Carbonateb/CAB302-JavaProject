@@ -3,6 +3,9 @@ package Server.Endpoints;
 import Shared.Network.Request;
 import Shared.Permissions.Perm;
 
+/***
+ * end point for deleting a user from the database
+ */
 public class DeleteUser extends Endpoint {
 	public DeleteUser(){
 		// This is the enum value bound to this endpoint

@@ -24,6 +24,7 @@ public class Credentials implements Serializable {
 	 * Credentials Constructor
 	 * @param username The username
 	 * @param password The (not hashed) password
+	 * @param permissions permissions object
 	 */
 	public Credentials(String username, String password, Permissions permissions) {
 		_username = username;

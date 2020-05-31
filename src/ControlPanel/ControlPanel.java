@@ -25,8 +25,8 @@ import java.util.Date;
  * Graphical User Interface for main window form
  *
  * @author Lucas Maldonado - n10534342
- * @contributor Callum McNeilage - n10482652
- * @contributor Connor McHugh - n10522662
+ * @author Callum McNeilage - n10482652
+ * @author Connor McHugh - n10522662
  */
 
 public class ControlPanel extends JFrame {
@@ -414,7 +414,7 @@ public class ControlPanel extends JFrame {
 	 * Gets the main Control Panel instance.
 	 * If ControlPanel.main() was called, this will never be null.
 	 * Use this to give callbacks back to ControlPanel.
-	 * @returns the main control panel instance
+	 * @return the main control panel instance
 	 */
 	public static ControlPanel get() {
 		return globalInstance;

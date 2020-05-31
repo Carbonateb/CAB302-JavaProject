@@ -37,8 +37,10 @@ public class SocketHandler {
 		db = inputDB;
 	}
 
-	/**
+	/***
 	 * Endlessly process and respond to requests
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
 	public void Run() throws IOException, ClassNotFoundException {
 		while (true) { // Endlessly process connections
@@ -104,7 +106,7 @@ public class SocketHandler {
 	 * If the token is expired, will remove it from the token array.
 	 *
 	 * @param token the token to examine
-	 * @returns valid if usable, invalid or expired otherwise
+	 * @return valid if usable, invalid or expired otherwise
 	 */
 	public TokenStatus validateToken(Token token) {
 		if (tokens.contains(token)) {

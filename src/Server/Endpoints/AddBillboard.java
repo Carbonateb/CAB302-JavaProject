@@ -9,6 +9,9 @@ import Shared.Schedule.Event;
 
 import java.io.IOException;
 
+/***
+ * end point for adding a billboard to the database
+ */
 public class AddBillboard extends Endpoint {
 	public AddBillboard(){
 		// This is the enum value bound to this endpoint

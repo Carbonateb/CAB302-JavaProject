@@ -5,6 +5,9 @@ import Shared.Network.Request;
 import Shared.Network.Response;
 import Shared.Permissions.Perm;
 
+/***
+ * end point for adding a user to the database
+ */
 public class AddUser extends Endpoint {
 	public AddUser(){
 		// This is the enum value bound to this endpoint

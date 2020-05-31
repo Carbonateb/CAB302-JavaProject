@@ -23,8 +23,8 @@ import java.util.Objects;
  * Form for creating a new billboard
  *
  * @author Connor McHugh - n10522662
- * @contributor Callum McNeilage - n10482652
- * @contributor Lucas Maldonado - n10534342
+ * @author Callum McNeilage - n10482652
+ * @author Lucas Maldonado - n10534342
  */
 public class BillboardEditor extends JFrame {
 	public JPanel BillboardWindow;

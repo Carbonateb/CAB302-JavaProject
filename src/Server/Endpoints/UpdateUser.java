@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Permission;
 
+/***
+ * end point to update user in the database 
+ */
 public class UpdateUser extends Endpoint {
 	public UpdateUser(){
 		// This is the enum value bound to this endpoint

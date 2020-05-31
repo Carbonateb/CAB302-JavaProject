@@ -10,6 +10,9 @@ import Shared.Schedule.Event;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/***
+ * end point for listing users from the database
+ */
 public class ListUsers extends Endpoint {
 	public ListUsers(){
 		// This is the enum value bound to this endpoint

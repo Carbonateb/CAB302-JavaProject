@@ -7,6 +7,9 @@ import Shared.Permissions.Perm;
 
 import java.util.ArrayList;
 
+/***
+ * end point for listing the billboards from the database
+ */
 public class ListBillboards extends Endpoint {
 	public ListBillboards(){
 		// This is the enum value bound to this endpoint

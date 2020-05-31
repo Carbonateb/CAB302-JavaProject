@@ -8,6 +8,9 @@ import Shared.Permissions.Perm;
 
 import java.io.IOException;
 
+/***
+ * endpoint to update a billboard in the database
+ */
 public class UpdateBillboard extends Endpoint {
 	public UpdateBillboard(){
 		// This is the enum value bound to this endpoint

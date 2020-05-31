@@ -86,6 +86,8 @@ public class Schedule implements Serializable {
 	 * Useful for saving the data to disk.
 	 */
 	public ArrayList<Event> exportEvents() {
+		populateActiveEvents();
+		cleanupActiveEvents();
 		ArrayList<Event> returnValue = new ArrayList<Event>();
 		returnValue.addAll(upcomingEvents);
 		returnValue.addAll(activeEvents);

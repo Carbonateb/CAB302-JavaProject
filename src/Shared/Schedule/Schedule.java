@@ -165,4 +165,9 @@ public class Schedule implements Serializable {
 		return System.currentTimeMillis();
 	}
 
+
+	@Override
+	public String toString() {
+		return Integer.toString(activeEvents.size() + upcomingEvents.size());
+	}
 }

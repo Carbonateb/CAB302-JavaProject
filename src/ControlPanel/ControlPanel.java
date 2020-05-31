@@ -512,6 +512,8 @@ public class ControlPanel extends JFrame {
 							} catch (IOException | ClassNotFoundException ioException) {
 								ioException.printStackTrace();
 							}
+							refreshBillboards();
+							refreshEvents();
 						}
 					}
 				} else if (e instanceof MouseEvent) {
@@ -570,6 +572,7 @@ public class ControlPanel extends JFrame {
 								} catch (IOException | ClassNotFoundException ioException) {
 									ioException.printStackTrace();
 								}
+								refreshEvents();
 							}
 						}
 					}

@@ -76,6 +76,7 @@ public class Schedule implements Serializable {
 
 		// Only schedule the next event if we found and deleted something, otherwise we would be creating a new event
 		if (removeThisOnly && (foundInActiveE || foundInUpcomingE)) { scheduleNextRepeatingEvent(e); }
+		System.out.println("Hello there " + e.billboardName);
 		return foundInActiveE || foundInUpcomingE;
 	}
 

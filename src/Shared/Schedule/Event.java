@@ -78,12 +78,18 @@ public class Event implements Serializable {
 	 * @return a string containing the formatted data
 	 */
 	public String toString() {
-		return String.format("Event for billboard '%s':\n" +
-			"\tStarts at %s\n" +
-			"\tLasts for %d minutes\n" +
-			"\tCreated by '%s'\n",
-			billboardName,
-			new SimpleDateFormat("h:mm aa dd-MM-yyyy").format(new Date(startTime)),
-			getDuration() / (60 * 1000), author);
+		return billboardName;
+	}
+
+
+	public boolean equals(Object otherObject) {
+		if (otherObject instanceof Event) {
+			Event e = (Event)otherObject;
+			return e.billboardName.equals(billboardName)
+				&& e.startTime == startTime
+				&& e.author.equals(author)
+				&& e.endTime == endTime;
+		}
+		return false;
 	}
 }

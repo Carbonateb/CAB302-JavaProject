@@ -73,6 +73,10 @@ public class Event implements Serializable {
 			&& author == "";
 	}
 
+	/***
+	 * prints information from event
+	 * @return a string containing the formatted data
+	 */
 	public String toString() {
 		return String.format("Event for billboard '%s':\n" +
 			"\tStarts at %s\n" +

@@ -91,9 +91,9 @@ public class Schedule implements Serializable {
 		return returnValue;
 	}
 
-
-	/**
+	/***
 	 * Bulk add a list of events. This will schedule everything in the list
+	 * @param events ArrayList<Event> contains a list of events to import
 	 */
 	public void importEvents(ArrayList<Event> events) {
 		for (Event e : events) {

@@ -118,37 +118,9 @@ public class Viewer {
 			"\t\t\t\"CC\"");
 	}
 
-	private Font textFormatter(JTextPane textArea, String textAreaText) {
-		StyledDocument test = textArea.getStyledDocument();
-		SimpleAttributeSet test2 = new SimpleAttributeSet();
-		StyleConstants.setAlignment(test2, StyleConstants.ALIGN_CENTER);
-		test.setParagraphAttributes(0, test.getLength()-1, test2, false);
-
-		Font labelFont = textArea.getFont();
-
-		int fontSizeToUse;
-
-		if (textArea == information) {
-			fontSizeToUse = 40;
-		} else {
-			int stringWidth = textArea.getFontMetrics(labelFont).stringWidth(textAreaText);
-			int componentWidth = textArea.getWidth();
-
-			double widthRatio = (double)componentWidth / (double)stringWidth;
-
-			int newFontSize = (int)(labelFont.getSize() * widthRatio);
-			int componentHeight = textArea.getHeight();
-
-			fontSizeToUse = Math.min(newFontSize, componentHeight);
-		}
-
-		return new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse);
-	}
-
 	private void clearViewer() {
 		message.setText(null);
 		information.setText(null);
-//		image
 		mainPanel.setBackground(null);
 		message.setBackground(null);
 		information.setBackground(null);
@@ -158,18 +130,17 @@ public class Viewer {
 
 	private void populateViewer(String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String imageString) {
 
+		clearViewer();
 		try {
 			if (messageText != null) {
 				message.setText(messageText);
 				message.setForeground(messageColor);
-				message.setFont(textFormatter(message, messageText));
 			}
 
 			// Set information text and color
 			if (informationText != null) {
 				information.setText(informationText);
 				information.setForeground(informationColor);
-				information.setFont(textFormatter(information, informationText));
 			}
 
 			// Set background color
@@ -269,7 +240,6 @@ public class Viewer {
 			/** Contact the server for info here */
 			@Override
 			public void run() {
-				clearViewer();
 				System.out.println("Requesting info from server...");
 
 				//Create variables

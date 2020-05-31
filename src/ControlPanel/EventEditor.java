@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,7 +123,16 @@ public class EventEditor extends JFrame {
 
 				System.out.println(event.toString());
 
-
+				if (enableLooping_ChkBox.isSelected()) {
+					event.loopInterval = (
+						((int)loopMinutes_Spinner.getValue() * 1000 * 60)
+							+ ((int)loopHours_spinner.getValue() * 1000 * 60 * 60)
+						+ ((int)loopDays_Spinner.getValue() * 1000 * 60 * 1440)
+						+ ((int)loopWeeks_Spinner.getValue() * 1000* 604800)
+						);
+				} else {
+					event.loopInterval = 0;
+				}
 
 				try {
 

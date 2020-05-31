@@ -93,9 +93,10 @@ public class BillboardEditor extends JFrame {
 		// Create the preview window
 		previewWindow = new BillboardDisplay();
 		previewFrame = new JFrame("Preview Changes");
-		previewFrame.setContentPane(previewWindow);
+		previewFrame.setContentPane(previewWindow.mainPanel);
 		previewFrame.setSize(800, 600);
-		previewFrame.setVisible(true);
+		//previewFrame.setVisible(true);
+		updatePreviewButton.setVisible(false);
 
 		updatePreviewButton.addActionListener(new ActionListener() {
 			@Override

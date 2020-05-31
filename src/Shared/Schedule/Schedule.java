@@ -40,7 +40,7 @@ public class Schedule implements Serializable {
 
 		if (activeEvents.size() == 0) {
 			// Return a blank event if there is none to display
-			return new Event(0, 0, "", "");
+			return new Event(0, 0, "", "", 0);
 
 		}
 
@@ -158,8 +158,8 @@ public class Schedule implements Serializable {
 	 * @param re the event to repeat. Will silently fail if not a Repeating Event
 	 */
 	private void scheduleNextRepeatingEvent(Event re) {
-		if (re instanceof RepeatingEvent) {
-			scheduleEvent(new RepeatingEvent((RepeatingEvent)re));
+		if (re.loopInterval > 0) {
+			scheduleEvent(re.nextEvent());
 		}
 	}
 

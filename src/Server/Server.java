@@ -114,8 +114,8 @@ public class Server {
 		Billboard billboard = new Billboard("sample_billboard", "sample", "sample2", Color.red, Color.blue, Color.white, null, "admin");
 		db.addBillboard(billboard);
 
-		Event event1 = new Event(10000000, 300000000, "bb_ex_1", "bob");
-		Event event2 = new Event(10000010, 300000001, "bb_ex_2", "jerry");
+		Event event1 = new Event(10000000, 300000000, "bb_ex_1", "bob", 0);
+		Event event2 = new Event(10000010, 300000001, "bb_ex_2", "jerry", 0);
 
 		db.addEvent(event1);
 		db.addEvent(event2);

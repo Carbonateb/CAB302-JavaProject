@@ -103,7 +103,7 @@ public class ExampleClient {
 
 		// Add event
 		System.out.println("Sending: " + requestSender.toString("AddEvents", null));
-		Event eventObj = new Event(10000, 20000, "bb_1", "hi");
+		Event eventObj = new Event(10000, 20000, "bb_1", "hi", 0);
 		response = requestSender.SendData(EndpointType.addEvents, eventObj);
 		System.out.println("Response: " + response);
 

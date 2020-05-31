@@ -1,8 +1,6 @@
 package Shared.Schedule;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -22,13 +20,21 @@ public class Event implements Serializable {
 	public String billboardName; // Reference to the billboard to display
 	public String author; // The user that created this event
 
+	public long loopInterval; // if >0 event should loop
+
 
 	/** Constructor */
-	public Event(long inStartTime, long inEndTime, String inBillboardName, String inAuthor) {
+	public Event(long inStartTime, long inEndTime, String inBillboardName, String inAuthor, long inLoopInterval) {
 		startTime = inStartTime;
 		endTime = inEndTime;
 		billboardName = inBillboardName;
 		author = inAuthor;
+		if (inLoopInterval > 0) {
+			loopInterval = Math.max(inLoopInterval, getDuration());
+		} else {
+			loopInterval = 0;
+		}
+
 	}
 
 	/** Constructor that inits everything to zero */
@@ -46,6 +52,19 @@ public class Event implements Serializable {
 		billboardName = "test";
 		Random r = new Random(System.currentTimeMillis());
 		author = "Test Event " + (r.nextInt() % 100);
+	}
+
+	/**
+	 * Creates the next event if it's a repeating event.
+	 * Only call if loopInterval >0
+	 */
+	public Event nextEvent() {
+		return new Event(
+			startTime + loopInterval,
+			endTime + loopInterval,
+			billboardName,
+			author,
+			loopInterval);
 	}
 
 
@@ -88,7 +107,8 @@ public class Event implements Serializable {
 			return e.billboardName.equals(billboardName)
 				&& e.startTime == startTime
 				&& e.author.equals(author)
-				&& e.endTime == endTime;
+				&& e.endTime == endTime
+				&& e.loopInterval == loopInterval;
 		}
 		return false;
 	}

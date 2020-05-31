@@ -1,6 +1,5 @@
 package ControlPanel;
 
-import Server.Endpoints.Endpoint;
 import Server.Endpoints.EndpointType;
 import Shared.Billboard;
 import Shared.ClientPropsReader;
@@ -326,7 +325,7 @@ public class ControlPanel extends JFrame {
 			row[0] = event;
 			row[1] = DateFormat(event.startTime);
 			row[2] = event.getDuration() / (60 * 1000);
-			row[3] = "No";
+			row[3] = (event.loopInterval > 0 ? event.loopInterval / 1000 : "No");
 			row[4] = event.author;
 
 			model.addRow(row);
@@ -551,13 +550,15 @@ public class ControlPanel extends JFrame {
 
 						if (n == 0) {
 							// Bring up a confirmation dialogue
-							int option = JOptionPane.showConfirmDialog(
+							int option = 1;
+							if (event.loopInterval > 0) {option = JOptionPane.showConfirmDialog(
 								this,
 								"This is a looping billboard. Do you want to delete the entire loop?\n" +
 									"Press yes to delete the whole loop.\n" +
 									"Press no to only delete the upcoming event (loop is preserver)",
 								"Confirm Delete User",
-								JOptionPane.YES_NO_OPTION);
+								JOptionPane.YES_NO_OPTION);}
+
 
 							// Don't proceed if the user presses escape
 							if (option != -1) {

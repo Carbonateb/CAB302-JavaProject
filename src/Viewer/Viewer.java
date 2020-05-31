@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,10 +49,32 @@ public class Viewer {
 	 */
 	public static final int updateFrequency = 15;
 
+	public byte[] imageToByte(String imgString)
+	{
+		return imgString.getBytes();
+	}
+
+	public BufferedImage convertToImage(String imgString) throws IOException {
+		BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageToByte(imgString)));
+		return img;
+	}
+
+	void setImage(String imgString) throws IOException {
+		BufferedImage img = convertToImage(imgString);
+
+		ImageIcon icon = new ImageIcon(img);
+		JFrame frame = new JFrame();
+		frame.setLayout(new FlowLayout());
+		frame.setSize(200, 300);
+		JLabel lbl = new JLabel();
+		lbl.setIcon(icon);
+		frame.add(lbl);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
 	/** Constructor */
-	public Viewer()
-	{
+	public Viewer() throws IOException {
 		System.out.println("Viewer starting...");
 		CreateUI();
 		CreateUpdateTimer();
@@ -93,6 +116,12 @@ public class Viewer {
 					System.exit(0);
 			}
 		});
+
+		setImage("\"iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAALHRFWHRDcmVhdGlvbiBUa\\n\" +\n" +
+			"\t\t\t\"W1lAE1vbiAxNiBNYXIgMjAyMCAxMDowNTo0NyArMTAwMNQXthkAAAAHdElNRQfkAxAABh+N6nQI\\n\" +\n" +
+			"\t\t\t\"AAAACXBIWXMAAAsSAAALEgHS3X78AAAABGdBTUEAALGPC/xhBQAAADVJREFUeNp1jkEKADAIwxr\\n\" +\n" +
+			"\t\t\t\"//+duIIhumJMUNUWSbU2AyPROFeVqaIH/T7JeRBd0DY+8SrLVPbTmFQ1iRvw3AAAAAElFTkSuQm\\n\" +\n" +
+			"\t\t\t\"CC\"");
 	}
 
 	private Font textFormatter(JTextPane textArea, String textAreaText) {
@@ -298,7 +327,7 @@ public class Viewer {
 	 * Entry point of the viewer, just creates an instance of itself.
 	 * @param args Unused
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new Viewer();
 	}
 }

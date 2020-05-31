@@ -1,6 +1,10 @@
 package Shared;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -45,10 +49,6 @@ public class Billboard implements Serializable {
 		this.author = author;
 	}
 
-	public byte[] imageToByte(String imgString)
-	{
-		return imgString.getBytes();
-	}
 
 	/**
 	 * Constructor that imports the values from a given xml string.

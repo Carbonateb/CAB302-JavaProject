@@ -23,7 +23,17 @@ public class Billboard implements Serializable {
 	public String author;
 
 
-	/** Default constructor */
+	/***
+	 * Default constructor
+	 * @param name
+	 * @param titleText
+	 * @param infoText
+	 * @param titleTextColor
+	 * @param infoTextColor
+	 * @param backgroundColor
+	 * @param image
+	 * @param author
+	 */
 	public Billboard(String name, String titleText, String infoText, Color titleTextColor, Color infoTextColor, Color backgroundColor, String image, String author) {
 		this.name = name;
 		this.titleText = titleText;
@@ -33,5 +43,30 @@ public class Billboard implements Serializable {
 		this.backgroundColor = backgroundColor;
 		this.image = image;
 		this.author = author;
+	}
+
+
+	/**
+	 * Constructor that imports the values from a given xml string.
+	 * @param xmlData
+	 */
+	public Billboard(String xmlData) {
+		importfromXML(xmlData);
+	}
+
+	/**
+	 * Converts this billboard to an xml string
+	 * @return
+	 */
+	public String toXML() {
+		return null;
+	}
+
+
+	/**
+	 * Init this billboard from a xml string
+	 */
+	public void importfromXML(String xmlData) {
+
 	}
 }

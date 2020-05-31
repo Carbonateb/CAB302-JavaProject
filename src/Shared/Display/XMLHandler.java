@@ -1,5 +1,6 @@
 package Shared.Display;
 
+import Shared.Billboard;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -76,18 +77,13 @@ public class XMLHandler {
 	/**
 	 * Method to generate an XML file based on the parameters provided
 	 * @param filePath path to save the XML file to
-	 * @param messageText billboard message
-	 * @param messageColor colour of billboard message text
-	 * @param informationText billboard information
-	 * @param informationColor colour of information text
-	 * @param backgroundColor background colour of the billboard
-	 * @param image image on billboard
+	 * @param b the billboard you want to save
 	 * @throws ParserConfigurationException
 	 */
-	public static void xmlWriter(String filePath, String messageText, Color messageColor, String informationText, Color informationColor, Color backgroundColor, String image) throws ParserConfigurationException {
-		String messageColorHex = colorConverter(messageColor);
-		String informationColorHex = colorConverter(informationColor);
-		String backgroundColorHex = colorConverter(backgroundColor);
+	public static void xmlWriter(String filePath, Billboard b) throws ParserConfigurationException {
+		String messageColorHex = colorConverter(b.titleTextColor);
+		String informationColorHex = colorConverter(b.infoTextColor);
+		String backgroundColorHex = colorConverter(b.backgroundColor);
 
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 			.newInstance();
@@ -104,11 +100,11 @@ public class XMLHandler {
 		rootElem.setAttributeNode(backgroundAttr);
 
 		// Message element
-		if (!messageText.equals("")) {
+		if (!b.titleText.equals("")) {
 			// Message text
 			Element messageElem = document.createElement("message");
 			rootElem.appendChild(messageElem);
-			messageElem.appendChild(document.createTextNode(messageText));
+			messageElem.appendChild(document.createTextNode(b.titleText));
 
 			// Message color attribute
 			Attr messageAttr = document.createAttribute("colour");
@@ -117,11 +113,11 @@ public class XMLHandler {
 		}
 
 		// Information element
-		if (!informationText.equals("")) {
+		if (!b.infoText.equals("")) {
 			// Information text
 			Element informationElem = document.createElement("information");
 			rootElem.appendChild(informationElem);
-			informationElem.appendChild(document.createTextNode(informationText));
+			informationElem.appendChild(document.createTextNode(b.infoText));
 
 			// Information color attribute
 			Attr informationAttr = document.createAttribute("colour");
@@ -130,18 +126,18 @@ public class XMLHandler {
 		}
 
 		// Picture element
-		if (!image.equals("")) {
+		if (!b.image.equals("")) {
 			Element pictureElem = document.createElement("picture");
 			rootElem.appendChild(pictureElem);
 
 			try {
-				URL imageURL = new URL(image);
+				URL imageURL = new URL(b.image);
 				Attr urlAttr = document.createAttribute("url");
 				urlAttr.setValue(String.valueOf(imageURL));
 				pictureElem.setAttributeNode(urlAttr);
 			} catch (MalformedURLException e) {
 				Attr dataAttr = document.createAttribute("data");
-				dataAttr.setValue(image);
+				dataAttr.setValue(b.image);
 				pictureElem.setAttributeNode(dataAttr);
 			}
 		}

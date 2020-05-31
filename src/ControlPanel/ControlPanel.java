@@ -421,13 +421,13 @@ public class ControlPanel extends JFrame {
 	}
 
 	private void createUIComponents() {
-		// TODO: place custom component creation code here
 		users_Table = new JTable(){
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 
 				if (e instanceof KeyEvent) {
 					KeyEvent ke = (KeyEvent)e;
+					// Keycode 8 is backspace, 127 is delete
 					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
 						String userName = (String) users_Table.getModel().getValueAt(row, 0);
 
@@ -476,13 +476,20 @@ public class ControlPanel extends JFrame {
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 				if (e instanceof KeyEvent) {
 					KeyEvent ke = (KeyEvent)e;
+					// Keycode 8 is backspace, 127 is delete
 					if (ke.getKeyCode() == 8 || ke.getKeyCode() == 127) {
 						// Delete thing
 					}
 				} else if (e instanceof MouseEvent) {
 					MouseEvent mouseEvent = (MouseEvent) e;
+					// Only allow double clicks
 					if (mouseEvent.getClickCount() != 2) {
-						// Only allow double clicks
+
+						String billboardName = (String) billboards_Table.getModel().getValueAt(row, 0);
+
+						new BillboardEditor(billboardName);
+
+
 						return false;
 					}
 

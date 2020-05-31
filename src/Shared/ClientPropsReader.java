@@ -1,5 +1,8 @@
 package Shared;
 
+/***
+ * used for reading the props file
+ */
 public class ClientPropsReader extends PropsReader {
 
 	/** Path to client.props file */

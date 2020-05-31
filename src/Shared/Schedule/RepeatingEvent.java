@@ -1,7 +1,9 @@
 package Shared.Schedule;
 
 /**
- * In a repeating event, the start and end EventEditor indicate the
+ * Repeating event adds a loop interval and some helper methods
+ *
+ * @author Lucas Maldonado - n10534342
  */
 
 public class RepeatingEvent extends Event {

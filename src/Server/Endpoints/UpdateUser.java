@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Permission;
 
 /***
- * end point to update user in the database 
+ * end point to update user in the database
  */
 public class UpdateUser extends Endpoint {
 	public UpdateUser(){

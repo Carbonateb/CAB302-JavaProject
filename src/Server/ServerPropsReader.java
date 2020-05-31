@@ -2,6 +2,9 @@ package Server;
 
 import Shared.PropsReader;
 
+/***
+ * used to read
+ */
 public final class ServerPropsReader extends PropsReader {
 
 	/** Path to both .props files */
@@ -20,11 +23,11 @@ public final class ServerPropsReader extends PropsReader {
 	}
 
 	public String GetURL(){
-		return dbPropsReader.GetStringProperty("jdbc.URL", "jdbc:mysql://localhost:3306");
+		return dbPropsReader.GetStringProperty("jdbc.URL", "jdbc:sqlite");
 	}
 
 	public String GetSchema(){
-		return dbPropsReader.GetStringProperty("jdbc.schema", "cab302");
+		return dbPropsReader.GetStringProperty("jdbc.schema", "main.db");
 	}
 
 	public String GetUsername(){
@@ -43,8 +46,8 @@ public final class ServerPropsReader extends PropsReader {
 	ServerPropsReader(){
 		super();
 		defaultKeysValues.put("port", "9977");
-		dbPropsReader.defaultKeysValues.put("jdbc.URL", "jdbc:mysql://localhost:3306");
-		dbPropsReader.defaultKeysValues.put("jdbc.schema", "cab302");
+		dbPropsReader.defaultKeysValues.put("jdbc.URL", "jdbc:sqlite");
+		dbPropsReader.defaultKeysValues.put("jdbc.schema", "main.db");
 		dbPropsReader.defaultKeysValues.put("jdbc.username", "root");
 		dbPropsReader.defaultKeysValues.put("jdbc.password", "root");
 		dbPropsReader.ReadPropFile(propsFileLocation, dbPropsFileName);

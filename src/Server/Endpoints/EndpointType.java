@@ -10,6 +10,7 @@ public enum EndpointType {
 	addEvents,
 	addBillboard,
 	deleteUser,
+	deleteEvent,
 	deleteBillboard,
 	echo,
 	getCurrentBillboard,

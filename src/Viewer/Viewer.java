@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -242,7 +243,6 @@ public class Viewer {
 			public void run() {
 				System.out.println("Requesting info from server...");
 
-
 				//Create variables
 				String titleText;
 				Color titleTextColor;
@@ -256,10 +256,6 @@ public class Viewer {
 					response = requestSender.SendData(EndpointType.getCurrentBillboard, null);
 
 					billboardToView = (Billboard) response.getData();
-
-//					System.out.println(billboardToView);
-//					System.out.println(lastBillboard);
-
 
 					titleText = billboardToView.titleText;
 					titleTextColor = billboardToView.titleTextColor;
@@ -275,7 +271,7 @@ public class Viewer {
 					infoTextColor = Color.red;
 					backgroundColor = Color.black;
 					image = null;
-					e.printStackTrace();
+//					e.printStackTrace();
 				} catch (NullPointerException err) {
 					titleText = "No Billboards Scheduled";
 					titleTextColor = Color.red;
@@ -286,13 +282,18 @@ public class Viewer {
 				}
 
 				try {
-					if (!titleText.equals(lastTitleText) && !infoText.equals(lastInfoText) && !image.equals(lastImage)) {
+					if ((!titleText.equals(lastTitleText) && !infoText.equals(lastInfoText)) ||
+						(!infoText.equals(lastInfoText) && !image.equals(lastImage)) ||
+						(!titleText.equals(lastTitleText) && !image.equals(lastImage))) {
 						populateViewer(titleText, titleTextColor, infoText, infoTextColor, backgroundColor, image);
 						lastTitleText = titleText;
 						lastInfoText = infoText;
 						lastImage = image;
 					}
-				} catch (NullPointerException ignored) {}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+
 
 
 

@@ -110,12 +110,7 @@ public class Viewer {
 					System.exit(0);
 			}
 		});
-
-		setImage("\"iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAALHRFWHRDcmVhdGlvbiBUa\\n\" +\n" +
-			"\t\t\t\"W1lAE1vbiAxNiBNYXIgMjAyMCAxMDowNTo0NyArMTAwMNQXthkAAAAHdElNRQfkAxAABh+N6nQI\\n\" +\n" +
-			"\t\t\t\"AAAACXBIWXMAAAsSAAALEgHS3X78AAAABGdBTUEAALGPC/xhBQAAADVJREFUeNp1jkEKADAIwxr\\n\" +\n" +
-			"\t\t\t\"//+duIIhumJMUNUWSbU2AyPROFeVqaIH/T7JeRBd0DY+8SrLVPbTmFQ1iRvw3AAAAAElFTkSuQm\\n\" +\n" +
-			"\t\t\t\"CC\"");
+		
 	}
 
 	private Font textFormatter(JTextPane textArea, String textAreaText) {

@@ -23,6 +23,10 @@ import java.util.Date;
 
 /**
  * Graphical User Interface for main window form
+ *
+ * @author Lucas Maldonado - n10534342
+ * @contributor Callum McNeilage - n10482652
+ * @contributor Connor McHugh - n10522662
  */
 
 public class ControlPanel extends JFrame {
@@ -54,6 +58,8 @@ public class ControlPanel extends JFrame {
 	/**
 	 * Constructor of ControlPanel. Initialises many of the important classes, such as the PropsReader and
 	 * RequestSender. The login process also starts from here.
+	 *
+	 * @author Lucas Maldonado - n10534342
 	 */
 	public ControlPanel() {
 		System.out.println("Starting control panel...");
@@ -80,11 +86,6 @@ public class ControlPanel extends JFrame {
 		setVisible(true);
 		System.out.println("Waiting for user to log in...");
 
-
-
-
-
-
 		/**
 		 * Opens the User form when editUsersButton is clicked
 		 *
@@ -98,6 +99,11 @@ public class ControlPanel extends JFrame {
 		});
 
 
+		/**
+		 * Opens blank user window
+		 *
+		 * @author Callum McNeilage - n10482652
+		 */
 		createNewAccount_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -105,6 +111,11 @@ public class ControlPanel extends JFrame {
 			}
 		});
 
+		/**
+		 * Reloads billboards list. For use when you create a billboard so that you can view it in the application
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		refreshBillboards_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -112,6 +123,11 @@ public class ControlPanel extends JFrame {
 			}
 		});
 
+		/**
+		 * Reloads billboard schedule. For use when you add a billboard to the schedule so that it is viewable in application
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		refreshEvents_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -119,6 +135,11 @@ public class ControlPanel extends JFrame {
 			}
 		});
 
+		/**
+		 * Reloads users list. For use when creating a new user so they are visible in application
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		refreshUsers_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -126,6 +147,11 @@ public class ControlPanel extends JFrame {
 			}
 		});
 
+		/**
+		 * Logs the user out of the application.
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		logOut_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -139,14 +165,12 @@ public class ControlPanel extends JFrame {
 			}
 		});
 
-
+		/**
+		 * Opens New BillboardEditor form when newBillboard_Button is pressed
+		 *
+		 * @author Connor McHugh - n10522662
+		 */
 		newBillboard_Button.addActionListener(new ActionListener() {
-			/**
-			 * Opens New BillboardEditor form when newBillboard_Button is pressed
-			 *
-			 * @author Connor McHugh - n10522662
-			 * @param e the event to be processed
-			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new BillboardEditor(null);
@@ -154,30 +178,11 @@ public class ControlPanel extends JFrame {
 			}
 		});
 
-		/*
-		newBillboard_Button.addActionListener(new ActionListener() {
-
-			/**
-			 * Opens pre-populated billboard form when editButton is pressed
-			 *
-			 * @author Callum McNeilage - n10482652
-			 * @param e the event to be processed
-			 /
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String testXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><billboard background=\"#6800C0\"><message colour=\"#FF9E3F\">All custom colours</message><information colour=\"#3FFFC7\">All custom colours</information><picture url=\"https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download\" /></billboard>\n";
-				BillboardEditor.main(testXML, "Edit BillboardEditor");
-
-				// Query server to get billboard information
-				try {
-					//Query server
-				}
-				catch (NullPointerException billErr) {
-					System.out.println("No billboard information to display");
-				}
-			}
-		});
-		*/
+		/**
+		 * Adds billboard to schedule.
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		newEvent_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -189,6 +194,8 @@ public class ControlPanel extends JFrame {
 	/**
 	 * Called by the loginWindow once the user has successfully logged in.
 	 * The main window is created here.
+	 *
+	 * @author Lucas Maldonado - n10534342
 	 */
 	public void loggedIn() {
 		System.out.println("Logged in successfully. Control panel is ready!");
@@ -236,6 +243,8 @@ public class ControlPanel extends JFrame {
 
 	/**
 	 * Call to request the server for the billboards list again
+	 *
+	 * @author Lucas Maldonado - n10534342
 	 */
 	public void refreshBillboards() {
 		try {
@@ -323,6 +332,11 @@ public class ControlPanel extends JFrame {
 		}
 	}
 
+	/**
+	 * Call to request the server for the users list again
+	 *
+	 * @author Lucas Maldonado - n10534342
+	 */
 	public void refreshUsers() {
 
 		// Update the text section describing your account
@@ -379,6 +393,8 @@ public class ControlPanel extends JFrame {
 	 * Entry point for the control panel. Just sets the system Look and Feel to something
 	 * that is actually pleasant to the eyes, and creates an instance of ControlPanel.
 	 * Take a look at the constructor if you're looking for the actual initialisation.
+	 *
+	 * @author - Lucas Maldonado - n10534342
 	 * @param args ControlPanel does not take in any command line arguments
 	 */
 	public static void main(String[] args) {

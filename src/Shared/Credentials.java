@@ -31,6 +31,10 @@ public class Credentials implements Serializable {
 		_permissions = permissions;
 	}
 
+	/***
+	 * fetches the password hahs
+	 * @return password hash as string
+	 */
 	public String getPassword() {
 		if (_password == null) {
 			return null;
@@ -52,6 +56,10 @@ public class Credentials implements Serializable {
 
 	public int getPermissions() { return _permissions.toInt(); }
 
+	/***
+	 *
+	 * @return formatted string containing username, password and permissions
+	 */
 	public String toString() {
 		String passwordText = "N/A";
 		if (_password != null) {

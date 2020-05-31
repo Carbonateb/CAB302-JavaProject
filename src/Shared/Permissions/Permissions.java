@@ -13,7 +13,10 @@ public class Permissions implements Serializable {
 	// Default constructor
 	public Permissions(){}
 
-	// Constructor that inits from an int
+	/***
+	 * Constructor that inits from an int
+	 * @param data 4 character long int storing permissions based on state
+	 */
 	public Permissions(int data) {
 		if ((data & 0b0001) != 0) {
 			addPermission(Perm.CREATE_BILLBOARDS);
@@ -32,9 +35,10 @@ public class Permissions implements Serializable {
 		}
 	}
 
-	/**
+	/***
 	 * Returns the number of permissions this has
- 	 */
+	 * @return integer counting permissions user has
+	 */
 	public int numPermissions() {
 		int returnValue = 0;
 
@@ -57,7 +61,10 @@ public class Permissions implements Serializable {
 		return returnValue;
 	}
 
-	// Converts this permissions to a int for easy serialization
+	/***
+	 * Converts this permissions to a int for easy serialization
+	 * @return an int corresponding to user permissions based on the state of each character in the int
+	 */
 	public int toInt() {
 		int returnValue = 0b0000;
 

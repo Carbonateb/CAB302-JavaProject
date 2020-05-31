@@ -39,7 +39,7 @@ public class EventEditor extends JFrame {
 	 * Allows the user to schedule a billboard. Has controls for setting a start date & time, duration, and looping
 	 * behaviours. All user input is sanitized. The inputs are converted to unix time for convenience.
 	 *
-	 * When the user presses OK, a new Event is created, which is handed off to WIP
+	 * When the user presses OK, a new Event is created, which is sent to server
 	 *
 	 * @author Callum McNeilage - n10482652
 	 * @contributor Lucas Maldonado - n10534342
@@ -69,9 +69,7 @@ public class EventEditor extends JFrame {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
-
-
+		
 		ok_Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,6 +126,8 @@ public class EventEditor extends JFrame {
 	 * Call to check if all of the inputs are good.
 	 * If they are, enable the ok button
 	 * If they are not, disable the ok button.
+	 *
+	 * @author Lucas Maldonado - n10534342
 	 */
 	private void setOkButtonEnabled() {
 		boolean validBillboardSelected = billboardSelector_ComboBox.getSelectedIndex() != 0;

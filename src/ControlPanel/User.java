@@ -33,6 +33,11 @@ public class User {
 			}
 		});
 
+		/**
+		 * Opens form to edit existing users
+		 *
+		 * @author Callum McNeilage - n10482652
+		 */
 		btnEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -63,6 +68,11 @@ public class User {
 			}
 		});
 
+		/**
+		 * Deletes user from server
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		btnDeleteUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -86,6 +96,12 @@ public class User {
 				}
 			}
 		});
+
+		/**
+		 * Enables buttons for user functions when a user is selected
+		 *
+		 * @author Lucas Maldonado - n10534342
+		 */
 		lstNames.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

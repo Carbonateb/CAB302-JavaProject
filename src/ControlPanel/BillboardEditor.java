@@ -44,17 +44,12 @@ public class BillboardEditor extends JFrame {
 	private JButton okay_Button;
 	private JTextField name_TextField;
 	private JTextPane info_TextPane;
-	private JButton updatePreviewButton;
 
 	private String author;
 	private boolean creatingNewBillboard;
 
 	private boolean imageIsURL;
 	private String imageBase64String;
-
-	private JFrame previewFrame;
-	private BillboardDisplay previewWindow;
-
 
 	/**
 	 * Billboard Constructor
@@ -315,7 +310,6 @@ public class BillboardEditor extends JFrame {
 					ControlPanel.get().requestSender.SendData(type, exportBillboard());
 					ControlPanel.get().refreshBillboards();
 					dispose();
-					previewFrame.dispose();
 				} catch (IOException | ClassNotFoundException ex) {
 					System.out.println(ex.getMessage());
 				}
@@ -347,7 +341,6 @@ public class BillboardEditor extends JFrame {
 	 * @returns a new billboard object with the data filled in
 	 */
 	private Billboard exportBillboard() {
-//		System.out.println(imageIsURL);
 		if (imageIsURL) {
 			System.out.println(selectedFile_Label.getText());
 			return new Billboard(
@@ -435,10 +428,6 @@ public class BillboardEditor extends JFrame {
 
 			System.out.println("IMAGE TEST:::" + image);
 
-//			if (image != null) {
-//				System.out.println(image);
-//				selectedFile_Label.setText(image);
-//			}
 		} catch (ParserConfigurationException | IOException | SAXException | NullPointerException ex) {
 			ex.printStackTrace();
 		}
